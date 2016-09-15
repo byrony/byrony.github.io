@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Pieces of Data Science</title><link href="http://byrony.github.it/" rel="alternate"></link><link href="http://byrony.github.it/feeds/all.atom.xml" rel="self"></link><id>http://byrony.github.it/</id><updated>2016-09-05T20:00:00-04:00</updated><entry><title>First Post</title><link href="http://byrony.github.it/first-post.html" rel="alternate"></link><published>2016-09-05T20:00:00-04:00</published><updated>2016-09-05T20:00:00-04:00</updated><author><name>Vincent Cao</name></author><id>tag:byrony.github.it,2016-09-05:first-post.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Pieces of Data Science</title><link href="http://byrony.github.io/" rel="alternate"></link><link href="http://byrony.github.io/feeds/all.atom.xml" rel="self"></link><id>http://byrony.github.io/</id><updated>2016-09-05T20:00:00-04:00</updated><entry><title>First Post</title><link href="http://byrony.github.io/first-post.html" rel="alternate"></link><published>2016-09-05T20:00:00-04:00</published><updated>2016-09-05T20:00:00-04:00</updated><author><name>Vincent Cao</name></author><id>tag:byrony.github.io,2016-09-05:first-post.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
 *
 * IPython notebook
 *
