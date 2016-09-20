@@ -45,7 +45,7 @@
       <h1><a href="https://byrony.github.io"></a></h1>
       <nav>
         <ul class="list">
-          <li><a href="www.linkedin.com/in/xiang-cao" target="_blank">Linkedin</a></li>
+          <li><a href="https://www.linkedin.com/in/xiang-cao" target="_blank">Linkedin</a></li>
           <li><a href="https://github.com/byrony" target="_blank">Github</a></li>
         </ul>
       </nav>
@@ -174,21 +174,12 @@ p
 <span class="c1"># show density plot</span>
 p2 <span class="o">&lt;-</span> ggplot<span class="p">(</span>train<span class="p">[</span><span class="o">-</span><span class="kp">which</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>train<span class="o">$</span>Age<span class="p">)),</span> <span class="p">],</span> aes<span class="p">(</span>x<span class="o">=</span>Age<span class="p">,</span> fill<span class="o">=</span>Survived<span class="p">))</span> <span class="o">+</span> geom_density<span class="p">(</span>alpha<span class="o">=</span><span class="m">0.6</span><span class="p">)</span> <span class="o">+</span> 
     facet_grid<span class="p">(</span><span class="m">.</span><span class="o">~</span>Sex<span class="p">)</span>
+
+p2
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="cp">##</span><span class="c"> Error in train$Age: object of type &#39;closure&#39; is not subsettable</span><span class="x"></span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>p2
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## Error in eval(expr, envir, enclos): object &#39;p2&#39; not found
-</pre></div>
-
-
+<p><img alt="plot of chunk Titanic-4" src="{filename}/figure/Titanic-4-1.png" /></p>
 <ul>
 <li><strong>Check the relation between <code>Fare</code> and <code>Survive</code></strong>.</li>
 </ul>
@@ -369,55 +360,15 @@ extractFeatures <span class="o">&lt;-</span> <span class="kr">function</span><sp
 
 <span class="c1"># create a sparse matrix of the dataset but column Survived. This is converting categorical variables into dummies variables.</span>
 x <span class="o">&lt;-</span> model.matrix<span class="p">(</span>Survived<span class="o">~</span><span class="m">.</span><span class="p">,</span> data <span class="o">=</span> extractFeatures<span class="p">(</span>train<span class="p">))</span>
-</pre></div>
+y <span class="o">&lt;-</span> extractFeatures<span class="p">(</span>train<span class="p">)</span><span class="o">$</span>Survived
+newx <span class="o">&lt;-</span> model.matrix<span class="p">(</span><span class="o">~</span><span class="m">.</span><span class="p">,</span> data <span class="o">=</span> extractFeatures<span class="p">(</span>test<span class="p">)[,</span><span class="o">-</span><span class="kp">which</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>extractFeatures<span class="p">(</span>test<span class="p">))</span> <span class="o">%in%</span> <span class="s">&#39;Survived&#39;</span><span class="p">)])</span>
 
-
-<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>y <span class="o">&lt;-</span> extractFeatures<span class="p">(</span>train<span class="p">)</span><span class="o">$</span>Survived
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>newx <span class="o">&lt;-</span> model.matrix<span class="p">(</span><span class="o">~</span><span class="m">.</span><span class="p">,</span> data <span class="o">=</span> extractFeatures<span class="p">(</span>test<span class="p">)[,</span><span class="o">-</span><span class="kp">which</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>extractFeatures<span class="p">(</span>test<span class="p">))</span> <span class="o">%in%</span> <span class="s">&#39;Survived&#39;</span><span class="p">)])</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## Error in extractFeatures(test): object &#39;test&#39; not found
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="kp">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 fit_ridge <span class="o">&lt;-</span> cv.glmnet<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> alpha <span class="o">=</span> <span class="m">0</span><span class="p">,</span> family <span class="o">=</span> <span class="s">&#39;binomial&#39;</span><span class="p">,</span> type.measure <span class="o">=</span> <span class="s">&#39;deviance&#39;</span><span class="p">)</span>
-</pre></div>
+pred_ridge <span class="o">&lt;-</span> predict<span class="p">(</span>fit_ridge<span class="p">,</span> newx <span class="o">=</span> newx<span class="p">,</span> s <span class="o">=</span> <span class="s">&#39;lambda.min&#39;</span><span class="p">,</span> type<span class="o">=</span><span class="s">&#39;class&#39;</span><span class="p">)</span>
 
-
-<div class="highlight"><pre><span></span>## Error in nrow(x): object &#39;x&#39; not found
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>pred_ridge <span class="o">&lt;-</span> predict<span class="p">(</span>fit_ridge<span class="p">,</span> newx <span class="o">=</span> newx<span class="p">,</span> s <span class="o">=</span> <span class="s">&#39;lambda.min&#39;</span><span class="p">,</span> type<span class="o">=</span><span class="s">&#39;class&#39;</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## Error in predict(fit_ridge, newx = newx, s = &quot;lambda.min&quot;, type = &quot;class&quot;): object &#39;fit_ridge&#39; not found
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_ridge<span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="cp">##</span><span class="c"> Error in data.frame(PassengerId = test$PassengerId, Survived = pred_ridge): object &#39;test&#39; not found</span><span class="x"></span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="c1">#write.csv(submission, file = &quot;ridge.csv&quot;, row.names=FALSE) </span>
+submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_ridge<span class="p">)</span>
+<span class="c1">#write.csv(submission, file = &quot;ridge.csv&quot;, row.names=FALSE) </span>
 </pre></div>
 
 
@@ -453,18 +404,12 @@ fit_gbm <span class="o">&lt;-</span> train<span class="p">(</span>Survived <span
                  tuneGrid <span class="o">=</span>  newGrid<span class="p">,</span>
                  bag.fraction <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
                  verbose <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+fit_gbm<span class="o">$</span>bestTune
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>fit_gbm<span class="o">$</span>bestTune
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## Error in eval(expr, envir, enclos): object &#39;fit_gbm&#39; not found
+<div class="highlight"><pre><span></span>##   n.trees interaction.depth shrinkage n.minobsinnode
+## 3     200                 6      0.01             10
 </pre></div>
 
 
@@ -481,18 +426,12 @@ fit_gbm <span class="o">&lt;-</span> train<span class="p">(</span>Survived <span
                  tuneGrid <span class="o">=</span>  newGrid<span class="p">,</span>
                  bag.fraction <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
                  verbose <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+fit_gbm<span class="o">$</span>bestTune
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>fit_gbm<span class="o">$</span>bestTune
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## Error in eval(expr, envir, enclos): object &#39;fit_gbm&#39; not found
+<div class="highlight"><pre><span></span>##   n.trees interaction.depth shrinkage n.minobsinnode
+## 7     200                10      0.01             10
 </pre></div>
 
 
@@ -509,39 +448,21 @@ fit_gbm_LowerRate <span class="o">&lt;-</span> train<span class="p">(</span>Surv
                  tuneGrid <span class="o">=</span>  newGrid<span class="p">,</span>
                  bag.fraction <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
                  verbose <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+fit_gbm_LowerRate<span class="o">$</span>results
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>fit_gbm_LowerRate<span class="o">$</span>results
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## Error in eval(expr, envir, enclos): object &#39;fit_gbm_LowerRate&#39; not found
+<div class="highlight"><pre><span></span>##   n.trees interaction.depth shrinkage n.minobsinnode  Accuracy    Kappa
+## 1    2000                10     0.001             10 0.8241676 0.618902
+##   AccuracySD  KappaSD
+## 1 0.03510324 0.072976
 </pre></div>
 
 
 <div class="highlight"><pre><span></span><span class="c1"># predict </span>
 pred_gbm <span class="o">&lt;-</span> predict<span class="p">(</span>fit_gbm_LowerRate<span class="p">,</span> extractFeatures<span class="p">(</span>test<span class="p">))</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## Error in predict(fit_gbm_LowerRate, extractFeatures(test)): object &#39;fit_gbm_LowerRate&#39; not found
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_gbm<span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="cp">##</span><span class="c"> Error in data.frame(PassengerId = test$PassengerId, Survived = pred_gbm): object &#39;test&#39; not found</span><span class="x"></span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="c1">#write.csv(submission, file = &quot;gbm_ntree-2000_rate-0.001_inter-10.csv&quot;, row.names=FALSE)</span>
+submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_gbm<span class="p">)</span>
+<span class="c1">#write.csv(submission, file = &quot;gbm_ntree-2000_rate-0.001_inter-10.csv&quot;, row.names=FALSE)</span>
 </pre></div>
 
 
@@ -551,30 +472,10 @@ pred_gbm <span class="o">&lt;-</span> predict<span class="p">(</span>fit_gbm_Low
 <div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>party<span class="p">)</span>
 <span class="kp">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 fit_crf <span class="o">&lt;-</span> cforest<span class="p">(</span>Survived <span class="o">~</span><span class="m">.</span><span class="p">,</span> data<span class="o">=</span>extractFeatures<span class="p">(</span>train<span class="p">),</span> controls<span class="o">=</span>cforest_unbiased<span class="p">(</span>ntree<span class="o">=</span><span class="m">2000</span><span class="p">,</span> mtry<span class="o">=</span><span class="m">3</span><span class="p">))</span>
-</pre></div>
+pred_crf <span class="o">&lt;-</span> predict<span class="p">(</span>fit_crf<span class="p">,</span> extractFeatures<span class="p">(</span>test<span class="p">),</span> OOB <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;response&quot;</span><span class="p">)</span>
 
-
-<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>pred_crf <span class="o">&lt;-</span> predict<span class="p">(</span>fit_crf<span class="p">,</span> extractFeatures<span class="p">(</span>test<span class="p">),</span> OOB <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;response&quot;</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## Error in predict(fit_crf, extractFeatures(test), OOB = TRUE, type = &quot;response&quot;): object &#39;fit_crf&#39; not found
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_crf<span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="cp">##</span><span class="c"> Error in data.frame(PassengerId = test$PassengerId, Survived = pred_crf): object &#39;test&#39; not found</span><span class="x"></span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="c1">#write.csv(submission, file = &quot;crf_seed1.csv&quot;, row.names=FALSE)</span>
+submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_crf<span class="p">)</span>
+<span class="c1">#write.csv(submission, file = &quot;crf_seed1.csv&quot;, row.names=FALSE)</span>
 </pre></div>
 
 
@@ -587,7 +488,7 @@ fit_crf <span class="o">&lt;-</span> cforest<span class="p">(</span>Survived <sp
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>## Error in cat(&quot;Difference ratio between ridge and conditional random forest:&quot;, : object &#39;pred_ridge&#39; not found
+<div class="highlight"><pre><span></span>## Difference ratio between ridge and conditional random forest: 0.06698565
 </pre></div>
 
 
@@ -595,7 +496,7 @@ fit_crf <span class="o">&lt;-</span> cforest<span class="p">(</span>Survived <sp
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>## Error in cat(&quot;Difference ratio between ridge and conditional gbm:&quot;, sum(pred_ridge != : object &#39;pred_ridge&#39; not found
+<div class="highlight"><pre><span></span>## Difference ratio between ridge and conditional gbm: 0.0861244
 </pre></div>
 
 
@@ -603,35 +504,15 @@ fit_crf <span class="o">&lt;-</span> cforest<span class="p">(</span>Survived <sp
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>## Error in cat(&quot;Difference ratio between conditional random forest and gbm:&quot;, : object &#39;pred_crf&#39; not found
+<div class="highlight"><pre><span></span>## Difference ratio between conditional random forest and gbm: 0.0430622
 </pre></div>
 
 
 <div class="highlight"><pre><span></span>ensemble <span class="o">&lt;-</span> <span class="kp">as.numeric</span><span class="p">(</span>pred_ridge<span class="p">)</span> <span class="o">+</span> <span class="kp">as.numeric</span><span class="p">(</span>pred_gbm<span class="p">)</span><span class="m">-1</span> <span class="o">+</span> <span class="kp">as.numeric</span><span class="p">(</span>pred_crf<span class="p">)</span><span class="m">-1</span>
-</pre></div>
+ensemble <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>ensemble<span class="o">/</span><span class="m">3</span><span class="p">,</span> <span class="kp">round</span><span class="p">)</span>
 
-
-<div class="highlight"><pre><span></span>## Error in eval(expr, envir, enclos): object &#39;pred_ridge&#39; not found
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>ensemble <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>ensemble<span class="o">/</span><span class="m">3</span><span class="p">,</span> <span class="kp">round</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## Error in lapply(X = X, FUN = FUN, ...): object &#39;ensemble&#39; not found
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> ensemble<span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="cp">##</span><span class="c"> Error in data.frame(PassengerId = test$PassengerId, Survived = ensemble): object &#39;test&#39; not found</span><span class="x"></span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="c1">#write.csv(submission, file = &quot;ensemble_vote2.csv&quot;, row.names=FALSE)</span>
+submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> ensemble<span class="p">)</span>
+<span class="c1">#write.csv(submission, file = &quot;ensemble_vote2.csv&quot;, row.names=FALSE)</span>
 </pre></div>
 
 

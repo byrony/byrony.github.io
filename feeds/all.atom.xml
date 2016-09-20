@@ -110,21 +110,12 @@ p
 &lt;span class="c1"&gt;# show density plot&lt;/span&gt;
 p2 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ggplot&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="o"&gt;$&lt;/span&gt;Age&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="p"&gt;],&lt;/span&gt; aes&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="o"&gt;=&lt;/span&gt;Age&lt;span class="p"&gt;,&lt;/span&gt; fill&lt;span class="o"&gt;=&lt;/span&gt;Survived&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; geom_density&lt;span class="p"&gt;(&lt;/span&gt;alpha&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0.6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; 
     facet_grid&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;Sex&lt;span class="p"&gt;)&lt;/span&gt;
+
+p2
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; Error in train$Age: object of type &amp;#39;closure&amp;#39; is not subsettable&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;p2
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in eval(expr, envir, enclos): object &amp;#39;p2&amp;#39; not found
-&lt;/pre&gt;&lt;/div&gt;
-
-
+&lt;p&gt;&lt;img alt="plot of chunk Titanic-4" src="{filename}/figure/Titanic-4-1.png" /&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Check the relation between &lt;code&gt;Fare&lt;/code&gt; and &lt;code&gt;Survive&lt;/code&gt;&lt;/strong&gt;.&lt;/li&gt;
 &lt;/ul&gt;
@@ -305,55 +296,15 @@ extractFeatures &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"
 
 &lt;span class="c1"&gt;# create a sparse matrix of the dataset but column Survived. This is converting categorical variables into dummies variables.&lt;/span&gt;
 x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; model.matrix&lt;span class="p"&gt;(&lt;/span&gt;Survived&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+y &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;Survived
+newx &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; model.matrix&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;)[,&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Survived&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
 
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in data[, features]: object of type &amp;#39;closure&amp;#39; is not subsettable
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;y &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;Survived
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in data[, features]: object of type &amp;#39;closure&amp;#39; is not subsettable
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;newx &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; model.matrix&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;)[,&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Survived&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in extractFeatures(test): object &amp;#39;test&amp;#39; not found
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 fit_ridge &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; cv.glmnet&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; y&lt;span class="p"&gt;,&lt;/span&gt; alpha &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; family &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;binomial&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type.measure &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;deviance&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+pred_ridge &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;fit_ridge&lt;span class="p"&gt;,&lt;/span&gt; newx &lt;span class="o"&gt;=&lt;/span&gt; newx&lt;span class="p"&gt;,&lt;/span&gt; s &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;lambda.min&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;class&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in nrow(x): object &amp;#39;x&amp;#39; not found
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pred_ridge &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;fit_ridge&lt;span class="p"&gt;,&lt;/span&gt; newx &lt;span class="o"&gt;=&lt;/span&gt; newx&lt;span class="p"&gt;,&lt;/span&gt; s &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;lambda.min&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;class&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in predict(fit_ridge, newx = newx, s = &amp;quot;lambda.min&amp;quot;, type = &amp;quot;class&amp;quot;): object &amp;#39;fit_ridge&amp;#39; not found
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; pred_ridge&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; Error in data.frame(PassengerId = test$PassengerId, Survived = pred_ridge): object &amp;#39;test&amp;#39; not found&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;ridge.csv&amp;quot;, row.names=FALSE) &lt;/span&gt;
+submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; pred_ridge&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;ridge.csv&amp;quot;, row.names=FALSE) &lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -389,18 +340,12 @@ fit_gbm &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; train&lt;span class="p"&gt;
                  tuneGrid &lt;span class="o"&gt;=&lt;/span&gt;  newGrid&lt;span class="p"&gt;,&lt;/span&gt;
                  bag.fraction &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
                  verbose &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+fit_gbm&lt;span class="o"&gt;$&lt;/span&gt;bestTune
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in data[, features]: object of type &amp;#39;closure&amp;#39; is not subsettable
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;fit_gbm&lt;span class="o"&gt;$&lt;/span&gt;bestTune
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in eval(expr, envir, enclos): object &amp;#39;fit_gbm&amp;#39; not found
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##   n.trees interaction.depth shrinkage n.minobsinnode
+## 3     200                 6      0.01             10
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -417,18 +362,12 @@ fit_gbm &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; train&lt;span class="p"&gt;
                  tuneGrid &lt;span class="o"&gt;=&lt;/span&gt;  newGrid&lt;span class="p"&gt;,&lt;/span&gt;
                  bag.fraction &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
                  verbose &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+fit_gbm&lt;span class="o"&gt;$&lt;/span&gt;bestTune
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in data[, features]: object of type &amp;#39;closure&amp;#39; is not subsettable
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;fit_gbm&lt;span class="o"&gt;$&lt;/span&gt;bestTune
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in eval(expr, envir, enclos): object &amp;#39;fit_gbm&amp;#39; not found
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##   n.trees interaction.depth shrinkage n.minobsinnode
+## 7     200                10      0.01             10
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -445,39 +384,21 @@ fit_gbm_LowerRate &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; train&lt;span cla
                  tuneGrid &lt;span class="o"&gt;=&lt;/span&gt;  newGrid&lt;span class="p"&gt;,&lt;/span&gt;
                  bag.fraction &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
                  verbose &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+fit_gbm_LowerRate&lt;span class="o"&gt;$&lt;/span&gt;results
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in data[, features]: object of type &amp;#39;closure&amp;#39; is not subsettable
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;fit_gbm_LowerRate&lt;span class="o"&gt;$&lt;/span&gt;results
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in eval(expr, envir, enclos): object &amp;#39;fit_gbm_LowerRate&amp;#39; not found
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##   n.trees interaction.depth shrinkage n.minobsinnode  Accuracy    Kappa
+## 1    2000                10     0.001             10 0.8241676 0.618902
+##   AccuracySD  KappaSD
+## 1 0.03510324 0.072976
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# predict &lt;/span&gt;
 pred_gbm &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;fit_gbm_LowerRate&lt;span class="p"&gt;,&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in predict(fit_gbm_LowerRate, extractFeatures(test)): object &amp;#39;fit_gbm_LowerRate&amp;#39; not found
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; pred_gbm&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; Error in data.frame(PassengerId = test$PassengerId, Survived = pred_gbm): object &amp;#39;test&amp;#39; not found&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;gbm_ntree-2000_rate-0.001_inter-10.csv&amp;quot;, row.names=FALSE)&lt;/span&gt;
+submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; pred_gbm&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;gbm_ntree-2000_rate-0.001_inter-10.csv&amp;quot;, row.names=FALSE)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -487,30 +408,10 @@ pred_gbm &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;party&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 fit_crf &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; cforest&lt;span class="p"&gt;(&lt;/span&gt;Survived &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data&lt;span class="o"&gt;=&lt;/span&gt;extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;),&lt;/span&gt; controls&lt;span class="o"&gt;=&lt;/span&gt;cforest_unbiased&lt;span class="p"&gt;(&lt;/span&gt;ntree&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; mtry&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+pred_crf &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;fit_crf&lt;span class="p"&gt;,&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;),&lt;/span&gt; OOB &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;response&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in data[, features]: object of type &amp;#39;closure&amp;#39; is not subsettable
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pred_crf &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;fit_crf&lt;span class="p"&gt;,&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;),&lt;/span&gt; OOB &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;response&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in predict(fit_crf, extractFeatures(test), OOB = TRUE, type = &amp;quot;response&amp;quot;): object &amp;#39;fit_crf&amp;#39; not found
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; pred_crf&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; Error in data.frame(PassengerId = test$PassengerId, Survived = pred_crf): object &amp;#39;test&amp;#39; not found&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;crf_seed1.csv&amp;quot;, row.names=FALSE)&lt;/span&gt;
+submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; pred_crf&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;crf_seed1.csv&amp;quot;, row.names=FALSE)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -523,7 +424,7 @@ fit_crf &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; cforest&lt;span class="p"&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in cat(&amp;quot;Difference ratio between ridge and conditional random forest:&amp;quot;, : object &amp;#39;pred_ridge&amp;#39; not found
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Difference ratio between ridge and conditional random forest: 0.06698565
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -531,7 +432,7 @@ fit_crf &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; cforest&lt;span class="p"&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in cat(&amp;quot;Difference ratio between ridge and conditional gbm:&amp;quot;, sum(pred_ridge != : object &amp;#39;pred_ridge&amp;#39; not found
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Difference ratio between ridge and conditional gbm: 0.0861244
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -539,35 +440,15 @@ fit_crf &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; cforest&lt;span class="p"&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in cat(&amp;quot;Difference ratio between conditional random forest and gbm:&amp;quot;, : object &amp;#39;pred_crf&amp;#39; not found
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Difference ratio between conditional random forest and gbm: 0.0430622
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ensemble &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pred_ridge&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pred_gbm&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="m"&gt;-1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pred_crf&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="m"&gt;-1&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
+ensemble &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ensemble&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;round&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in eval(expr, envir, enclos): object &amp;#39;pred_ridge&amp;#39; not found
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ensemble &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ensemble&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;round&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Error in lapply(X = X, FUN = FUN, ...): object &amp;#39;ensemble&amp;#39; not found
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; ensemble&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; Error in data.frame(PassengerId = test$PassengerId, Survived = ensemble): object &amp;#39;test&amp;#39; not found&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;ensemble_vote2.csv&amp;quot;, row.names=FALSE)&lt;/span&gt;
+submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; ensemble&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;ensemble_vote2.csv&amp;quot;, row.names=FALSE)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
