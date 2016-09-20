@@ -1,70 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
 <head>
-  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
-
-    <link rel="stylesheet" type="text/css" href="https://byrony.github.io/theme/stylesheet/style.min.css">
-
-  <link rel="stylesheet" type="text/css" href="https://byrony.github.io/theme/pygments/github.min.css">
-  <link rel="stylesheet" type="text/css" href="https://byrony.github.io/theme/font-awesome/css/font-awesome.min.css">
-
-
-    <link href="https://byrony.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Pieces of Data Science Atom">
+    <title>"Titanic: A Tutorial to Achieve 0.82297" - Pieces of Data Science</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
 
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="" />
+<link rel="canonical" href="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html">
+
+        <meta name="author" content=""Vincent Cao"" />
+        <meta name="description" content="For the original Knitr version HTML file, see here. It looks like the plugin of Pelican doesn&#39;t support Rmd perfectly. 1. Introduction The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset ..." />
+
+        <meta property="og:site_name" content="Pieces of Data Science" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="&#34;Titanic: A Tutorial to Achieve 0.82297&#34;"/>
+        <meta property="og:url" content="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html"/>
+        <meta property="og:description" content="For the original Knitr version HTML file, see here. It looks like the plugin of Pelican doesn&#39;t support Rmd perfectly. 1. Introduction The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset ..."/>
+        <meta property="article:published_time" content="2016-09-06" />
+            <meta property="article:section" content="misc" />
+            <meta property="article:author" content=""Vincent Cao"" />
 
 
-<meta name="author" content=""Vincent Cao"" />
-<meta name="description" content="1. Introduction The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset to machine learning beginners to predict what sorts of people were more likely to survive given the information including sex, age ..." />
-<meta name="keywords" content="">
-<meta property="og:site_name" content="Pieces of Data Science"/>
-<meta property="og:title" content=""Titanic: A Tutorial to Achieve 0.82297""/>
-<meta property="og:description" content="1. Introduction The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset to machine learning beginners to predict what sorts of people were more likely to survive given the information including sex, age ..."/>
-<meta property="og:locale" content="en_US"/>
-<meta property="og:url" content="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html"/>
-<meta property="og:type" content="article"/>
-<meta property="article:published_time" content="2016-09-06 00:00:00-04:00"/>
-<meta property="article:modified_time" content=""/>
-<meta property="article:author" content="https://byrony.github.io/author/vincent-cao.html">
-<meta property="article:section" content="misc"/>
-<meta property="og:image" content="">
-  <title>Pieces of Data Science &ndash; "Titanic: A Tutorial to Achieve 0.82297"</title>
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://byrony.github.io/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://byrony.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://byrony.github.io/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://byrony.github.io/theme/css/style.css" type="text/css"/>
+
+        <link href="https://byrony.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Pieces of Data Science ATOM Feed"/>
+
+
+
+        <link href="https://byrony.github.io/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Pieces of Data Science misc ATOM Feed"/>
+
 </head>
 <body>
-  <aside>
-    <div>
-      <a href="https://byrony.github.io">
-        <img src="https://byrony.github.io/theme/img/profile.png" alt="" title="">
-      </a>
-      <h1><a href="https://byrony.github.io"></a></h1>
-      <nav>
-        <ul class="list">
-          <li><a href="http://getpelican.com/" target="_blank">Pelican</a></li>
-          <li><a href="http://python.org/" target="_blank">Python.org</a></li>
-          <li><a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a></li>
-        </ul>
-      </nav>
-      <ul class="social">
-        <li><a class="sc-Linkedin" href="www.linkedin.com/in/xiang-cao" target="_blank"><i class="fa fa-Linkedin"></i></a></li>
-        <li><a class="sc-Github" href="https://github.com/byrony" target="_blank"><i class="fa fa-Github"></i></a></li>
-      </ul>
-    </div>
-  </aside>
-  <main>
 
-<article>
-  <header>
-    <h1 id="titanic-a-tutorial-to-achieve-082297">"Titanic: A Tutorial to Achieve 0.82297"</h1>
-    <p>Posted on Tue 06 September 2016 in <a href="https://byrony.github.io/category/misc.html">misc</a></p>
-  </header>
-  <div>
-    <h2>1. Introduction</h2>
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://byrony.github.io/" class="navbar-brand">
+Pieces of Data Science            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="https://byrony.github.io/category/misc.html">Misc</a>
+                        </li>
+                        <li >
+                            <a href="https://byrony.github.io/category/posts.html">Posts</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html"
+                       rel="bookmark"
+                       title="Permalink to "Titanic: A Tutorial to Achieve 0.82297"">
+                        "Titanic: A Tutorial to Achieve 0.82297"
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-09-06T00:00:00-04:00"> Tue 06 September 2016</time>
+    </span>
+
+
+
+
+
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h4>For the original Knitr version HTML file, see <a href="http://rpubs.com/Vincent/Titanic">here</a>. It looks like the plugin of Pelican doesn't support Rmd perfectly.</h4>
+<h2>1. Introduction</h2>
 <p>The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset to machine learning beginners to predict what sorts of people were more likely to survive given the information including sex, age, name, etc. Although the size of the dataset is small, it provides newbies a chance to accomplish most procedures in a data science project including data cleaning, feature engineering, model fitting, and tweaking to achieve higher scores.</p>
 <h3>1.1 Read the data</h3>
 <div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>caret<span class="p">)</span>
@@ -153,45 +191,6 @@ combi <span class="o">&lt;-</span> <span class="kp">rbind</span><span class="p">
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="kp">summary</span><span class="p">(</span>test<span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>##   PassengerId     Pclass      Name               Sex           Age       
-##  Min.   : 892.0   1:107   Length:418         female:152   Min.   : 0.17  
-##  1st Qu.: 996.2   2: 93   Class :character   male  :266   1st Qu.:21.00  
-##  Median :1100.5   3:218   Mode  :character                Median :27.00  
-##  Mean   :1100.5                                           Mean   :30.27  
-##  3rd Qu.:1204.8                                           3rd Qu.:39.00  
-##  Max.   :1309.0                                           Max.   :76.00  
-##                                                           NA&#39;s   :86     
-##      SibSp            Parch           Ticket               Fare        
-##  Min.   :0.0000   Min.   :0.0000   Length:418         Min.   :  0.000  
-##  1st Qu.:0.0000   1st Qu.:0.0000   Class :character   1st Qu.:  7.896  
-##  Median :0.0000   Median :0.0000   Mode  :character   Median : 14.454  
-##  Mean   :0.4474   Mean   :0.3923                      Mean   : 35.627  
-##  3rd Qu.:1.0000   3rd Qu.:0.0000                      3rd Qu.: 31.500  
-##  Max.   :8.0000   Max.   :9.0000                      Max.   :512.329  
-##                                                       NA&#39;s   :1        
-##     Cabin           Embarked Survived      
-##  Length:418         C:102    Mode:logical  
-##  Class :character   Q: 46    NA&#39;s:418      
-##  Mode  :character   S:270                  
-##                                            
-##                                            
-##                                            
-## 
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="kp">head</span><span class="p">(</span>train<span class="o">$</span>Age<span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span>## [1] 22 38 26 35 35 NA
-</pre></div>
-
-
 <h3>2.2 Visualize the relationship between features and response</h3>
 <ul>
 <li><strong>Check the relation between <code>Sex</code> and <code>Survived</code></strong></li>
@@ -213,12 +212,21 @@ p
 <span class="c1"># show density plot</span>
 p2 <span class="o">&lt;-</span> ggplot<span class="p">(</span>train<span class="p">[</span><span class="o">-</span><span class="kp">which</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>train<span class="o">$</span>Age<span class="p">)),</span> <span class="p">],</span> aes<span class="p">(</span>x<span class="o">=</span>Age<span class="p">,</span> fill<span class="o">=</span>Survived<span class="p">))</span> <span class="o">+</span> geom_density<span class="p">(</span>alpha<span class="o">=</span><span class="m">0.6</span><span class="p">)</span> <span class="o">+</span> 
     facet_grid<span class="p">(</span><span class="m">.</span><span class="o">~</span>Sex<span class="p">)</span>
-
-p2
 </pre></div>
 
 
-<p><img alt="plot of chunk Titanic-4" src="{filename}/figure/Titanic-4-1.png" /></p>
+<div class="highlight"><pre><span></span><span class="cp">##</span><span class="c"> Error in train$Age: object of type &#39;closure&#39; is not subsettable</span><span class="x"></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>p2
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Error in eval(expr, envir, enclos): object &#39;p2&#39; not found
+</pre></div>
+
+
 <ul>
 <li><strong>Check the relation between <code>Fare</code> and <code>Survive</code></strong>.</li>
 </ul>
@@ -399,15 +407,55 @@ extractFeatures <span class="o">&lt;-</span> <span class="kr">function</span><sp
 
 <span class="c1"># create a sparse matrix of the dataset but column Survived. This is converting categorical variables into dummies variables.</span>
 x <span class="o">&lt;-</span> model.matrix<span class="p">(</span>Survived<span class="o">~</span><span class="m">.</span><span class="p">,</span> data <span class="o">=</span> extractFeatures<span class="p">(</span>train<span class="p">))</span>
-y <span class="o">&lt;-</span> extractFeatures<span class="p">(</span>train<span class="p">)</span><span class="o">$</span>Survived
-newx <span class="o">&lt;-</span> model.matrix<span class="p">(</span><span class="o">~</span><span class="m">.</span><span class="p">,</span> data <span class="o">=</span> extractFeatures<span class="p">(</span>test<span class="p">)[,</span><span class="o">-</span><span class="kp">which</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>extractFeatures<span class="p">(</span>test<span class="p">))</span> <span class="o">%in%</span> <span class="s">&#39;Survived&#39;</span><span class="p">)])</span>
+</pre></div>
 
-<span class="kp">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+
+<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>y <span class="o">&lt;-</span> extractFeatures<span class="p">(</span>train<span class="p">)</span><span class="o">$</span>Survived
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>newx <span class="o">&lt;-</span> model.matrix<span class="p">(</span><span class="o">~</span><span class="m">.</span><span class="p">,</span> data <span class="o">=</span> extractFeatures<span class="p">(</span>test<span class="p">)[,</span><span class="o">-</span><span class="kp">which</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>extractFeatures<span class="p">(</span>test<span class="p">))</span> <span class="o">%in%</span> <span class="s">&#39;Survived&#39;</span><span class="p">)])</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Error in extractFeatures(test): object &#39;test&#39; not found
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kp">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 fit_ridge <span class="o">&lt;-</span> cv.glmnet<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> alpha <span class="o">=</span> <span class="m">0</span><span class="p">,</span> family <span class="o">=</span> <span class="s">&#39;binomial&#39;</span><span class="p">,</span> type.measure <span class="o">=</span> <span class="s">&#39;deviance&#39;</span><span class="p">)</span>
-pred_ridge <span class="o">&lt;-</span> predict<span class="p">(</span>fit_ridge<span class="p">,</span> newx <span class="o">=</span> newx<span class="p">,</span> s <span class="o">=</span> <span class="s">&#39;lambda.min&#39;</span><span class="p">,</span> type<span class="o">=</span><span class="s">&#39;class&#39;</span><span class="p">)</span>
+</pre></div>
 
-submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_ridge<span class="p">)</span>
-<span class="c1">#write.csv(submission, file = &quot;ridge.csv&quot;, row.names=FALSE) </span>
+
+<div class="highlight"><pre><span></span>## Error in nrow(x): object &#39;x&#39; not found
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>pred_ridge <span class="o">&lt;-</span> predict<span class="p">(</span>fit_ridge<span class="p">,</span> newx <span class="o">=</span> newx<span class="p">,</span> s <span class="o">=</span> <span class="s">&#39;lambda.min&#39;</span><span class="p">,</span> type<span class="o">=</span><span class="s">&#39;class&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Error in predict(fit_ridge, newx = newx, s = &quot;lambda.min&quot;, type = &quot;class&quot;): object &#39;fit_ridge&#39; not found
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_ridge<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="cp">##</span><span class="c"> Error in data.frame(PassengerId = test$PassengerId, Survived = pred_ridge): object &#39;test&#39; not found</span><span class="x"></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#write.csv(submission, file = &quot;ridge.csv&quot;, row.names=FALSE) </span>
 </pre></div>
 
 
@@ -443,12 +491,18 @@ fit_gbm <span class="o">&lt;-</span> train<span class="p">(</span>Survived <span
                  tuneGrid <span class="o">=</span>  newGrid<span class="p">,</span>
                  bag.fraction <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
                  verbose <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-fit_gbm<span class="o">$</span>bestTune
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>##   n.trees interaction.depth shrinkage n.minobsinnode
-## 3     200                 6      0.01             10
+<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>fit_gbm<span class="o">$</span>bestTune
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Error in eval(expr, envir, enclos): object &#39;fit_gbm&#39; not found
 </pre></div>
 
 
@@ -465,12 +519,18 @@ fit_gbm <span class="o">&lt;-</span> train<span class="p">(</span>Survived <span
                  tuneGrid <span class="o">=</span>  newGrid<span class="p">,</span>
                  bag.fraction <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
                  verbose <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-fit_gbm<span class="o">$</span>bestTune
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>##   n.trees interaction.depth shrinkage n.minobsinnode
-## 7     200                10      0.01             10
+<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>fit_gbm<span class="o">$</span>bestTune
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Error in eval(expr, envir, enclos): object &#39;fit_gbm&#39; not found
 </pre></div>
 
 
@@ -487,21 +547,39 @@ fit_gbm_LowerRate <span class="o">&lt;-</span> train<span class="p">(</span>Surv
                  tuneGrid <span class="o">=</span>  newGrid<span class="p">,</span>
                  bag.fraction <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
                  verbose <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-fit_gbm_LowerRate<span class="o">$</span>results
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>##   n.trees interaction.depth shrinkage n.minobsinnode  Accuracy    Kappa
-## 1    2000                10     0.001             10 0.8241676 0.618902
-##   AccuracySD  KappaSD
-## 1 0.03510324 0.072976
+<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>fit_gbm_LowerRate<span class="o">$</span>results
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Error in eval(expr, envir, enclos): object &#39;fit_gbm_LowerRate&#39; not found
 </pre></div>
 
 
 <div class="highlight"><pre><span></span><span class="c1"># predict </span>
 pred_gbm <span class="o">&lt;-</span> predict<span class="p">(</span>fit_gbm_LowerRate<span class="p">,</span> extractFeatures<span class="p">(</span>test<span class="p">))</span>
-submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_gbm<span class="p">)</span>
-<span class="c1">#write.csv(submission, file = &quot;gbm_ntree-2000_rate-0.001_inter-10.csv&quot;, row.names=FALSE)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Error in predict(fit_gbm_LowerRate, extractFeatures(test)): object &#39;fit_gbm_LowerRate&#39; not found
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_gbm<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="cp">##</span><span class="c"> Error in data.frame(PassengerId = test$PassengerId, Survived = pred_gbm): object &#39;test&#39; not found</span><span class="x"></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#write.csv(submission, file = &quot;gbm_ntree-2000_rate-0.001_inter-10.csv&quot;, row.names=FALSE)</span>
 </pre></div>
 
 
@@ -511,10 +589,30 @@ submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span 
 <div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>party<span class="p">)</span>
 <span class="kp">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 fit_crf <span class="o">&lt;-</span> cforest<span class="p">(</span>Survived <span class="o">~</span><span class="m">.</span><span class="p">,</span> data<span class="o">=</span>extractFeatures<span class="p">(</span>train<span class="p">),</span> controls<span class="o">=</span>cforest_unbiased<span class="p">(</span>ntree<span class="o">=</span><span class="m">2000</span><span class="p">,</span> mtry<span class="o">=</span><span class="m">3</span><span class="p">))</span>
-pred_crf <span class="o">&lt;-</span> predict<span class="p">(</span>fit_crf<span class="p">,</span> extractFeatures<span class="p">(</span>test<span class="p">),</span> OOB <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;response&quot;</span><span class="p">)</span>
+</pre></div>
 
-submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_crf<span class="p">)</span>
-<span class="c1">#write.csv(submission, file = &quot;crf_seed1.csv&quot;, row.names=FALSE)</span>
+
+<div class="highlight"><pre><span></span>## Error in data[, features]: object of type &#39;closure&#39; is not subsettable
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>pred_crf <span class="o">&lt;-</span> predict<span class="p">(</span>fit_crf<span class="p">,</span> extractFeatures<span class="p">(</span>test<span class="p">),</span> OOB <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;response&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Error in predict(fit_crf, extractFeatures(test), OOB = TRUE, type = &quot;response&quot;): object &#39;fit_crf&#39; not found
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_crf<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="cp">##</span><span class="c"> Error in data.frame(PassengerId = test$PassengerId, Survived = pred_crf): object &#39;test&#39; not found</span><span class="x"></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#write.csv(submission, file = &quot;crf_seed1.csv&quot;, row.names=FALSE)</span>
 </pre></div>
 
 
@@ -527,7 +625,7 @@ submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span 
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>## Difference ratio between ridge and conditional random forest: 0.06698565
+<div class="highlight"><pre><span></span>## Error in cat(&quot;Difference ratio between ridge and conditional random forest:&quot;, : object &#39;pred_ridge&#39; not found
 </pre></div>
 
 
@@ -535,7 +633,7 @@ submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span 
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>## Difference ratio between ridge and conditional gbm: 0.0861244
+<div class="highlight"><pre><span></span>## Error in cat(&quot;Difference ratio between ridge and conditional gbm:&quot;, sum(pred_ridge != : object &#39;pred_ridge&#39; not found
 </pre></div>
 
 
@@ -543,15 +641,35 @@ submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span 
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>## Difference ratio between conditional random forest and gbm: 0.0430622
+<div class="highlight"><pre><span></span>## Error in cat(&quot;Difference ratio between conditional random forest and gbm:&quot;, : object &#39;pred_crf&#39; not found
 </pre></div>
 
 
 <div class="highlight"><pre><span></span>ensemble <span class="o">&lt;-</span> <span class="kp">as.numeric</span><span class="p">(</span>pred_ridge<span class="p">)</span> <span class="o">+</span> <span class="kp">as.numeric</span><span class="p">(</span>pred_gbm<span class="p">)</span><span class="m">-1</span> <span class="o">+</span> <span class="kp">as.numeric</span><span class="p">(</span>pred_crf<span class="p">)</span><span class="m">-1</span>
-ensemble <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>ensemble<span class="o">/</span><span class="m">3</span><span class="p">,</span> <span class="kp">round</span><span class="p">)</span>
+</pre></div>
 
-submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> ensemble<span class="p">)</span>
-<span class="c1">#write.csv(submission, file = &quot;ensemble_vote2.csv&quot;, row.names=FALSE)</span>
+
+<div class="highlight"><pre><span></span>## Error in eval(expr, envir, enclos): object &#39;pred_ridge&#39; not found
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>ensemble <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>ensemble<span class="o">/</span><span class="m">3</span><span class="p">,</span> <span class="kp">round</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Error in lapply(X = X, FUN = FUN, ...): object &#39;ensemble&#39; not found
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> ensemble<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="cp">##</span><span class="c"> Error in data.frame(PassengerId = test$PassengerId, Survived = ensemble): object &#39;test&#39; not found</span><span class="x"></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#write.csv(submission, file = &quot;ensemble_vote2.csv&quot;, row.names=FALSE)</span>
 </pre></div>
 
 
@@ -578,48 +696,73 @@ submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span 
 <ul>
 <li>The ensemble method like stacking and blending may achieve better results, which could be the next step to tweak the model.</li>
 </ul>
-  </div>
-  <div class="tag-cloud">
-    <p>
-    </p>
-  </div>
-</article>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
 
-    <footer>
-        <p>&copy; Vincent </p>
-<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
-  </main>
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="www.linkedin.com/in/xiang-cao"><i class="fa fa-linkedin-square fa-lg"></i> Linkedin</a></li>
+                <li class="list-group-item"><a href="https://github.com/byrony"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
 
 
 
 
 
-<script type="application/ld+json">
-{
-  "@context" : "http://schema.org",
-  "@type" : "Blog",
-  "name": " Pieces of Data Science ",
-  "url" : "https://byrony.github.io",
-  "image": "",
-  "description": ""
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "BlogPosting",
-  "name": ""Titanic: A Tutorial to Achieve 0.82297"",
-  "headline": ""Titanic: A Tutorial to Achieve 0.82297"",
-  "datePublished": "2016-09-06 00:00:00-04:00",
-  "dateModified": "",
-  "author": {
-    "@type": "Person",
-    "name": ""Vincent Cao"",
-    "url": "https://byrony.github.io/author/vincent-cao.html"
-  },
-  "image": "{{ SITEURL }}/{{ THEME_STATIC_DIR }}/img/profile.png",
-  "url": "https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html",
-  "description": "1. Introduction The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset to machine learning beginners to predict what sorts of people were more likely to survive given the information including sex, age ..."
-}
-</script></body>
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 Vincent
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://byrony.github.io/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://byrony.github.io/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="https://byrony.github.io/theme/js/respond.min.js"></script>
+
+
+</body>
 </html>
