@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" type="text/css" href="https://byrony.github.io/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://byrony.github.io/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="https://byrony.github.io/theme/font-awesome/css/font-awesome.min.css">
+
+
+    <link href="https://byrony.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Pieces of Data Science Atom">
+
+
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="" />
+
+
+<meta name="author" content=""Vincent Cao"" />
+<meta name="description" content="1. Introduction The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset to machine learning beginners to predict what sorts of people were more likely to survive given the information including sex, age ..." />
+<meta name="keywords" content="">
+<meta property="og:site_name" content="Pieces of Data Science"/>
+<meta property="og:title" content=""Titanic: A Tutorial to Achieve 0.82297""/>
+<meta property="og:description" content="1. Introduction The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset to machine learning beginners to predict what sorts of people were more likely to survive given the information including sex, age ..."/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2016-09-06 00:00:00-04:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://byrony.github.io/author/vincent-cao.html">
+<meta property="article:section" content="misc"/>
+<meta property="og:image" content="">
+  <title>Pieces of Data Science &ndash; "Titanic: A Tutorial to Achieve 0.82297"</title>
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://byrony.github.io">
+        <img src="https://byrony.github.io/theme/img/profile.png" alt="" title="">
+      </a>
+      <h1><a href="https://byrony.github.io"></a></h1>
+      <nav>
+        <ul class="list">
+          <li><a href="http://getpelican.com/" target="_blank">Pelican</a></li>
+          <li><a href="http://python.org/" target="_blank">Python.org</a></li>
+          <li><a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a></li>
+        </ul>
+      </nav>
+      <ul class="social">
+        <li><a class="sc-Linkedin" href="www.linkedin.com/in/xiang-cao" target="_blank"><i class="fa fa-Linkedin"></i></a></li>
+        <li><a class="sc-Github" href="https://github.com/byrony" target="_blank"><i class="fa fa-Github"></i></a></li>
+      </ul>
+    </div>
+  </aside>
+  <main>
+
+<article>
+  <header>
+    <h1 id="titanic-a-tutorial-to-achieve-082297">"Titanic: A Tutorial to Achieve 0.82297"</h1>
+    <p>Posted on Tue 06 September 2016 in <a href="https://byrony.github.io/category/misc.html">misc</a></p>
+  </header>
+  <div>
+    <h2>1. Introduction</h2>
+<p>The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset to machine learning beginners to predict what sorts of people were more likely to survive given the information including sex, age, name, etc. Although the size of the dataset is small, it provides newbies a chance to accomplish most procedures in a data science project including data cleaning, feature engineering, model fitting, and tweaking to achieve higher scores.</p>
+<h3>1.1 Read the data</h3>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>caret<span class="p">)</span>
+
+readData <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>path.name<span class="p">,</span> file.name<span class="p">,</span> column.types<span class="p">,</span> missing.types<span class="p">){</span>
+    read.csv<span class="p">(</span><span class="kp">paste</span><span class="p">(</span>path.name<span class="p">,</span> file.name<span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">),</span> colClasses <span class="o">=</span> column.types<span class="p">,</span> na.strings <span class="o">=</span> missing.types <span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">#Titanic.path &lt;- &#39;./data/&#39;</span>
+Titanic.path <span class="o">&lt;-</span> <span class="s">&#39;/Users/caoxiang/Dropbox/Titanic/data/&#39;</span>
+train.file.name <span class="o">&lt;-</span> <span class="s">&#39;train.csv&#39;</span>
+test.file.name <span class="o">&lt;-</span> <span class="s">&#39;test.csv&#39;</span>
+missing.types <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;NA&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+train.column.types <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;integer&#39;</span><span class="p">,</span>   <span class="c1"># PassengerId</span>
+                        <span class="s">&#39;factor&#39;</span><span class="p">,</span>    <span class="c1"># Survived </span>
+                        <span class="s">&#39;factor&#39;</span><span class="p">,</span>    <span class="c1"># Pclass</span>
+                        <span class="s">&#39;character&#39;</span><span class="p">,</span> <span class="c1"># Name</span>
+                        <span class="s">&#39;factor&#39;</span><span class="p">,</span>    <span class="c1"># Sex</span>
+                        <span class="s">&#39;numeric&#39;</span><span class="p">,</span>   <span class="c1"># Age</span>
+                        <span class="s">&#39;integer&#39;</span><span class="p">,</span>   <span class="c1"># SibSp</span>
+                        <span class="s">&#39;integer&#39;</span><span class="p">,</span>   <span class="c1"># Parch</span>
+                        <span class="s">&#39;character&#39;</span><span class="p">,</span> <span class="c1"># Ticket</span>
+                        <span class="s">&#39;numeric&#39;</span><span class="p">,</span>   <span class="c1"># Fare</span>
+                        <span class="s">&#39;character&#39;</span><span class="p">,</span> <span class="c1"># Cabin</span>
+                        <span class="s">&#39;factor&#39;</span>     <span class="c1"># Embarked</span>
+<span class="p">)</span>
+test.column.types <span class="o">&lt;-</span> train.column.types<span class="p">[</span><span class="m">-2</span><span class="p">]</span>
+
+train <span class="o">&lt;-</span> readData<span class="p">(</span>Titanic.path<span class="p">,</span> train.file.name<span class="p">,</span> train.column.types<span class="p">,</span> missing.types<span class="p">)</span>
+test <span class="o">&lt;-</span> readData<span class="p">(</span>Titanic.path<span class="p">,</span> test.file.name<span class="p">,</span> test.column.types<span class="p">,</span> missing.types<span class="p">)</span>
+test<span class="o">$</span>Survived <span class="o">&lt;-</span> <span class="kc">NA</span> <span class="c1"># add Survived column to test dataset and fill it out with NA.</span>
+
+combi <span class="o">&lt;-</span> <span class="kp">rbind</span><span class="p">(</span>train<span class="p">,</span> test<span class="p">)</span> <span class="c1"># combine training and test set for further manipulation</span>
+</pre></div>
+
+
+<h2>2. Exploratory Data Analysis</h2>
+<h3>2.1 Check the structure of the dataset</h3>
+<div class="highlight"><pre><span></span>str<span class="p">(</span>train<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## &#39;data.frame&#39;:    891 obs. of  12 variables:
+##  $ PassengerId: int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Survived   : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 2 2 2 1 1 1 1 2 2 ...
+##  $ Pclass     : Factor w/ 3 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;: 3 1 3 1 3 3 1 3 3 2 ...
+##  $ Name       : chr  &quot;Braund, Mr. Owen Harris&quot; &quot;Cumings, Mrs. John Bradley (Florence Briggs Thayer)&quot; &quot;Heikkinen, Miss. Laina&quot; &quot;Futrelle, Mrs. Jacques Heath (Lily May Peel)&quot; ...
+##  $ Sex        : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 2 1 1 1 2 2 2 2 1 1 ...
+##  $ Age        : num  22 38 26 35 35 NA 54 2 27 14 ...
+##  $ SibSp      : int  1 1 0 1 0 0 0 3 0 1 ...
+##  $ Parch      : int  0 0 0 0 0 0 0 1 2 0 ...
+##  $ Ticket     : chr  &quot;A/5 21171&quot; &quot;PC 17599&quot; &quot;STON/O2. 3101282&quot; &quot;113803&quot; ...
+##  $ Fare       : num  7.25 71.28 7.92 53.1 8.05 ...
+##  $ Cabin      : chr  NA &quot;C85&quot; NA &quot;C123&quot; ...
+##  $ Embarked   : Factor w/ 3 levels &quot;C&quot;,&quot;Q&quot;,&quot;S&quot;: 3 1 3 3 3 2 3 3 3 1 ...
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kp">summary</span><span class="p">(</span>train<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##   PassengerId    Survived Pclass      Name               Sex     
+##  Min.   :  1.0   0:549    1:216   Length:891         female:314  
+##  1st Qu.:223.5   1:342    2:184   Class :character   male  :577  
+##  Median :446.0            3:491   Mode  :character               
+##  Mean   :446.0                                                   
+##  3rd Qu.:668.5                                                   
+##  Max.   :891.0                                                   
+##                                                                  
+##       Age            SibSp           Parch           Ticket         
+##  Min.   : 0.42   Min.   :0.000   Min.   :0.0000   Length:891        
+##  1st Qu.:20.12   1st Qu.:0.000   1st Qu.:0.0000   Class :character  
+##  Median :28.00   Median :0.000   Median :0.0000   Mode  :character  
+##  Mean   :29.70   Mean   :0.523   Mean   :0.3816                     
+##  3rd Qu.:38.00   3rd Qu.:1.000   3rd Qu.:0.0000                     
+##  Max.   :80.00   Max.   :8.000   Max.   :6.0000                     
+##  NA&#39;s   :177                                                        
+##       Fare           Cabin           Embarked  
+##  Min.   :  0.00   Length:891         C   :168  
+##  1st Qu.:  7.91   Class :character   Q   : 77  
+##  Median : 14.45   Mode  :character   S   :644  
+##  Mean   : 32.20                      NA&#39;s:  2  
+##  3rd Qu.: 31.00                                
+##  Max.   :512.33                                
+## 
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kp">summary</span><span class="p">(</span>test<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##   PassengerId     Pclass      Name               Sex           Age       
+##  Min.   : 892.0   1:107   Length:418         female:152   Min.   : 0.17  
+##  1st Qu.: 996.2   2: 93   Class :character   male  :266   1st Qu.:21.00  
+##  Median :1100.5   3:218   Mode  :character                Median :27.00  
+##  Mean   :1100.5                                           Mean   :30.27  
+##  3rd Qu.:1204.8                                           3rd Qu.:39.00  
+##  Max.   :1309.0                                           Max.   :76.00  
+##                                                           NA&#39;s   :86     
+##      SibSp            Parch           Ticket               Fare        
+##  Min.   :0.0000   Min.   :0.0000   Length:418         Min.   :  0.000  
+##  1st Qu.:0.0000   1st Qu.:0.0000   Class :character   1st Qu.:  7.896  
+##  Median :0.0000   Median :0.0000   Mode  :character   Median : 14.454  
+##  Mean   :0.4474   Mean   :0.3923                      Mean   : 35.627  
+##  3rd Qu.:1.0000   3rd Qu.:0.0000                      3rd Qu.: 31.500  
+##  Max.   :8.0000   Max.   :9.0000                      Max.   :512.329  
+##                                                       NA&#39;s   :1        
+##     Cabin           Embarked Survived      
+##  Length:418         C:102    Mode:logical  
+##  Class :character   Q: 46    NA&#39;s:418      
+##  Mode  :character   S:270                  
+##                                            
+##                                            
+##                                            
+## 
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kp">head</span><span class="p">(</span>train<span class="o">$</span>Age<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## [1] 22 38 26 35 35 NA
+</pre></div>
+
+
+<h3>2.2 Visualize the relationship between features and response</h3>
+<ul>
+<li><strong>Check the relation between <code>Sex</code> and <code>Survived</code></strong></li>
+</ul>
+<p>Consistent with our prior, the female is more likely to survive.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+p <span class="o">&lt;-</span> ggplot<span class="p">(</span>train<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Survived<span class="p">,</span> fill<span class="o">=</span>Sex<span class="p">))</span> <span class="o">+</span> geom_bar<span class="p">(</span>color<span class="o">=</span><span class="s">&#39;black&#39;</span><span class="p">)</span>
+p
+</pre></div>
+
+
+<p><img alt="plot of chunk Titanic-3" src="{filename}/figure/Titanic-3-1.png" /></p>
+<ul>
+<li><strong>Check the relation between <code>Age</code> and <code>Survive</code></strong>.</li>
+</ul>
+<p>As there are many missing value in <code>Age</code> column, we omitted these rows before plotting. It looks like children are more likely to survive.</p>
+<div class="highlight"><pre><span></span><span class="c1"># show histogram</span>
+<span class="c1"># p3 &lt;- ggplot(train[!is.na(train$Age), ], aes(x=Age, fill=Survived)) + geom_histogram()</span>
+<span class="c1"># show density plot</span>
+p2 <span class="o">&lt;-</span> ggplot<span class="p">(</span>train<span class="p">[</span><span class="o">-</span><span class="kp">which</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>train<span class="o">$</span>Age<span class="p">)),</span> <span class="p">],</span> aes<span class="p">(</span>x<span class="o">=</span>Age<span class="p">,</span> fill<span class="o">=</span>Survived<span class="p">))</span> <span class="o">+</span> geom_density<span class="p">(</span>alpha<span class="o">=</span><span class="m">0.6</span><span class="p">)</span> <span class="o">+</span> 
+    facet_grid<span class="p">(</span><span class="m">.</span><span class="o">~</span>Sex<span class="p">)</span>
+
+p2
+</pre></div>
+
+
+<p><img alt="plot of chunk Titanic-4" src="{filename}/figure/Titanic-4-1.png" /></p>
+<ul>
+<li><strong>Check the relation between <code>Fare</code> and <code>Survive</code></strong>.</li>
+</ul>
+<p>Within the people who survived, higher percentage of them afforded high fare for the ticket, which indicates the high fare may correspond better cabins that are easy to escape from. </p>
+<div class="highlight"><pre><span></span>p3 <span class="o">&lt;-</span> ggplot<span class="p">(</span>train<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Fare<span class="p">,</span> fill<span class="o">=</span>Survived<span class="p">))</span> <span class="o">+</span> geom_histogram<span class="p">()</span> <span class="o">+</span> 
+    facet_grid<span class="p">(</span><span class="m">.</span><span class="o">~</span>Pclass<span class="p">)</span>
+p3
+</pre></div>
+
+
+<p><img alt="plot of chunk Titanic-5" src="{filename}/figure/Titanic-5-1.png" /></p>
+<div class="highlight"><pre><span></span><span class="kp">prop.table</span><span class="p">(</span><span class="kp">table</span><span class="p">(</span>train<span class="o">$</span>Survived<span class="p">,</span> train<span class="o">$</span>Pclass<span class="p">),</span> margin <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    
+##             1         2         3
+##   0 0.3703704 0.5271739 0.7576375
+##   1 0.6296296 0.4728261 0.2423625
+</pre></div>
+
+
+<p>From the <code>prop.table</code>, compared to <code>Pclass 2</code> and <code>Pclass 3</code>, higher percentage of passenger in <code>Pclass 1</code> survived.</p>
+<ul>
+<li><strong>Check the relation between <code>Embarked</code> and <code>Survived</code></strong>.</li>
+</ul>
+<p>No significant difference between port of embarkation.</p>
+<div class="highlight"><pre><span></span>p4 <span class="o">&lt;-</span> ggplot<span class="p">(</span>train<span class="p">[</span><span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>train<span class="o">$</span>Embarked<span class="p">),</span> <span class="p">],</span> aes<span class="p">(</span>x<span class="o">=</span>Survived<span class="p">,</span> fill<span class="o">=</span>Embarked<span class="p">))</span> <span class="o">+</span> geom_bar<span class="p">(</span>color<span class="o">=</span><span class="s">&#39;black&#39;</span><span class="p">)</span>
+p4
+</pre></div>
+
+
+<p><img alt="plot of chunk Titanic-6" src="{filename}/figure/Titanic-6-1.png" /></p>
+<h2>3. Data Clearing and Feature Engineering</h2>
+<h3>3.1 Feature Engineering</h3>
+<ul>
+<li><code>Name</code>. Extract the <code>title</code> and <code>Surname</code> from <code>Name</code> and create two new features.</li>
+</ul>
+<div class="highlight"><pre><span></span>title.extract <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">){</span>
+    <span class="kp">strsplit</span><span class="p">(</span>x<span class="p">,</span> split <span class="o">=</span> <span class="s">&quot;[,.]&quot;</span><span class="p">)[[</span><span class="m">1</span><span class="p">]][</span><span class="m">2</span><span class="p">]</span>
+<span class="p">}</span>
+combi<span class="o">$</span>Title <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>combi<span class="o">$</span>Name<span class="p">,</span> FUN <span class="o">=</span> title.extract<span class="p">)</span>
+combi<span class="o">$</span>Title <span class="o">&lt;-</span> <span class="kp">sub</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> combi<span class="o">$</span>Title<span class="p">)</span> <span class="c1"># delete the space in the Title</span>
+
+<span class="c1"># combine the similiar into the same category</span>
+combi<span class="o">$</span>Title<span class="p">[</span>combi<span class="o">$</span>PassengerId <span class="o">==</span> <span class="m">797</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&#39;Mrs&#39;</span> <span class="c1"># this passenger is a female doctor</span>
+combi<span class="o">$</span>Title<span class="p">[</span>combi<span class="o">$</span>Title <span class="o">%in%</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Mlle&#39;</span><span class="p">,</span> <span class="s">&#39;Mme&#39;</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="s">&#39;Mlle&#39;</span>
+combi<span class="o">$</span>Title<span class="p">[</span>combi<span class="o">$</span>Title <span class="o">%in%</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Capt&#39;</span><span class="p">,</span><span class="s">&#39;Don&#39;</span><span class="p">,</span><span class="s">&#39;Major&#39;</span><span class="p">,</span><span class="s">&#39;Sir&#39;</span><span class="p">,</span> <span class="s">&#39;Jonkheer&#39;</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="s">&#39;Sir&#39;</span>
+combi<span class="o">$</span>Title<span class="p">[</span>combi<span class="o">$</span>Title <span class="o">%in%</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Dona&#39;</span><span class="p">,</span> <span class="s">&#39;Lady&#39;</span><span class="p">,</span> <span class="s">&#39;the Countess&#39;</span><span class="p">)]</span> <span class="o">&lt;-</span> <span class="s">&#39;lady&#39;</span>
+combi<span class="o">$</span>Title <span class="o">&lt;-</span> <span class="kp">as.factor</span><span class="p">(</span>combi<span class="o">$</span>Title<span class="p">)</span>
+
+combi<span class="o">$</span>Surname <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>combi<span class="o">$</span>Name<span class="p">,</span> FUN <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">){</span><span class="kp">strsplit</span><span class="p">(</span>x<span class="p">,</span> split<span class="o">=</span><span class="s">&quot;[,.]&quot;</span><span class="p">)[[</span><span class="m">1</span><span class="p">]][</span><span class="m">1</span><span class="p">]})</span>
+</pre></div>
+
+
+<ul>
+<li><code>SibSp</code> and <code>Parch</code>. Create a new feature <code>FamilySize</code> which equals <code>SibSq + Parch +1</code></li>
+</ul>
+<div class="highlight"><pre><span></span>combi<span class="o">$</span>FamilySize <span class="o">&lt;-</span> combi<span class="o">$</span>SibSp <span class="o">+</span> combi<span class="o">$</span>Parch <span class="o">+</span> <span class="m">1</span>
+</pre></div>
+
+
+<ul>
+<li>Base on the two features <code>FamilySize</code> and <code>Surname</code>, we create a new feature <code>FamilyID</code> in order to classify the passengers from the same family into groups. As there are many single passenger whose family is 1, we label these passengers whose <code>FamilySize &lt;=2</code> as <code>Small</code>. Note there may be some records whose <code>FamilySize</code> doesn't equal the frequence of <code>FamilyID</code>, it's obvious inconformity exists. So we labeled the records where frequence of <code>FamilyID &lt;=2</code> as <code>Small</code> as well.  </li>
+</ul>
+<div class="highlight"><pre><span></span>combi<span class="o">$</span>FamilyID <span class="o">&lt;-</span> <span class="kp">paste</span><span class="p">(</span><span class="kp">as.character</span><span class="p">(</span>combi<span class="o">$</span>FamilySize<span class="p">),</span> combi<span class="o">$</span>Surname<span class="p">,</span> sep <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+combi<span class="o">$</span>FamilyID<span class="p">[</span>combi<span class="o">$</span>FamilySize <span class="o">&lt;=</span> <span class="m">2</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Small&quot;</span>
+famIDs <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span><span class="kp">table</span><span class="p">(</span>combi<span class="o">$</span>FamilyID<span class="p">))</span>
+famIDs <span class="o">&lt;-</span> famIDs<span class="p">[</span>famIDs<span class="o">$</span>Freq <span class="o">&lt;=</span> <span class="m">2</span><span class="p">,]</span> 
+<span class="c1"># if famIDs frequency &lt;=2, regard it as &quot;Small&quot; as well. </span>
+combi<span class="o">$</span>FamilyID<span class="p">[</span>combi<span class="o">$</span>FamilyID <span class="o">%in%</span> famIDs<span class="o">$</span>Var1 <span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Small&quot;</span>
+combi<span class="o">$</span>FamilyID <span class="o">&lt;-</span> <span class="kp">as.factor</span><span class="p">(</span>combi<span class="o">$</span>FamilyID<span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li>For <code>Cabin</code>, we can extract the first letter of <code>Cabin</code> as a label. It's obviouse the <code>Cabin</code> numbers correspond different Passenger Class which is a crucial factor determining whether one could survive. However, since the <code>Cabin</code> of most records are missing, although the importance of this variable seems to be significant in training, it doesn't increase the predicting score in my models.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># We write a function to extract the first letter of Cabin. A new factor &#39;N&#39; is assigned to the missing values. Also, for the passengers with the same ticket number, the most frequent Cabin level besides &#39;N&#39; is assigned to the rest passengers.</span>
+
+extractCabin <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>combi<span class="p">){</span>
+    <span class="c1"># extract the first letter of Cabin</span>
+    combi<span class="o">$</span>Cabin <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>combi<span class="o">$</span>Cabin<span class="p">,</span> FUN <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">){</span><span class="kp">strsplit</span><span class="p">(</span>x<span class="p">,</span> split<span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)[[</span><span class="m">1</span><span class="p">]][</span><span class="m">1</span><span class="p">]})</span>
+    combi<span class="o">$</span>Cabin<span class="p">[</span><span class="kp">is.na</span><span class="p">(</span>combi<span class="o">$</span>Cabin<span class="p">)]</span> <span class="o">&lt;-</span> <span class="s">&#39;N&#39;</span>
+    combi<span class="o">$</span>Cabin <span class="o">&lt;-</span> <span class="kp">as.factor</span><span class="p">(</span>combi<span class="o">$</span>Cabin<span class="p">)</span>
+
+    <span class="c1"># set the same number tickets with the same Cabin label</span>
+    combi.ticket <span class="o">&lt;-</span> <span class="kp">table</span><span class="p">(</span><span class="kp">factor</span><span class="p">(</span>combi<span class="o">$</span>Ticket<span class="p">))</span>
+    combi.ticket.moreThanOne <span class="o">&lt;-</span> combi.ticket<span class="p">[</span>combi.ticket<span class="o">&gt;</span><span class="m">1</span><span class="p">]</span>
+    combi.temp <span class="o">&lt;-</span> combi<span class="p">[</span>combi<span class="o">$</span>Ticket <span class="o">%in%</span> <span class="kp">names</span><span class="p">(</span>combi.ticket.moreThanOne<span class="p">),</span> <span class="p">]</span>
+    <span class="kr">for</span><span class="p">(</span>name <span class="kr">in</span> <span class="kp">names</span><span class="p">(</span>combi.ticket.moreThanOne<span class="p">)){</span>
+        row.sameTicket <span class="o">&lt;-</span> combi<span class="p">[</span>combi<span class="o">$</span>Ticket <span class="o">==</span> name<span class="p">,</span> <span class="p">]</span>
+        Cabin_boolean <span class="o">&lt;-</span> row.sameTicket<span class="o">$</span>Cabin <span class="o">%in%</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;A&#39;</span><span class="p">,</span><span class="s">&#39;B&#39;</span><span class="p">,</span><span class="s">&#39;C&#39;</span><span class="p">,</span><span class="s">&#39;D&#39;</span><span class="p">,</span><span class="s">&#39;E&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;G&#39;</span><span class="p">)</span>
+        <span class="kr">if</span><span class="p">(</span><span class="kp">sum</span><span class="p">(</span>Cabin_boolean<span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">){</span>
+            correctCabin <span class="o">&lt;-</span> <span class="kp">names</span><span class="p">(</span><span class="kp">sort</span><span class="p">(</span><span class="kp">table</span><span class="p">(</span>row.sameTicket<span class="o">$</span>Cabin<span class="p">[</span>Cabin_boolean<span class="p">]),</span> decreasing<span class="o">=</span><span class="kc">TRUE</span><span class="p">))[</span><span class="m">1</span><span class="p">]</span>
+            row.sameTicket<span class="o">$</span>Cabin<span class="p">[</span>row.sameTicket<span class="o">$</span>Cabin <span class="o">==</span> <span class="s">&quot;N&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> correctCabin
+            <span class="c1"># modify the Cabin of combi dataset</span>
+            combi<span class="o">$</span>Cabin<span class="p">[</span>row.sameTicket<span class="o">$</span>PassengerId<span class="p">]</span> <span class="o">&lt;-</span> row.sameTicket<span class="o">$</span>Cabin
+        <span class="p">}</span>
+    <span class="p">}</span>
+    combi<span class="o">$</span>Cabin <span class="o">&lt;-</span> <span class="kp">as.factor</span><span class="p">(</span>combi<span class="o">$</span>Cabin<span class="p">)</span>
+    <span class="kr">return</span><span class="p">(</span>combi<span class="p">)</span>
+<span class="p">}</span>
+combi <span class="o">&lt;-</span> extractCabin<span class="p">(</span>combi<span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li>For <code>Ticket</code>, we extracted the first alphabet character of <code>Ticket</code> to label the ticket.</li>
+</ul>
+<div class="highlight"><pre><span></span>extractTicket <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>ticket<span class="p">){</span>
+    pattern <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;\\/&#39;</span><span class="p">,</span> <span class="s">&#39;\\.&#39;</span><span class="p">,</span> <span class="s">&#39;\\s&#39;</span><span class="p">,</span> <span class="s">&#39;[[:digit:]]&#39;</span><span class="p">)</span>
+    <span class="kr">for</span> <span class="p">(</span>p <span class="kr">in</span> pattern<span class="p">){</span>
+        <span class="c1"># replace all chracter matches the pattern p with &quot;&quot;</span>
+        ticket <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span>p<span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> ticket<span class="p">)</span>
+    <span class="p">}</span>
+    ticket <span class="o">&lt;-</span> <span class="kp">substr</span><span class="p">(</span><span class="kp">toupper</span><span class="p">(</span>ticket<span class="p">),</span> <span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">)</span> <span class="c1"># only extract the first alphabet character to label the ticket</span>
+    ticket<span class="p">[</span>ticket<span class="o">==</span><span class="s">&quot;&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&#39;N&#39;</span>
+    ticket <span class="o">&lt;-</span> <span class="kp">as.factor</span><span class="p">(</span>ticket<span class="p">)</span>
+<span class="p">}</span>
+combi<span class="o">$</span>Ticket <span class="o">&lt;-</span> extractTicket<span class="p">(</span>combi<span class="o">$</span>Ticket<span class="p">)</span>
+</pre></div>
+
+
+<h3>3.2 Dealing with missing values</h3>
+<ul>
+<li><code>Fare</code>. Replace the NA in <code>Fare</code> with the median of <code>Fare</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span>combi<span class="o">$</span>Fare<span class="p">[</span><span class="kp">is.na</span><span class="p">(</span>combi<span class="o">$</span>Fare<span class="p">)]</span> <span class="o">&lt;-</span> median<span class="p">(</span>combi<span class="o">$</span>Fare<span class="p">,</span> na.rm <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li><code>Embarked</code>. Replase the NA in <code>Embarked</code> with the most frequent label <code>S</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span>combi<span class="o">$</span>Embarked<span class="p">[</span><span class="kp">is.na</span><span class="p">(</span>combi<span class="o">$</span>Embarked<span class="p">)]</span> <span class="o">&lt;-</span> <span class="s">&quot;S&quot;</span>
+</pre></div>
+
+
+<ul>
+<li><code>Age</code>. We fill out the NA in <code>Age</code> by fitting a decision tree, which uses the features exclude <code>Survived</code> to predict <code>Age</code>. Here we just use the default parameters of <code>rpart</code>, for more details, check <code>rpart.control</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>rpart<span class="p">)</span>
+Agefit <span class="o">&lt;-</span> rpart<span class="p">(</span>Age <span class="o">~</span> Pclass <span class="o">+</span> Sex <span class="o">+</span> SibSp <span class="o">+</span> Parch <span class="o">+</span> Fare <span class="o">+</span> Embarked <span class="o">+</span> Title <span class="o">+</span> FamilySize<span class="p">,</span>
+                data <span class="o">=</span> combi<span class="p">[</span><span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>combi<span class="o">$</span>Age<span class="p">),</span> <span class="p">],</span> method <span class="o">=</span> <span class="s">&quot;anova&quot;</span><span class="p">)</span>
+combi<span class="o">$</span>Age<span class="p">[</span><span class="kp">is.na</span><span class="p">(</span>combi<span class="o">$</span>Age<span class="p">)]</span> <span class="o">&lt;-</span> predict<span class="p">(</span>Agefit<span class="p">,</span> combi<span class="p">[</span><span class="kp">is.na</span><span class="p">(</span>combi<span class="o">$</span>Age<span class="p">),</span> <span class="p">])</span>
+</pre></div>
+
+
+<h2>4. Fitting Models</h2>
+<p>Write a function to extract features from dataset. As the dataset is small and many missing values in <code>Cabin</code> and <code>Ticket</code>, these two features actually don't increase the predicting score so I didn't included them in my models. </p>
+<div class="highlight"><pre><span></span>train <span class="o">&lt;-</span> combi<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="kp">nrow</span><span class="p">(</span>train<span class="p">),</span> <span class="p">]</span>
+test <span class="o">&lt;-</span> combi<span class="p">[</span><span class="kp">nrow</span><span class="p">(</span>train<span class="p">)</span><span class="m">+1</span> <span class="o">:</span> <span class="kp">nrow</span><span class="p">(</span>test<span class="p">),</span> <span class="p">]</span>
+
+extractFeatures <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>data<span class="p">){</span>
+    features <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Pclass&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;Sex&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;Age&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;SibSp&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;Parch&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;Fare&#39;</span><span class="p">,</span>
+                  <span class="c1">#&#39;Cabin&#39;,</span>
+                  <span class="s">&#39;Embarked&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;Survived&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;Title&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;FamilySize&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;FamilyID&#39;</span>
+                  <span class="c1">#&#39;Ticket&#39;</span>
+    <span class="p">)</span>
+    fea <span class="o">&lt;-</span> data<span class="p">[</span> <span class="p">,</span> features<span class="p">]</span>
+    <span class="kr">return</span><span class="p">(</span>fea<span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>4.1 Logistic regression (Ridge)</h3>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>glmnet<span class="p">)</span>
+
+<span class="c1"># create a sparse matrix of the dataset but column Survived. This is converting categorical variables into dummies variables.</span>
+x <span class="o">&lt;-</span> model.matrix<span class="p">(</span>Survived<span class="o">~</span><span class="m">.</span><span class="p">,</span> data <span class="o">=</span> extractFeatures<span class="p">(</span>train<span class="p">))</span>
+y <span class="o">&lt;-</span> extractFeatures<span class="p">(</span>train<span class="p">)</span><span class="o">$</span>Survived
+newx <span class="o">&lt;-</span> model.matrix<span class="p">(</span><span class="o">~</span><span class="m">.</span><span class="p">,</span> data <span class="o">=</span> extractFeatures<span class="p">(</span>test<span class="p">)[,</span><span class="o">-</span><span class="kp">which</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>extractFeatures<span class="p">(</span>test<span class="p">))</span> <span class="o">%in%</span> <span class="s">&#39;Survived&#39;</span><span class="p">)])</span>
+
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+fit_ridge <span class="o">&lt;-</span> cv.glmnet<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> alpha <span class="o">=</span> <span class="m">0</span><span class="p">,</span> family <span class="o">=</span> <span class="s">&#39;binomial&#39;</span><span class="p">,</span> type.measure <span class="o">=</span> <span class="s">&#39;deviance&#39;</span><span class="p">)</span>
+pred_ridge <span class="o">&lt;-</span> predict<span class="p">(</span>fit_ridge<span class="p">,</span> newx <span class="o">=</span> newx<span class="p">,</span> s <span class="o">=</span> <span class="s">&#39;lambda.min&#39;</span><span class="p">,</span> type<span class="o">=</span><span class="s">&#39;class&#39;</span><span class="p">)</span>
+
+submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_ridge<span class="p">)</span>
+<span class="c1">#write.csv(submission, file = &quot;ridge.csv&quot;, row.names=FALSE) </span>
+</pre></div>
+
+
+<p>The <code>glmnet</code> package can fit <code>lasso</code>, <code>ridge</code> and <code>elasticnet</code>. Here we just fit <code>ridge</code> which performs a little bit better than <code>lasso</code> in this dataset. </p>
+<p>The submitted score is 0.80861.</p>
+<p>Actually if you set <code>set.seed(1)</code>, and use misclassification error as metric (set <code>type.measure = 'class'</code>), the submitted score can be as high as 0.82297. However, it seems the result of this metric isn't as stable as deviance.</p>
+<h3>4.2 Gradient boosting machine</h3>
+<p>Here we directly use <code>Caret</code> to fit the gradient boosting machine and tune parameters. Through <code>Caret</code>, there are four parameters can be tuned.</p>
+<ul>
+<li><code>n.trees</code>, the number of iterations (trees) in the model.</li>
+<li><code>interaction.depth</code>, the numbers of splits it has to perform on a tree, so it equals <code>NumberOfLeaves + 1</code>. <strong>Note:</strong> the interaction in <code>interaction.depth</code> is defferent from the usual understanding which is the interaction of features, e.g. feature x has two levels A and B, feature y has two levels C and D, then the interaction of x and y has four levels.</li>
+<li><code>shrinkage</code>, knows as learning rate, the empact of each tree on the final model. Lower learning rate requires more iterations.</li>
+<li><code>n.minobsinnode</code>, minimum number of observations in the trees terminal nodes. The default value is 10.</li>
+</ul>
+<p>For other parameters, like <code>bag.fraction</code>, cannot be tuned via <code>Caret</code>. You can write your function to tune it. </p>
+<p>For the precedures of tuning GBM parameters in Python, see a blog <a href="https://www.analyticsvidhya.com/blog/2016/02/complete-guide-parameter-tuning-gradient-boosting-gbm-python/">here</a>. The parameters of GBM in R is slightly different from the one in Python, but the experience of tuning is consistent.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>caret<span class="p">)</span>
+
+fitControl <span class="o">&lt;-</span> trainControl<span class="p">(</span>method <span class="o">=</span> <span class="s">&#39;repeatedcv&#39;</span><span class="p">,</span>
+                           number <span class="o">=</span> <span class="m">3</span><span class="p">,</span>
+                           repeats <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+<span class="c1"># for caret, there are only four tuning parameters below.</span>
+
+<span class="c1"># tune n.trees</span>
+newGrid <span class="o">&lt;-</span> <span class="kp">expand.grid</span><span class="p">(</span>n.trees <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">50</span><span class="p">,</span> <span class="m">100</span><span class="p">,</span> <span class="m">200</span><span class="p">,</span> <span class="m">300</span><span class="p">),</span> 
+                       interaction.depth <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">6</span><span class="p">),</span>
+                       shrinkage <span class="o">=</span> <span class="m">0.01</span><span class="p">,</span>
+                       n.minobsinnode <span class="o">=</span> <span class="m">10</span>
+                       <span class="p">)</span>
+fit_gbm <span class="o">&lt;-</span> train<span class="p">(</span>Survived <span class="o">~</span><span class="m">.</span><span class="p">,</span> data<span class="o">=</span>extractFeatures<span class="p">(</span>train<span class="p">),</span> 
+                 method <span class="o">=</span> <span class="s">&#39;gbm&#39;</span><span class="p">,</span> 
+                 trControl <span class="o">=</span> fitControl<span class="p">,</span>
+                 tuneGrid <span class="o">=</span>  newGrid<span class="p">,</span>
+                 bag.fraction <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
+                 verbose <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+fit_gbm<span class="o">$</span>bestTune
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##   n.trees interaction.depth shrinkage n.minobsinnode
+## 3     200                 6      0.01             10
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># tune interaction.depth</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">1234</span><span class="p">)</span>
+newGrid <span class="o">&lt;-</span> <span class="kp">expand.grid</span><span class="p">(</span>n.trees <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">200</span><span class="p">),</span> 
+                       interaction.depth <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">4</span><span class="o">:</span><span class="m">12</span><span class="p">),</span>
+                       shrinkage <span class="o">=</span> <span class="m">0.01</span><span class="p">,</span>
+                       n.minobsinnode <span class="o">=</span> <span class="m">10</span>
+                       <span class="p">)</span>
+fit_gbm <span class="o">&lt;-</span> train<span class="p">(</span>Survived <span class="o">~</span><span class="m">.</span><span class="p">,</span> data<span class="o">=</span>extractFeatures<span class="p">(</span>train<span class="p">),</span> 
+                 method <span class="o">=</span> <span class="s">&#39;gbm&#39;</span><span class="p">,</span> 
+                 trControl <span class="o">=</span> fitControl<span class="p">,</span>
+                 tuneGrid <span class="o">=</span>  newGrid<span class="p">,</span>
+                 bag.fraction <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
+                 verbose <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+fit_gbm<span class="o">$</span>bestTune
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##   n.trees interaction.depth shrinkage n.minobsinnode
+## 7     200                10      0.01             10
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># decrease learning rate</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">1234</span><span class="p">)</span>
+newGrid <span class="o">&lt;-</span> <span class="kp">expand.grid</span><span class="p">(</span>n.trees <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">2000</span><span class="p">),</span> 
+                       interaction.depth <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">10</span><span class="p">),</span>
+                       shrinkage <span class="o">=</span> <span class="m">0.001</span><span class="p">,</span>
+                       n.minobsinnode <span class="o">=</span> <span class="m">10</span>
+                       <span class="p">)</span>
+fit_gbm_LowerRate <span class="o">&lt;-</span> train<span class="p">(</span>Survived <span class="o">~</span><span class="m">.</span><span class="p">,</span> data<span class="o">=</span>extractFeatures<span class="p">(</span>train<span class="p">),</span> 
+                 method <span class="o">=</span> <span class="s">&#39;gbm&#39;</span><span class="p">,</span> 
+                 trControl <span class="o">=</span> fitControl<span class="p">,</span>
+                 tuneGrid <span class="o">=</span>  newGrid<span class="p">,</span>
+                 bag.fraction <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span>
+                 verbose <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+fit_gbm_LowerRate<span class="o">$</span>results
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##   n.trees interaction.depth shrinkage n.minobsinnode  Accuracy    Kappa
+## 1    2000                10     0.001             10 0.8241676 0.618902
+##   AccuracySD  KappaSD
+## 1 0.03510324 0.072976
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># predict </span>
+pred_gbm <span class="o">&lt;-</span> predict<span class="p">(</span>fit_gbm_LowerRate<span class="p">,</span> extractFeatures<span class="p">(</span>test<span class="p">))</span>
+submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_gbm<span class="p">)</span>
+<span class="c1">#write.csv(submission, file = &quot;gbm_ntree-2000_rate-0.001_inter-10.csv&quot;, row.names=FALSE)</span>
+</pre></div>
+
+
+<p>The submitted score is 0.81340. As the size of data set is small, it seems the result of GBM isn't very stable for different random seed. </p>
+<h3>4.3 Random forest</h3>
+<p>This article is inspired by the excellent tutorial of <a href="http://trevorstephens.com/kaggle-titanic-tutorial/getting-started-with-r/">Trevor Stephens</a>, in which a conditional random forest is implemented to achieve the score of 0.81340. Here I just repeat this model.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>party<span class="p">)</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+fit_crf <span class="o">&lt;-</span> cforest<span class="p">(</span>Survived <span class="o">~</span><span class="m">.</span><span class="p">,</span> data<span class="o">=</span>extractFeatures<span class="p">(</span>train<span class="p">),</span> controls<span class="o">=</span>cforest_unbiased<span class="p">(</span>ntree<span class="o">=</span><span class="m">2000</span><span class="p">,</span> mtry<span class="o">=</span><span class="m">3</span><span class="p">))</span>
+pred_crf <span class="o">&lt;-</span> predict<span class="p">(</span>fit_crf<span class="p">,</span> extractFeatures<span class="p">(</span>test<span class="p">),</span> OOB <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;response&quot;</span><span class="p">)</span>
+
+submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> pred_crf<span class="p">)</span>
+<span class="c1">#write.csv(submission, file = &quot;crf_seed1.csv&quot;, row.names=FALSE)</span>
+</pre></div>
+
+
+<p>The <code>ntree</code> is the number of trees in the random forest model, the <code>mtry</code> is the number of input variables randomly sampled as candidate at each node. The rule-of-thumb is <code>sqrt(p)</code> where <code>p</code> is the number of features, as we only included 10 features in our model, so we set <code>mtry=3</code>. For more details of conditional random forest, check <code>help(ctree_contorl)</code> in R. For the comparison between conditional inference trees and traditional decision trees, check the question in <a href="http://stats.stackexchange.com/questions/12140/conditional-inference-trees-vs-traditional-decision-trees">StackExchange</a>.</p>
+<p>The submitted score is 0.81340.</p>
+<h3>4.4. Ensemble</h3>
+<p>Ensemble is a effective way to combine the models to reduce the overall error rate. In one word, extracting the pattern discovered by each model and ensembling them could achieve a better score. Therefore, ensembling the uncorrelated results of models may do better since each model contain different patterns. For the detailed introduction of ensembling experiences, check this fantastic <a href="http://mlwave.com/kaggle-ensembling-guide/">blog</a>. </p>
+<p>Here we just do the simple majority vote.</p>
+<div class="highlight"><pre><span></span><span class="kp">cat</span><span class="p">(</span><span class="s">&#39;Difference ratio between ridge and conditional random forest:&#39;</span><span class="p">,</span> <span class="kp">sum</span><span class="p">(</span>pred_ridge<span class="o">!=</span>pred_crf<span class="p">)</span><span class="o">/</span><span class="kp">nrow</span><span class="p">(</span>test<span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Difference ratio between ridge and conditional random forest: 0.06698565
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kp">cat</span><span class="p">(</span><span class="s">&#39;Difference ratio between ridge and conditional gbm:&#39;</span><span class="p">,</span> <span class="kp">sum</span><span class="p">(</span>pred_ridge<span class="o">!=</span>pred_gbm<span class="p">)</span><span class="o">/</span><span class="kp">nrow</span><span class="p">(</span>test<span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Difference ratio between ridge and conditional gbm: 0.0861244
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kp">cat</span><span class="p">(</span><span class="s">&#39;Difference ratio between conditional random forest and gbm:&#39;</span><span class="p">,</span> <span class="kp">sum</span><span class="p">(</span>pred_crf<span class="o">!=</span>pred_gbm<span class="p">)</span><span class="o">/</span><span class="kp">nrow</span><span class="p">(</span>test<span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Difference ratio between conditional random forest and gbm: 0.0430622
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>ensemble <span class="o">&lt;-</span> <span class="kp">as.numeric</span><span class="p">(</span>pred_ridge<span class="p">)</span> <span class="o">+</span> <span class="kp">as.numeric</span><span class="p">(</span>pred_gbm<span class="p">)</span><span class="m">-1</span> <span class="o">+</span> <span class="kp">as.numeric</span><span class="p">(</span>pred_crf<span class="p">)</span><span class="m">-1</span>
+ensemble <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>ensemble<span class="o">/</span><span class="m">3</span><span class="p">,</span> <span class="kp">round</span><span class="p">)</span>
+
+submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>PassengerId <span class="o">=</span> test<span class="o">$</span>PassengerId<span class="p">,</span> Survived <span class="o">=</span> ensemble<span class="p">)</span>
+<span class="c1">#write.csv(submission, file = &quot;ensemble_vote2.csv&quot;, row.names=FALSE)</span>
+</pre></div>
+
+
+<p>The submitted score is 0.82297.</p>
+<h2>5. Summary</h2>
+<p><strong>Logistic regression</strong></p>
+<ul>
+<li>The <code>glmnet</code> in R and logistic regression with l1 and l2 penalty in python sklearn are different. The cost function is different, sklearn regularize intercept while glmnet doesn't. See <a href="http://stats.stackexchange.com/questions/203816/logistic-regression-scikit-learn-vs-glmnet">stackexchange</a> as reference.</li>
+<li>In <code>glmnet</code>, before fitting the model, the data should be converted into sparse matrix(encode categorical variable into dummy variable). By default <code>glmnet</code> standardize the input by default, including the dummy variables. According to the Tibshirani's <a href="http://statweb.stanford.edu/~tibs/lasso/fulltext.pdf">article</a>:<ul>
+<li>
+<blockquote>
+<p>The lasso method requires initial standardization of the regressors, so that the penalization scheme is fair to all regressors. For categorical regressors, one codes the regressor with dummy variables and then standardizes the dummy variables. As pointed out by a referee, however, the relative scaling between continuous and categorical variables in this scheme can be somewhat arbitrary.</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>When tuning the regularization parameter $\lambda$ via <code>cv.glmnet</code>, <code>glmnet</code> called one hundred values of lambda and choose the one which achieve lowest error. However for logistic regression in sklearn, a sequence of tuning parameter <code>C</code> need be specified for tuning. As a result, logistic regression in sklearn can hardly performs as good as <code>glmnet</code>.</li>
+</ul>
+<p><strong>Gradient boosting</strong></p>
+<ul>
+<li>Since the dataset is small, the performance of boosting machine isn't stable. This brings difficulty in tuning the parameters. Although some parameter combinations perform good through cross-validation on training set, they still overfit the test set.</li>
+</ul>
+<p><strong>Ensemble</strong></p>
+<ul>
+<li>The ensemble method like stacking and blending may achieve better results, which could be the next step to tweak the model.</li>
+</ul>
+  </div>
+  <div class="tag-cloud">
+    <p>
+    </p>
+  </div>
+</article>
+
+    <footer>
+        <p>&copy; Vincent </p>
+<p>Built using <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a></p>    </footer>
+  </main>
+
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Pieces of Data Science ",
+  "url" : "https://byrony.github.io",
+  "image": "",
+  "description": ""
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BlogPosting",
+  "name": ""Titanic: A Tutorial to Achieve 0.82297"",
+  "headline": ""Titanic: A Tutorial to Achieve 0.82297"",
+  "datePublished": "2016-09-06 00:00:00-04:00",
+  "dateModified": "",
+  "author": {
+    "@type": "Person",
+    "name": ""Vincent Cao"",
+    "url": "https://byrony.github.io/author/vincent-cao.html"
+  },
+  "image": "{{ SITEURL }}/{{ THEME_STATIC_DIR }}/img/profile.png",
+  "url": "https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html",
+  "description": "1. Introduction The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset to machine learning beginners to predict what sorts of people were more likely to survive given the information including sex, age ..."
+}
+</script></body>
+</html>

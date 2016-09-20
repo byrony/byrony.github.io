@@ -1,0 +1,1523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Pieces of Data Science</title><link href="https://byrony.github.io/" rel="alternate"></link><link href="https://byrony.github.io/feeds/all.atom.xml" rel="self"></link><id>https://byrony.github.io/</id><updated>2016-09-06T00:00:00-04:00</updated><entry><title>"Titanic: A Tutorial to Achieve 0.82297"</title><link href="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html" rel="alternate"></link><published>2016-09-06T00:00:00-04:00</published><updated>2016-09-06T00:00:00-04:00</updated><author><name>"Vincent Cao"</name></author><id>tag:byrony.github.io,2016-09-06:titanic-a-tutorial-to-achieve-082297.html</id><summary type="html">&lt;h2&gt;1. Introduction&lt;/h2&gt;
+&lt;p&gt;The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset to machine learning beginners to predict what sorts of people were more likely to survive given the information including sex, age, name, etc. Although the size of the dataset is small, it provides newbies a chance to accomplish most procedures in a data science project including data cleaning, feature engineering, model fitting, and tweaking to achieve higher scores.&lt;/p&gt;
+&lt;h3&gt;1.1 Read the data&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;caret&lt;span class="p"&gt;)&lt;/span&gt;
+
+readData &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;path.name&lt;span class="p"&gt;,&lt;/span&gt; file.name&lt;span class="p"&gt;,&lt;/span&gt; column.types&lt;span class="p"&gt;,&lt;/span&gt; missing.types&lt;span class="p"&gt;){&lt;/span&gt;
+    read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;paste&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;path.name&lt;span class="p"&gt;,&lt;/span&gt; file.name&lt;span class="p"&gt;,&lt;/span&gt; sep&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; colClasses &lt;span class="o"&gt;=&lt;/span&gt; column.types&lt;span class="p"&gt;,&lt;/span&gt; na.strings &lt;span class="o"&gt;=&lt;/span&gt; missing.types &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="c1"&gt;#Titanic.path &amp;lt;- &amp;#39;./data/&amp;#39;&lt;/span&gt;
+Titanic.path &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;/Users/caoxiang/Dropbox/Titanic/data/&amp;#39;&lt;/span&gt;
+train.file.name &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;train.csv&amp;#39;&lt;/span&gt;
+test.file.name &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;test.csv&amp;#39;&lt;/span&gt;
+missing.types &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;NA&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+train.column.types &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;integer&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;   &lt;span class="c1"&gt;# PassengerId&lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;factor&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;    &lt;span class="c1"&gt;# Survived &lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;factor&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;    &lt;span class="c1"&gt;# Pclass&lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;character&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c1"&gt;# Name&lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;factor&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;    &lt;span class="c1"&gt;# Sex&lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;numeric&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;   &lt;span class="c1"&gt;# Age&lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;integer&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;   &lt;span class="c1"&gt;# SibSp&lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;integer&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;   &lt;span class="c1"&gt;# Parch&lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;character&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c1"&gt;# Ticket&lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;numeric&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;   &lt;span class="c1"&gt;# Fare&lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;character&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c1"&gt;# Cabin&lt;/span&gt;
+                        &lt;span class="s"&gt;&amp;#39;factor&amp;#39;&lt;/span&gt;     &lt;span class="c1"&gt;# Embarked&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+test.column.types &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; train.column.types&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;-2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+train &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; readData&lt;span class="p"&gt;(&lt;/span&gt;Titanic.path&lt;span class="p"&gt;,&lt;/span&gt; train.file.name&lt;span class="p"&gt;,&lt;/span&gt; train.column.types&lt;span class="p"&gt;,&lt;/span&gt; missing.types&lt;span class="p"&gt;)&lt;/span&gt;
+test &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; readData&lt;span class="p"&gt;(&lt;/span&gt;Titanic.path&lt;span class="p"&gt;,&lt;/span&gt; test.file.name&lt;span class="p"&gt;,&lt;/span&gt; test.column.types&lt;span class="p"&gt;,&lt;/span&gt; missing.types&lt;span class="p"&gt;)&lt;/span&gt;
+test&lt;span class="o"&gt;$&lt;/span&gt;Survived &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kc"&gt;NA&lt;/span&gt; &lt;span class="c1"&gt;# add Survived column to test dataset and fill it out with NA.&lt;/span&gt;
+
+combi &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;rbind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;,&lt;/span&gt; test&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# combine training and test set for further manipulation&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;2. Exploratory Data Analysis&lt;/h2&gt;
+&lt;h3&gt;2.1 Check the structure of the dataset&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;str&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## &amp;#39;data.frame&amp;#39;:    891 obs. of  12 variables:
+##  $ PassengerId: int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Survived   : Factor w/ 2 levels &amp;quot;0&amp;quot;,&amp;quot;1&amp;quot;: 1 2 2 2 1 1 1 1 2 2 ...
+##  $ Pclass     : Factor w/ 3 levels &amp;quot;1&amp;quot;,&amp;quot;2&amp;quot;,&amp;quot;3&amp;quot;: 3 1 3 1 3 3 1 3 3 2 ...
+##  $ Name       : chr  &amp;quot;Braund, Mr. Owen Harris&amp;quot; &amp;quot;Cumings, Mrs. John Bradley (Florence Briggs Thayer)&amp;quot; &amp;quot;Heikkinen, Miss. Laina&amp;quot; &amp;quot;Futrelle, Mrs. Jacques Heath (Lily May Peel)&amp;quot; ...
+##  $ Sex        : Factor w/ 2 levels &amp;quot;female&amp;quot;,&amp;quot;male&amp;quot;: 2 1 1 1 2 2 2 2 1 1 ...
+##  $ Age        : num  22 38 26 35 35 NA 54 2 27 14 ...
+##  $ SibSp      : int  1 1 0 1 0 0 0 3 0 1 ...
+##  $ Parch      : int  0 0 0 0 0 0 0 1 2 0 ...
+##  $ Ticket     : chr  &amp;quot;A/5 21171&amp;quot; &amp;quot;PC 17599&amp;quot; &amp;quot;STON/O2. 3101282&amp;quot; &amp;quot;113803&amp;quot; ...
+##  $ Fare       : num  7.25 71.28 7.92 53.1 8.05 ...
+##  $ Cabin      : chr  NA &amp;quot;C85&amp;quot; NA &amp;quot;C123&amp;quot; ...
+##  $ Embarked   : Factor w/ 3 levels &amp;quot;C&amp;quot;,&amp;quot;Q&amp;quot;,&amp;quot;S&amp;quot;: 3 1 3 3 3 2 3 3 3 1 ...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##   PassengerId    Survived Pclass      Name               Sex     
+##  Min.   :  1.0   0:549    1:216   Length:891         female:314  
+##  1st Qu.:223.5   1:342    2:184   Class :character   male  :577  
+##  Median :446.0            3:491   Mode  :character               
+##  Mean   :446.0                                                   
+##  3rd Qu.:668.5                                                   
+##  Max.   :891.0                                                   
+##                                                                  
+##       Age            SibSp           Parch           Ticket         
+##  Min.   : 0.42   Min.   :0.000   Min.   :0.0000   Length:891        
+##  1st Qu.:20.12   1st Qu.:0.000   1st Qu.:0.0000   Class :character  
+##  Median :28.00   Median :0.000   Median :0.0000   Mode  :character  
+##  Mean   :29.70   Mean   :0.523   Mean   :0.3816                     
+##  3rd Qu.:38.00   3rd Qu.:1.000   3rd Qu.:0.0000                     
+##  Max.   :80.00   Max.   :8.000   Max.   :6.0000                     
+##  NA&amp;#39;s   :177                                                        
+##       Fare           Cabin           Embarked  
+##  Min.   :  0.00   Length:891         C   :168  
+##  1st Qu.:  7.91   Class :character   Q   : 77  
+##  Median : 14.45   Mode  :character   S   :644  
+##  Mean   : 32.20                      NA&amp;#39;s:  2  
+##  3rd Qu.: 31.00                                
+##  Max.   :512.33                                
+## 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##   PassengerId     Pclass      Name               Sex           Age       
+##  Min.   : 892.0   1:107   Length:418         female:152   Min.   : 0.17  
+##  1st Qu.: 996.2   2: 93   Class :character   male  :266   1st Qu.:21.00  
+##  Median :1100.5   3:218   Mode  :character                Median :27.00  
+##  Mean   :1100.5                                           Mean   :30.27  
+##  3rd Qu.:1204.8                                           3rd Qu.:39.00  
+##  Max.   :1309.0                                           Max.   :76.00  
+##                                                           NA&amp;#39;s   :86     
+##      SibSp            Parch           Ticket               Fare        
+##  Min.   :0.0000   Min.   :0.0000   Length:418         Min.   :  0.000  
+##  1st Qu.:0.0000   1st Qu.:0.0000   Class :character   1st Qu.:  7.896  
+##  Median :0.0000   Median :0.0000   Mode  :character   Median : 14.454  
+##  Mean   :0.4474   Mean   :0.3923                      Mean   : 35.627  
+##  3rd Qu.:1.0000   3rd Qu.:0.0000                      3rd Qu.: 31.500  
+##  Max.   :8.0000   Max.   :9.0000                      Max.   :512.329  
+##                                                       NA&amp;#39;s   :1        
+##     Cabin           Embarked Survived      
+##  Length:418         C:102    Mode:logical  
+##  Class :character   Q: 46    NA&amp;#39;s:418      
+##  Mode  :character   S:270                  
+##                                            
+##                                            
+##                                            
+## 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="o"&gt;$&lt;/span&gt;Age&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## [1] 22 38 26 35 35 NA
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;2.2 Visualize the relationship between features and response&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Check the relation between &lt;code&gt;Sex&lt;/code&gt; and &lt;code&gt;Survived&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Consistent with our prior, the female is more likely to survive.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ggplot2&lt;span class="p"&gt;)&lt;/span&gt;
+p &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ggplot&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;,&lt;/span&gt; aes&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="o"&gt;=&lt;/span&gt;Survived&lt;span class="p"&gt;,&lt;/span&gt; fill&lt;span class="o"&gt;=&lt;/span&gt;Sex&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; geom_bar&lt;span class="p"&gt;(&lt;/span&gt;color&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;black&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+p
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="plot of chunk Titanic-3" src="{filename}/figure/Titanic-3-1.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Check the relation between &lt;code&gt;Age&lt;/code&gt; and &lt;code&gt;Survive&lt;/code&gt;&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As there are many missing value in &lt;code&gt;Age&lt;/code&gt; column, we omitted these rows before plotting. It looks like children are more likely to survive.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# show histogram&lt;/span&gt;
+&lt;span class="c1"&gt;# p3 &amp;lt;- ggplot(train[!is.na(train$Age), ], aes(x=Age, fill=Survived)) + geom_histogram()&lt;/span&gt;
+&lt;span class="c1"&gt;# show density plot&lt;/span&gt;
+p2 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ggplot&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="o"&gt;$&lt;/span&gt;Age&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="p"&gt;],&lt;/span&gt; aes&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="o"&gt;=&lt;/span&gt;Age&lt;span class="p"&gt;,&lt;/span&gt; fill&lt;span class="o"&gt;=&lt;/span&gt;Survived&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; geom_density&lt;span class="p"&gt;(&lt;/span&gt;alpha&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;0.6&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; 
+    facet_grid&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;Sex&lt;span class="p"&gt;)&lt;/span&gt;
+
+p2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="plot of chunk Titanic-4" src="{filename}/figure/Titanic-4-1.png" /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Check the relation between &lt;code&gt;Fare&lt;/code&gt; and &lt;code&gt;Survive&lt;/code&gt;&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Within the people who survived, higher percentage of them afforded high fare for the ticket, which indicates the high fare may correspond better cabins that are easy to escape from. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;p3 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ggplot&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;,&lt;/span&gt; aes&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="o"&gt;=&lt;/span&gt;Fare&lt;span class="p"&gt;,&lt;/span&gt; fill&lt;span class="o"&gt;=&lt;/span&gt;Survived&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; geom_histogram&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; 
+    facet_grid&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;Pclass&lt;span class="p"&gt;)&lt;/span&gt;
+p3
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="plot of chunk Titanic-5" src="{filename}/figure/Titanic-5-1.png" /&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;prop.table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="o"&gt;$&lt;/span&gt;Survived&lt;span class="p"&gt;,&lt;/span&gt; train&lt;span class="o"&gt;$&lt;/span&gt;Pclass&lt;span class="p"&gt;),&lt;/span&gt; margin &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##    
+##             1         2         3
+##   0 0.3703704 0.5271739 0.7576375
+##   1 0.6296296 0.4728261 0.2423625
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;From the &lt;code&gt;prop.table&lt;/code&gt;, compared to &lt;code&gt;Pclass 2&lt;/code&gt; and &lt;code&gt;Pclass 3&lt;/code&gt;, higher percentage of passenger in &lt;code&gt;Pclass 1&lt;/code&gt; survived.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Check the relation between &lt;code&gt;Embarked&lt;/code&gt; and &lt;code&gt;Survived&lt;/code&gt;&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;No significant difference between port of embarkation.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;p4 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ggplot&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="o"&gt;$&lt;/span&gt;Embarked&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;],&lt;/span&gt; aes&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="o"&gt;=&lt;/span&gt;Survived&lt;span class="p"&gt;,&lt;/span&gt; fill&lt;span class="o"&gt;=&lt;/span&gt;Embarked&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; geom_bar&lt;span class="p"&gt;(&lt;/span&gt;color&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;black&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+p4
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="plot of chunk Titanic-6" src="{filename}/figure/Titanic-6-1.png" /&gt;&lt;/p&gt;
+&lt;h2&gt;3. Data Clearing and Feature Engineering&lt;/h2&gt;
+&lt;h3&gt;3.1 Feature Engineering&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Name&lt;/code&gt;. Extract the &lt;code&gt;title&lt;/code&gt; and &lt;code&gt;Surname&lt;/code&gt; from &lt;code&gt;Name&lt;/code&gt; and create two new features.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;title.extract &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;){&lt;/span&gt;
+    &lt;span class="kp"&gt;strsplit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; split &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;[,.]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]][&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;Title &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Name&lt;span class="p"&gt;,&lt;/span&gt; FUN &lt;span class="o"&gt;=&lt;/span&gt; title.extract&lt;span class="p"&gt;)&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;Title &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot; &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; combi&lt;span class="o"&gt;$&lt;/span&gt;Title&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# delete the space in the Title&lt;/span&gt;
+
+&lt;span class="c1"&gt;# combine the similiar into the same category&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;Title&lt;span class="p"&gt;[&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;PassengerId &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="m"&gt;797&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Mrs&amp;#39;&lt;/span&gt; &lt;span class="c1"&gt;# this passenger is a female doctor&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;Title&lt;span class="p"&gt;[&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Title &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Mlle&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Mme&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Mlle&amp;#39;&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;Title&lt;span class="p"&gt;[&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Title &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Capt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Don&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Major&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Sir&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Jonkheer&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Sir&amp;#39;&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;Title&lt;span class="p"&gt;[&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Title &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Dona&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Lady&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;the Countess&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;lady&amp;#39;&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;Title &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.factor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Title&lt;span class="p"&gt;)&lt;/span&gt;
+
+combi&lt;span class="o"&gt;$&lt;/span&gt;Surname &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Name&lt;span class="p"&gt;,&lt;/span&gt; FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;){&lt;/span&gt;&lt;span class="kp"&gt;strsplit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; split&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;[,.]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]][&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]})&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;SibSp&lt;/code&gt; and &lt;code&gt;Parch&lt;/code&gt;. Create a new feature &lt;code&gt;FamilySize&lt;/code&gt; which equals &lt;code&gt;SibSq + Parch +1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;FamilySize &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; combi&lt;span class="o"&gt;$&lt;/span&gt;SibSp &lt;span class="o"&gt;+&lt;/span&gt; combi&lt;span class="o"&gt;$&lt;/span&gt;Parch &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Base on the two features &lt;code&gt;FamilySize&lt;/code&gt; and &lt;code&gt;Surname&lt;/code&gt;, we create a new feature &lt;code&gt;FamilyID&lt;/code&gt; in order to classify the passengers from the same family into groups. As there are many single passenger whose family is 1, we label these passengers whose &lt;code&gt;FamilySize &amp;lt;=2&lt;/code&gt; as &lt;code&gt;Small&lt;/code&gt;. Note there may be some records whose &lt;code&gt;FamilySize&lt;/code&gt; doesn't equal the frequence of &lt;code&gt;FamilyID&lt;/code&gt;, it's obvious inconformity exists. So we labeled the records where frequence of &lt;code&gt;FamilyID &amp;lt;=2&lt;/code&gt; as &lt;code&gt;Small&lt;/code&gt; as well.  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;FamilyID &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;paste&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.character&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;FamilySize&lt;span class="p"&gt;),&lt;/span&gt; combi&lt;span class="o"&gt;$&lt;/span&gt;Surname&lt;span class="p"&gt;,&lt;/span&gt; sep &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;FamilyID&lt;span class="p"&gt;[&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;FamilySize &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Small&amp;quot;&lt;/span&gt;
+famIDs &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;FamilyID&lt;span class="p"&gt;))&lt;/span&gt;
+famIDs &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; famIDs&lt;span class="p"&gt;[&lt;/span&gt;famIDs&lt;span class="o"&gt;$&lt;/span&gt;Freq &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,]&lt;/span&gt; 
+&lt;span class="c1"&gt;# if famIDs frequency &amp;lt;=2, regard it as &amp;quot;Small&amp;quot; as well. &lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;FamilyID&lt;span class="p"&gt;[&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;FamilyID &lt;span class="o"&gt;%in%&lt;/span&gt; famIDs&lt;span class="o"&gt;$&lt;/span&gt;Var1 &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Small&amp;quot;&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;FamilyID &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.factor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;FamilyID&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;For &lt;code&gt;Cabin&lt;/code&gt;, we can extract the first letter of &lt;code&gt;Cabin&lt;/code&gt; as a label. It's obviouse the &lt;code&gt;Cabin&lt;/code&gt; numbers correspond different Passenger Class which is a crucial factor determining whether one could survive. However, since the &lt;code&gt;Cabin&lt;/code&gt; of most records are missing, although the importance of this variable seems to be significant in training, it doesn't increase the predicting score in my models.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# We write a function to extract the first letter of Cabin. A new factor &amp;#39;N&amp;#39; is assigned to the missing values. Also, for the passengers with the same ticket number, the most frequent Cabin level besides &amp;#39;N&amp;#39; is assigned to the rest passengers.&lt;/span&gt;
+
+extractCabin &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="p"&gt;){&lt;/span&gt;
+    &lt;span class="c1"&gt;# extract the first letter of Cabin&lt;/span&gt;
+    combi&lt;span class="o"&gt;$&lt;/span&gt;Cabin &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Cabin&lt;span class="p"&gt;,&lt;/span&gt; FUN &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;){&lt;/span&gt;&lt;span class="kp"&gt;strsplit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; split&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]][&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]})&lt;/span&gt;
+    combi&lt;span class="o"&gt;$&lt;/span&gt;Cabin&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Cabin&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;N&amp;#39;&lt;/span&gt;
+    combi&lt;span class="o"&gt;$&lt;/span&gt;Cabin &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.factor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Cabin&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="c1"&gt;# set the same number tickets with the same Cabin label&lt;/span&gt;
+    combi.ticket &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;factor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Ticket&lt;span class="p"&gt;))&lt;/span&gt;
+    combi.ticket.moreThanOne &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; combi.ticket&lt;span class="p"&gt;[&lt;/span&gt;combi.ticket&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    combi.temp &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; combi&lt;span class="p"&gt;[&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Ticket &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi.ticket.moreThanOne&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="kr"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;name &lt;span class="kr"&gt;in&lt;/span&gt; &lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi.ticket.moreThanOne&lt;span class="p"&gt;)){&lt;/span&gt;
+        row.sameTicket &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; combi&lt;span class="p"&gt;[&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Ticket &lt;span class="o"&gt;==&lt;/span&gt; name&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+        Cabin_boolean &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; row.sameTicket&lt;span class="o"&gt;$&lt;/span&gt;Cabin &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;A&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;B&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;C&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;D&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;E&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;F&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;G&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="kr"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Cabin_boolean&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+            correctCabin &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;sort&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;row.sameTicket&lt;span class="o"&gt;$&lt;/span&gt;Cabin&lt;span class="p"&gt;[&lt;/span&gt;Cabin_boolean&lt;span class="p"&gt;]),&lt;/span&gt; decreasing&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;))[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+            row.sameTicket&lt;span class="o"&gt;$&lt;/span&gt;Cabin&lt;span class="p"&gt;[&lt;/span&gt;row.sameTicket&lt;span class="o"&gt;$&lt;/span&gt;Cabin &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;N&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; correctCabin
+            &lt;span class="c1"&gt;# modify the Cabin of combi dataset&lt;/span&gt;
+            combi&lt;span class="o"&gt;$&lt;/span&gt;Cabin&lt;span class="p"&gt;[&lt;/span&gt;row.sameTicket&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; row.sameTicket&lt;span class="o"&gt;$&lt;/span&gt;Cabin
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    combi&lt;span class="o"&gt;$&lt;/span&gt;Cabin &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.factor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Cabin&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+combi &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; extractCabin&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;For &lt;code&gt;Ticket&lt;/code&gt;, we extracted the first alphabet character of &lt;code&gt;Ticket&lt;/code&gt; to label the ticket.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;extractTicket &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ticket&lt;span class="p"&gt;){&lt;/span&gt;
+    pattern &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;\\/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;\\.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;\\s&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;[[:digit:]]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="kr"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;p &lt;span class="kr"&gt;in&lt;/span&gt; pattern&lt;span class="p"&gt;){&lt;/span&gt;
+        &lt;span class="c1"&gt;# replace all chracter matches the pattern p with &amp;quot;&amp;quot;&lt;/span&gt;
+        ticket &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;gsub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;p&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; ticket&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    ticket &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;substr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;toupper&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ticket&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# only extract the first alphabet character to label the ticket&lt;/span&gt;
+    ticket&lt;span class="p"&gt;[&lt;/span&gt;ticket&lt;span class="o"&gt;==&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;N&amp;#39;&lt;/span&gt;
+    ticket &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.factor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ticket&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;Ticket &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; extractTicket&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Ticket&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;3.2 Dealing with missing values&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Fare&lt;/code&gt;. Replace the NA in &lt;code&gt;Fare&lt;/code&gt; with the median of &lt;code&gt;Fare&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Fare&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Fare&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; median&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Fare&lt;span class="p"&gt;,&lt;/span&gt; na.rm &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Embarked&lt;/code&gt;. Replase the NA in &lt;code&gt;Embarked&lt;/code&gt; with the most frequent label &lt;code&gt;S&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Embarked&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Embarked&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;S&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Age&lt;/code&gt;. We fill out the NA in &lt;code&gt;Age&lt;/code&gt; by fitting a decision tree, which uses the features exclude &lt;code&gt;Survived&lt;/code&gt; to predict &lt;code&gt;Age&lt;/code&gt;. Here we just use the default parameters of &lt;code&gt;rpart&lt;/code&gt;, for more details, check &lt;code&gt;rpart.control&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rpart&lt;span class="p"&gt;)&lt;/span&gt;
+Agefit &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; rpart&lt;span class="p"&gt;(&lt;/span&gt;Age &lt;span class="o"&gt;~&lt;/span&gt; Pclass &lt;span class="o"&gt;+&lt;/span&gt; Sex &lt;span class="o"&gt;+&lt;/span&gt; SibSp &lt;span class="o"&gt;+&lt;/span&gt; Parch &lt;span class="o"&gt;+&lt;/span&gt; Fare &lt;span class="o"&gt;+&lt;/span&gt; Embarked &lt;span class="o"&gt;+&lt;/span&gt; Title &lt;span class="o"&gt;+&lt;/span&gt; FamilySize&lt;span class="p"&gt;,&lt;/span&gt;
+                data &lt;span class="o"&gt;=&lt;/span&gt; combi&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Age&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;],&lt;/span&gt; method &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;anova&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+combi&lt;span class="o"&gt;$&lt;/span&gt;Age&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Age&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;Agefit&lt;span class="p"&gt;,&lt;/span&gt; combi&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;is.na&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;combi&lt;span class="o"&gt;$&lt;/span&gt;Age&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;4. Fitting Models&lt;/h2&gt;
+&lt;p&gt;Write a function to extract features from dataset. As the dataset is small and many missing values in &lt;code&gt;Cabin&lt;/code&gt; and &lt;code&gt;Ticket&lt;/code&gt;, these two features actually don't increase the predicting score so I didn't included them in my models. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;train &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; combi&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+test &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; combi&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="m"&gt;+1&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
+
+extractFeatures &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;data&lt;span class="p"&gt;){&lt;/span&gt;
+    features &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Pclass&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="s"&gt;&amp;#39;Sex&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="s"&gt;&amp;#39;Age&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="s"&gt;&amp;#39;SibSp&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="s"&gt;&amp;#39;Parch&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="s"&gt;&amp;#39;Fare&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="c1"&gt;#&amp;#39;Cabin&amp;#39;,&lt;/span&gt;
+                  &lt;span class="s"&gt;&amp;#39;Embarked&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="s"&gt;&amp;#39;Survived&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="s"&gt;&amp;#39;Title&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="s"&gt;&amp;#39;FamilySize&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                  &lt;span class="s"&gt;&amp;#39;FamilyID&amp;#39;&lt;/span&gt;
+                  &lt;span class="c1"&gt;#&amp;#39;Ticket&amp;#39;&lt;/span&gt;
+    &lt;span class="p"&gt;)&lt;/span&gt;
+    fea &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; data&lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt; features&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;fea&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;4.1 Logistic regression (Ridge)&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glmnet&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# create a sparse matrix of the dataset but column Survived. This is converting categorical variables into dummies variables.&lt;/span&gt;
+x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; model.matrix&lt;span class="p"&gt;(&lt;/span&gt;Survived&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;))&lt;/span&gt;
+y &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;Survived
+newx &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; model.matrix&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;)[,&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="kp"&gt;which&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;%in%&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Survived&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+
+&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+fit_ridge &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; cv.glmnet&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; y&lt;span class="p"&gt;,&lt;/span&gt; alpha &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; family &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;binomial&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type.measure &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;deviance&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+pred_ridge &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;fit_ridge&lt;span class="p"&gt;,&lt;/span&gt; newx &lt;span class="o"&gt;=&lt;/span&gt; newx&lt;span class="p"&gt;,&lt;/span&gt; s &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;lambda.min&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;class&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; pred_ridge&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;ridge.csv&amp;quot;, row.names=FALSE) &lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The &lt;code&gt;glmnet&lt;/code&gt; package can fit &lt;code&gt;lasso&lt;/code&gt;, &lt;code&gt;ridge&lt;/code&gt; and &lt;code&gt;elasticnet&lt;/code&gt;. Here we just fit &lt;code&gt;ridge&lt;/code&gt; which performs a little bit better than &lt;code&gt;lasso&lt;/code&gt; in this dataset. &lt;/p&gt;
+&lt;p&gt;The submitted score is 0.80861.&lt;/p&gt;
+&lt;p&gt;Actually if you set &lt;code&gt;set.seed(1)&lt;/code&gt;, and use misclassification error as metric (set &lt;code&gt;type.measure = 'class'&lt;/code&gt;), the submitted score can be as high as 0.82297. However, it seems the result of this metric isn't as stable as deviance.&lt;/p&gt;
+&lt;h3&gt;4.2 Gradient boosting machine&lt;/h3&gt;
+&lt;p&gt;Here we directly use &lt;code&gt;Caret&lt;/code&gt; to fit the gradient boosting machine and tune parameters. Through &lt;code&gt;Caret&lt;/code&gt;, there are four parameters can be tuned.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;n.trees&lt;/code&gt;, the number of iterations (trees) in the model.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;interaction.depth&lt;/code&gt;, the numbers of splits it has to perform on a tree, so it equals &lt;code&gt;NumberOfLeaves + 1&lt;/code&gt;. &lt;strong&gt;Note:&lt;/strong&gt; the interaction in &lt;code&gt;interaction.depth&lt;/code&gt; is defferent from the usual understanding which is the interaction of features, e.g. feature x has two levels A and B, feature y has two levels C and D, then the interaction of x and y has four levels.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;shrinkage&lt;/code&gt;, knows as learning rate, the empact of each tree on the final model. Lower learning rate requires more iterations.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;n.minobsinnode&lt;/code&gt;, minimum number of observations in the trees terminal nodes. The default value is 10.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For other parameters, like &lt;code&gt;bag.fraction&lt;/code&gt;, cannot be tuned via &lt;code&gt;Caret&lt;/code&gt;. You can write your function to tune it. &lt;/p&gt;
+&lt;p&gt;For the precedures of tuning GBM parameters in Python, see a blog &lt;a href="https://www.analyticsvidhya.com/blog/2016/02/complete-guide-parameter-tuning-gradient-boosting-gbm-python/"&gt;here&lt;/a&gt;. The parameters of GBM in R is slightly different from the one in Python, but the experience of tuning is consistent.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;caret&lt;span class="p"&gt;)&lt;/span&gt;
+
+fitControl &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; trainControl&lt;span class="p"&gt;(&lt;/span&gt;method &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;repeatedcv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                           number &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                           repeats &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# for caret, there are only four tuning parameters below.&lt;/span&gt;
+
+&lt;span class="c1"&gt;# tune n.trees&lt;/span&gt;
+newGrid &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;expand.grid&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;n.trees &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;50&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;200&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;300&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
+                       interaction.depth &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                       shrinkage &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                       n.minobsinnode &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;
+                       &lt;span class="p"&gt;)&lt;/span&gt;
+fit_gbm &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; train&lt;span class="p"&gt;(&lt;/span&gt;Survived &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data&lt;span class="o"&gt;=&lt;/span&gt;extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;),&lt;/span&gt; 
+                 method &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;gbm&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                 trControl &lt;span class="o"&gt;=&lt;/span&gt; fitControl&lt;span class="p"&gt;,&lt;/span&gt;
+                 tuneGrid &lt;span class="o"&gt;=&lt;/span&gt;  newGrid&lt;span class="p"&gt;,&lt;/span&gt;
+                 bag.fraction &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                 verbose &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+fit_gbm&lt;span class="o"&gt;$&lt;/span&gt;bestTune
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##   n.trees interaction.depth shrinkage n.minobsinnode
+## 3     200                 6      0.01             10
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# tune interaction.depth&lt;/span&gt;
+&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1234&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+newGrid &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;expand.grid&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;n.trees &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;200&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
+                       interaction.depth &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;4&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;12&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                       shrinkage &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                       n.minobsinnode &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;
+                       &lt;span class="p"&gt;)&lt;/span&gt;
+fit_gbm &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; train&lt;span class="p"&gt;(&lt;/span&gt;Survived &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data&lt;span class="o"&gt;=&lt;/span&gt;extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;),&lt;/span&gt; 
+                 method &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;gbm&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                 trControl &lt;span class="o"&gt;=&lt;/span&gt; fitControl&lt;span class="p"&gt;,&lt;/span&gt;
+                 tuneGrid &lt;span class="o"&gt;=&lt;/span&gt;  newGrid&lt;span class="p"&gt;,&lt;/span&gt;
+                 bag.fraction &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                 verbose &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+fit_gbm&lt;span class="o"&gt;$&lt;/span&gt;bestTune
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##   n.trees interaction.depth shrinkage n.minobsinnode
+## 7     200                10      0.01             10
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# decrease learning rate&lt;/span&gt;
+&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1234&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+newGrid &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;expand.grid&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;n.trees &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;2000&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
+                       interaction.depth &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                       shrinkage &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.001&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                       n.minobsinnode &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;10&lt;/span&gt;
+                       &lt;span class="p"&gt;)&lt;/span&gt;
+fit_gbm_LowerRate &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; train&lt;span class="p"&gt;(&lt;/span&gt;Survived &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data&lt;span class="o"&gt;=&lt;/span&gt;extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;),&lt;/span&gt; 
+                 method &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;gbm&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+                 trControl &lt;span class="o"&gt;=&lt;/span&gt; fitControl&lt;span class="p"&gt;,&lt;/span&gt;
+                 tuneGrid &lt;span class="o"&gt;=&lt;/span&gt;  newGrid&lt;span class="p"&gt;,&lt;/span&gt;
+                 bag.fraction &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                 verbose &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+fit_gbm_LowerRate&lt;span class="o"&gt;$&lt;/span&gt;results
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##   n.trees interaction.depth shrinkage n.minobsinnode  Accuracy    Kappa
+## 1    2000                10     0.001             10 0.8241676 0.618902
+##   AccuracySD  KappaSD
+## 1 0.03510324 0.072976
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# predict &lt;/span&gt;
+pred_gbm &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;fit_gbm_LowerRate&lt;span class="p"&gt;,&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;))&lt;/span&gt;
+submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; pred_gbm&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;gbm_ntree-2000_rate-0.001_inter-10.csv&amp;quot;, row.names=FALSE)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The submitted score is 0.81340. As the size of data set is small, it seems the result of GBM isn't very stable for different random seed. &lt;/p&gt;
+&lt;h3&gt;4.3 Random forest&lt;/h3&gt;
+&lt;p&gt;This article is inspired by the excellent tutorial of &lt;a href="http://trevorstephens.com/kaggle-titanic-tutorial/getting-started-with-r/"&gt;Trevor Stephens&lt;/a&gt;, in which a conditional random forest is implemented to achieve the score of 0.81340. Here I just repeat this model.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;party&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+fit_crf &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; cforest&lt;span class="p"&gt;(&lt;/span&gt;Survived &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; data&lt;span class="o"&gt;=&lt;/span&gt;extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;train&lt;span class="p"&gt;),&lt;/span&gt; controls&lt;span class="o"&gt;=&lt;/span&gt;cforest_unbiased&lt;span class="p"&gt;(&lt;/span&gt;ntree&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; mtry&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+pred_crf &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;fit_crf&lt;span class="p"&gt;,&lt;/span&gt; extractFeatures&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;),&lt;/span&gt; OOB &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;response&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; pred_crf&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;crf_seed1.csv&amp;quot;, row.names=FALSE)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The &lt;code&gt;ntree&lt;/code&gt; is the number of trees in the random forest model, the &lt;code&gt;mtry&lt;/code&gt; is the number of input variables randomly sampled as candidate at each node. The rule-of-thumb is &lt;code&gt;sqrt(p)&lt;/code&gt; where &lt;code&gt;p&lt;/code&gt; is the number of features, as we only included 10 features in our model, so we set &lt;code&gt;mtry=3&lt;/code&gt;. For more details of conditional random forest, check &lt;code&gt;help(ctree_contorl)&lt;/code&gt; in R. For the comparison between conditional inference trees and traditional decision trees, check the question in &lt;a href="http://stats.stackexchange.com/questions/12140/conditional-inference-trees-vs-traditional-decision-trees"&gt;StackExchange&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The submitted score is 0.81340.&lt;/p&gt;
+&lt;h3&gt;4.4. Ensemble&lt;/h3&gt;
+&lt;p&gt;Ensemble is a effective way to combine the models to reduce the overall error rate. In one word, extracting the pattern discovered by each model and ensembling them could achieve a better score. Therefore, ensembling the uncorrelated results of models may do better since each model contain different patterns. For the detailed introduction of ensembling experiences, check this fantastic &lt;a href="http://mlwave.com/kaggle-ensembling-guide/"&gt;blog&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;Here we just do the simple majority vote.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;cat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Difference ratio between ridge and conditional random forest:&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pred_ridge&lt;span class="o"&gt;!=&lt;/span&gt;pred_crf&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Difference ratio between ridge and conditional random forest: 0.06698565
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;cat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Difference ratio between ridge and conditional gbm:&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pred_ridge&lt;span class="o"&gt;!=&lt;/span&gt;pred_gbm&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Difference ratio between ridge and conditional gbm: 0.0861244
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kp"&gt;cat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Difference ratio between conditional random forest and gbm:&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pred_crf&lt;span class="o"&gt;!=&lt;/span&gt;pred_gbm&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="kp"&gt;nrow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;test&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## Difference ratio between conditional random forest and gbm: 0.0430622
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ensemble &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pred_ridge&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pred_gbm&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="m"&gt;-1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pred_crf&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="m"&gt;-1&lt;/span&gt;
+ensemble &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ensemble&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;round&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+submission &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;PassengerId &lt;span class="o"&gt;=&lt;/span&gt; test&lt;span class="o"&gt;$&lt;/span&gt;PassengerId&lt;span class="p"&gt;,&lt;/span&gt; Survived &lt;span class="o"&gt;=&lt;/span&gt; ensemble&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;#write.csv(submission, file = &amp;quot;ensemble_vote2.csv&amp;quot;, row.names=FALSE)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The submitted score is 0.82297.&lt;/p&gt;
+&lt;h2&gt;5. Summary&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Logistic regression&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;code&gt;glmnet&lt;/code&gt; in R and logistic regression with l1 and l2 penalty in python sklearn are different. The cost function is different, sklearn regularize intercept while glmnet doesn't. See &lt;a href="http://stats.stackexchange.com/questions/203816/logistic-regression-scikit-learn-vs-glmnet"&gt;stackexchange&lt;/a&gt; as reference.&lt;/li&gt;
+&lt;li&gt;In &lt;code&gt;glmnet&lt;/code&gt;, before fitting the model, the data should be converted into sparse matrix(encode categorical variable into dummy variable). By default &lt;code&gt;glmnet&lt;/code&gt; standardize the input by default, including the dummy variables. According to the Tibshirani's &lt;a href="http://statweb.stanford.edu/~tibs/lasso/fulltext.pdf"&gt;article&lt;/a&gt;:&lt;ul&gt;
+&lt;li&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The lasso method requires initial standardization of the regressors, so that the penalization scheme is fair to all regressors. For categorical regressors, one codes the regressor with dummy variables and then standardizes the dummy variables. As pointed out by a referee, however, the relative scaling between continuous and categorical variables in this scheme can be somewhat arbitrary.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;When tuning the regularization parameter $\lambda$ via &lt;code&gt;cv.glmnet&lt;/code&gt;, &lt;code&gt;glmnet&lt;/code&gt; called one hundred values of lambda and choose the one which achieve lowest error. However for logistic regression in sklearn, a sequence of tuning parameter &lt;code&gt;C&lt;/code&gt; need be specified for tuning. As a result, logistic regression in sklearn can hardly performs as good as &lt;code&gt;glmnet&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Gradient boosting&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Since the dataset is small, the performance of boosting machine isn't stable. This brings difficulty in tuning the parameters. Although some parameter combinations perform good through cross-validation on training set, they still overfit the test set.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Ensemble&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The ensemble method like stacking and blending may achieve better results, which could be the next step to tweak the model.&lt;/li&gt;
+&lt;/ul&gt;</summary></entry><entry><title>First Post</title><link href="https://byrony.github.io/first-post.html" rel="alternate"></link><published>2016-09-05T20:00:00-04:00</published><updated>2016-09-05T20:00:00-04:00</updated><author><name>Vincent Cao</name></author><id>tag:byrony.github.io,2016-09-05:first-post.html</id><summary type="html">&lt;style type="text/css"&gt;/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+@-moz-document url-prefix() {
+  div.inner_cell {
+    overflow-x: hidden;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell &gt; div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area &gt; div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area &gt; div.highlight &gt; pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the &lt;head&gt; if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev &lt;Maniac@SoftwareManiacs.Org&gt;
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell &gt; div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+&lt;/style&gt;
+&lt;style type="text/css"&gt;.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */&lt;/style&gt;
+&lt;style type="text/css"&gt;
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+&lt;/style&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;h1 id="First-post!"&gt;First post!&lt;a class="anchor-link" href="#First-post!"&gt;¶&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;Welcome! This will be the first post in my new Pelican blog. This blog mainly focus on data science, including project reports, technical articles, data science news, etc.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;
+</summary><category term="python firsts"></category></entry></feed>
