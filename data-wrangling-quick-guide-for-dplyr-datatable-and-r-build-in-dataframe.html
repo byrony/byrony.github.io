@@ -461,7 +461,7 @@ iris<span class="p">[,</span> <span class="p">{</span><span class="kp">print</sp
 </pre></div>
 
 
-<h3>Doing <code>j</code> by group.</h3>
+<h3>Doing <code>j</code> by group</h3>
 <ul>
 <li><code>by</code> can have more than one values. <code>by = .(A, B)</code></li>
 <li>We can call functions in <code>by</code></li>
@@ -515,7 +515,7 @@ iris<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>la
 </pre></div>
 
 
-<h3>Chaining.</h3>
+<h3>Chaining</h3>
 <ul>
 <li>Chain two <code>[]</code>, <code>[]</code> together.</li>
 </ul>
@@ -549,7 +549,7 @@ iris<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>la
 </pre></div>
 
 
-<h3>Subset of data.</h3>
+<h3>Subset of data</h3>
 <ul>
 <li>A special built-in variable <code>.SD</code>, refers to the subset of the data table for each unique value of the <code>by</code> argument. </li>
 <li><code>.SDcols</code> specifies the columns of <code>DT</code> that are included in <code>.SD</code>. Use <code>.SDcols</code> if you want to perform a particular operation on a subset of the columns. </li>
@@ -590,7 +590,7 @@ iris<span class="p">[,</span> <span class="kp">lapply</span><span class="p">(</s
 </pre></div>
 
 
-<h3>Using <code>:=</code> in <code>j</code>,</h3>
+<h3>Using <code>:=</code> in <code>j</code></h3>
 <ul>
 <li>Updates the data table by reference.</li>
 <li>Different from selecting by <code>i</code> and <code>j</code>, this is updating data table, and the new data table isn't printed.</li>
@@ -650,10 +650,10 @@ temp
 
 
 <div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
-## 1: 5.1 3.5 1.4 0.2  setosa      NA
-## 2: 4.9 3.0 1.4 0.2  setosa   5.006
-## 3: 4.7 3.2 1.3 0.2  setosa      NA
-## 4: 4.6 3.1 1.5 0.2  setosa   5.006
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
+## 2: 4.9 3.0 1.4 0.2  setosa      NA
+## 3: 4.7 3.2 1.3 0.2  setosa   5.006
+## 4: 4.6 3.1 1.5 0.2  setosa      NA
 ## 5: 5.0 3.6 1.4 0.2  setosa   5.006
 ## 6: 5.4 3.9 1.7 0.4  setosa      NA
 </pre></div>
@@ -669,7 +669,7 @@ temp<span class="p">[</span><span class="m">1</span><span class="p">]</span>
 
 
 <div class="highlight"><pre><span></span>##    SL_new SW_new PL_new PW_new Species_new mean_SL_new
-## 1:    5.1    3.5    1.4    0.2      setosa          NA
+## 1:    5.1    3.5    1.4    0.2      setosa       5.006
 </pre></div>
 
 
@@ -717,7 +717,7 @@ temp<span class="p">[</span><span class="m">1</span><span class="p">]</span>
 
 
 <div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
-## 1: 5.1 3.5 1.4 0.2  setosa      NA
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
 </pre></div>
 
 
