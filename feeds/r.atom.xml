@@ -544,12 +544,12 @@ temp
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##     SL  SW  PL  PW Species mean_SL
-## 1: 5.1 3.5 1.4 0.2  setosa      NA
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
 ## 2: 4.9 3.0 1.4 0.2  setosa      NA
-## 3: 4.7 3.2 1.3 0.2  setosa      NA
-## 4: 4.6 3.1 1.5 0.2  setosa   5.006
+## 3: 4.7 3.2 1.3 0.2  setosa   5.006
+## 4: 4.6 3.1 1.5 0.2  setosa      NA
 ## 5: 5.0 3.6 1.4 0.2  setosa   5.006
-## 6: 5.4 3.9 1.7 0.4  setosa   5.006
+## 6: 5.4 3.9 1.7 0.4  setosa      NA
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -563,7 +563,7 @@ temp&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##    SL_new SW_new PL_new PW_new Species_new mean_SL_new
-## 1:    5.1    3.5    1.4    0.2      setosa          NA
+## 1:    5.1    3.5    1.4    0.2      setosa       5.006
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -611,7 +611,7 @@ temp&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##     SL  SW  PL  PW Species mean_SL
-## 1: 5.1 3.5 1.4 0.2  setosa      NA
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
 &lt;/pre&gt;&lt;/div&gt;
 
 
