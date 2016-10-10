@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>Data Wrangling: Quick Guide for dplyr, data.table and R build-in data.frame - Pieces of Data Science</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="https://byrony.github.io/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html">
+
+        <meta name="author" content=""Vincent Cao"" />
+        <meta name="keywords" content="Toturial" />
+        <meta name="description" content="The dplyr and data.table part are based on the courses Data Manipulation in R with dplyr and Data Manipulation in R, the data.table way on DataCamp. Hope the description along with the code in this guide help you understand the basic data wrangling in R clearly. dplyr Overview ..." />
+
+        <meta property="og:site_name" content="Pieces of Data Science" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Data Wrangling: Quick Guide for dplyr, data.table and R build-in data.frame"/>
+        <meta property="og:url" content="https://byrony.github.io/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html"/>
+        <meta property="og:description" content="The dplyr and data.table part are based on the courses Data Manipulation in R with dplyr and Data Manipulation in R, the data.table way on DataCamp. Hope the description along with the code in this guide help you understand the basic data wrangling in R clearly. dplyr Overview ..."/>
+        <meta property="article:published_time" content="2016-10-09" />
+            <meta property="article:section" content="R" />
+            <meta property="article:tag" content="Toturial" />
+            <meta property="article:author" content=""Vincent Cao"" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://byrony.github.io/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://byrony.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://byrony.github.io/theme/css/pygments/default.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://byrony.github.io/theme/css/style.css" type="text/css"/>
+
+        <link href="https://byrony.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Pieces of Data Science ATOM Feed"/>
+
+
+
+        <link href="https://byrony.github.io/feeds/r.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Pieces of Data Science R ATOM Feed"/>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://byrony.github.io/" class="navbar-brand">
+Pieces of Data Science            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="https://byrony.github.io/category/about-me.html">About me</a>
+                        </li>
+                        <li class="active">
+                            <a href="https://byrony.github.io/category/r.html">R</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="https://byrony.github.io/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html"
+                       rel="bookmark"
+                       title="Permalink to Data Wrangling: Quick Guide for dplyr, data.table and R build-in data.frame">
+                        Data Wrangling: Quick Guide for dplyr, data.table and R build-in data.frame
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-10-09T00:00:00-04:00"> Sun 09 October 2016</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="https://byrony.github.io/tag/toturial.html">Toturial</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>The <code>dplyr</code> and <code>data.table</code> part are based on the courses <em>Data Manipulation in R with dplyr</em> and <em>Data Manipulation in R, the data.table way</em> on DataCamp. Hope the description along with the code in this guide help you understand the basic data wrangling in R clearly.</p>
+<h2>dplyr</h2>
+<h3>Overview</h3>
+<ul>
+<li>Use <code>tbl_df</code> to convert <code>data.frame</code> into data frame table. <code>tbl</code> is a special type of data.frame.</li>
+<li><code>glimpse</code> (from <code>tibble</code>) display more info of the data table. It checks every column in the set, similar to R base function <code>str</code>. </li>
+<li>Convert tbl back to data.frame. <code>as.data.frame(iris)</code></li>
+</ul>
+<div class="highlight"><pre><span></span>data<span class="p">(</span><span class="s">&#39;iris&#39;</span><span class="p">)</span>
+
+<span class="c1"># change names</span>
+<span class="kp">names</span><span class="p">(</span>iris<span class="p">)</span> <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;SL&#39;</span><span class="p">,</span> <span class="s">&#39;SW&#39;</span><span class="p">,</span> <span class="s">&#39;PL&#39;</span><span class="p">,</span> <span class="s">&#39;PW&#39;</span><span class="p">,</span> <span class="s">&#39;Species&#39;</span><span class="p">)</span>
+
+<span class="c1"># covert the data.frame into tbl</span>
+<span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+iris <span class="o">&lt;-</span> tbl_df<span class="p">(</span>iris<span class="p">)</span>
+iris <span class="c1"># R only disply a portion of the tbl fits the console window</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 150 &lt;U+00D7&gt; 5
+##       SL    SW    PL    PW Species
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;fctr&gt;
+## 1    5.1   3.5   1.4   0.2  setosa
+## 2    4.9   3.0   1.4   0.2  setosa
+## 3    4.7   3.2   1.3   0.2  setosa
+## 4    4.6   3.1   1.5   0.2  setosa
+## 5    5.0   3.6   1.4   0.2  setosa
+## 6    5.4   3.9   1.7   0.4  setosa
+## 7    4.6   3.4   1.4   0.3  setosa
+## 8    5.0   3.4   1.5   0.2  setosa
+## 9    4.4   2.9   1.4   0.2  setosa
+## 10   4.9   3.1   1.5   0.1  setosa
+## # ... with 140 more rows
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># change column names</span>
+<span class="kp">names</span><span class="p">(</span>iris<span class="p">)</span> <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;SL&#39;</span><span class="p">,</span> <span class="s">&#39;SW&#39;</span><span class="p">,</span> <span class="s">&#39;PL&#39;</span><span class="p">,</span> <span class="s">&#39;PW&#39;</span><span class="p">,</span> <span class="s">&#39;Species&#39;</span><span class="p">)</span>
+
+<span class="c1"># change the level name of factor</span>
+new_level <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;setasa&#39;</span><span class="o">=</span><span class="s">&#39;set&#39;</span><span class="p">,</span> <span class="s">&#39;versicolor&#39;</span><span class="o">=</span><span class="s">&#39;ver&#39;</span><span class="p">,</span> <span class="s">&#39;virginica&#39;</span><span class="o">=</span><span class="s">&#39;vir&#39;</span><span class="p">)</span>
+iris<span class="o">$</span>new_Species <span class="o">&lt;-</span> <span class="kp">as.factor</span><span class="p">(</span>new_level<span class="p">[</span>iris<span class="o">$</span>Species<span class="p">])</span>
+
+<span class="c1"># check more info of data table</span>
+glimpse<span class="p">(</span>iris<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Observations: 150
+## Variables: 6
+## $ SL          &lt;dbl&gt; 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.9, ...
+## $ SW          &lt;dbl&gt; 3.5, 3.0, 3.2, 3.1, 3.6, 3.9, 3.4, 3.4, 2.9, 3.1, ...
+## $ PL          &lt;dbl&gt; 1.4, 1.4, 1.3, 1.5, 1.4, 1.7, 1.4, 1.5, 1.4, 1.5, ...
+## $ PW          &lt;dbl&gt; 0.2, 0.2, 0.2, 0.2, 0.2, 0.4, 0.3, 0.2, 0.2, 0.1, ...
+## $ Species     &lt;fctr&gt; setosa, setosa, setosa, setosa, setosa, setosa, s...
+## $ new_Species &lt;fctr&gt; set, set, set, set, set, set, set, set, set, set,...
+</pre></div>
+
+
+<p>Five verbs for data manipulation. <code>select</code>, <code>filter</code>, <code>arrange</code>, <code>mutate</code>, <code>summarize</code>.</p>
+<h3><code>select()</code></h3>
+<p>Select(Remove) the columns by name and return a <code>table</code> which contains the selected columns. The original <code>table</code> is not modified. If you want to use the returned table later, save it into a new object. <code>new_table &lt;- select(iris, var1, var2)</code>.</p>
+<ul>
+<li>The grammer is <code>select(data, var1, var2)</code>. We can put variable names into a string <code>c(var1, var2)</code> also.</li>
+<li>Use colon <code>:</code> to select a range of columns. Use <code>-</code> to drop columns. <code>select(data, var1:var4, -var2)</code>.</li>
+<li><code>select</code> also works with column index. <code>select(data, 1:4, -2)</code></li>
+<li>Helper function for selection, check <code>select_helpers</code>.<ul>
+<li><code>starts_with("X")</code>: every name that starts with <code>"X"</code>,</li>
+<li><code>ends_with("X")</code>: every name that ends with <code>"X"</code>,</li>
+<li><code>contains("X")</code>: every name that contains <code>"X"</code>, </li>
+<li><code>matches("X")</code>: every name that matches <code>"X"</code>, where <code>"X"</code> can be a regular expression,</li>
+<li><code>num_range("x", 1:5)</code>: the variables named <code>x01, x02, x03, x04 and x05</code>,</li>
+<li><code>one_of(x)</code>: every name that appears in x, which should be a character vector.</li>
+</ul>
+</li>
+<li><code>select_</code> accepts string(only) as paramters which used often when programming with select.</li>
+</ul>
+<div class="highlight"><pre><span></span>select<span class="p">(</span>iris<span class="p">,</span> SL<span class="p">,</span> Species<span class="p">)</span> <span class="c1"># select two columns</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 150 &lt;U+00D7&gt; 2
+##       SL Species
+##    &lt;dbl&gt;  &lt;fctr&gt;
+## 1    5.1  setosa
+## 2    4.9  setosa
+## 3    4.7  setosa
+## 4    4.6  setosa
+## 5    5.0  setosa
+## 6    5.4  setosa
+## 7    4.6  setosa
+## 8    5.0  setosa
+## 9    4.4  setosa
+## 10   4.9  setosa
+## # ... with 140 more rows
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># select(iris, SL:Species, -SW) # select columns between SL and Species except SW</span>
+<span class="c1"># select(iris, c(1:2, 4:5))</span>
+<span class="c1"># select(iris, 1:3, -2) # select columns between index 1 and 3 except 2</span>
+<span class="c1"># select(iris, starts_with(&#39;S&#39;), ends_with(&#39;L&#39;)) # for more than one helper function, the relation is `OR`</span>
+</pre></div>
+
+
+<h3><code>mutate()</code></h3>
+<ul>
+<li>Use the data to build new columns and update the original data set.</li>
+<li>The new created column can be referred in later expression.</li>
+</ul>
+<div class="highlight"><pre><span></span>iris_2 <span class="o">&lt;-</span> mutate<span class="p">(</span>iris<span class="p">,</span> area_S <span class="o">=</span> SL<span class="o">*</span>SW<span class="p">,</span> area_S2 <span class="o">=</span> area_S<span class="o">^</span><span class="m">2</span><span class="p">)</span>
+<span class="kp">head</span><span class="p">(</span>iris_2<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 6 &lt;U+00D7&gt; 8
+##      SL    SW    PL    PW Species new_Species area_S  area_S2
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;fctr&gt;      &lt;fctr&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+## 1   5.1   3.5   1.4   0.2  setosa         set  17.85 318.6225
+## 2   4.9   3.0   1.4   0.2  setosa         set  14.70 216.0900
+## 3   4.7   3.2   1.3   0.2  setosa         set  15.04 226.2016
+## 4   4.6   3.1   1.5   0.2  setosa         set  14.26 203.3476
+## 5   5.0   3.6   1.4   0.2  setosa         set  18.00 324.0000
+## 6   5.4   3.9   1.7   0.4  setosa         set  21.06 443.5236
+</pre></div>
+
+
+<h3><code>filter()</code></h3>
+<ul>
+<li>Remove the rows. </li>
+<li>Use <code>filter</code> together with relational operators. Check <code>Comparison</code>. <code>&lt;, &gt;, &lt;=, &gt;=, ==, !=, %in%</code>. </li>
+<li>For more than one conditions, use boolean operators <code>&amp;</code>, <code>|</code>, <code>!</code>.</li>
+<li><code>filter_</code> accepts string as parameters as well.</li>
+</ul>
+<div class="highlight"><pre><span></span>filter<span class="p">(</span>iris<span class="p">,</span> SL <span class="o">==</span> <span class="m">5.1</span> <span class="o">&amp;</span> SW <span class="o">&gt;=</span><span class="m">3.5</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 6 &lt;U+00D7&gt; 6
+##      SL    SW    PL    PW Species new_Species
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;fctr&gt;      &lt;fctr&gt;
+## 1   5.1   3.5   1.4   0.2  setosa         set
+## 2   5.1   3.5   1.4   0.3  setosa         set
+## 3   5.1   3.8   1.5   0.3  setosa         set
+## 4   5.1   3.7   1.5   0.4  setosa         set
+## 5   5.1   3.8   1.9   0.4  setosa         set
+## 6   5.1   3.8   1.6   0.2  setosa         set
+</pre></div>
+
+
+<h3><code>arrange()</code></h3>
+<ul>
+<li>Reorder the rows in a data set</li>
+<li>Use <code>desc()</code> to arrange in descending order, defaul is ascending.</li>
+<li>Support arrange by several variables using comma <code>,</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># rearrange the table by SL and SW in ascending order</span>
+arrange<span class="p">(</span>iris<span class="p">,</span> SL<span class="p">,</span> SW<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 150 &lt;U+00D7&gt; 6
+##       SL    SW    PL    PW Species new_Species
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;fctr&gt;      &lt;fctr&gt;
+## 1    4.3   3.0   1.1   0.1  setosa         set
+## 2    4.4   2.9   1.4   0.2  setosa         set
+## 3    4.4   3.0   1.3   0.2  setosa         set
+## 4    4.4   3.2   1.3   0.2  setosa         set
+## 5    4.5   2.3   1.3   0.3  setosa         set
+## 6    4.6   3.1   1.5   0.2  setosa         set
+## 7    4.6   3.2   1.4   0.2  setosa         set
+## 8    4.6   3.4   1.4   0.3  setosa         set
+## 9    4.6   3.6   1.0   0.2  setosa         set
+## 10   4.7   3.2   1.3   0.2  setosa         set
+## # ... with 140 more rows
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># in descending order</span>
+<span class="c1"># arrange(iris, SL, desc(SW))</span>
+
+<span class="c1"># arrange by sum of SL and SW</span>
+<span class="c1"># arrange(iris, SL+SW)</span>
+</pre></div>
+
+
+<h3><code>summarise()</code></h3>
+<ul>
+<li>Calculate summary statistics. <code>summarise(tbl, sum=sum(A), avg=mean(B), var=var(B))</code></li>
+<li>You can use any function in <code>summarise</code> as long as the function can take a vector of data and return a single number. <code>min</code>, <code>max</code>, <code>mean</code>, <code>median</code>, <code>quantile(x, p)</code> -p is the quantile of vector x, <code>sd</code>, <code>var</code>, <code>IQR</code> -Inter Quartile Range of vector x, <code>diff(range(x))</code> -total range of vector x. </li>
+<li><code>dplyr</code> aggrgate function. <ul>
+<li><code>first(x)</code>, <code>last(x)</code>, <code>nth(x, n)</code> -the nth element of vector x. </li>
+<li><code>n()</code> -the number of rows in the data.frame or group of observations that <code>summarise()</code> describes.</li>
+<li><code>n_distinct(x)</code> -the number of unique values in vector x.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span>summarise<span class="p">(</span>iris<span class="p">,</span> mean_SL<span class="o">=</span><span class="kp">mean</span><span class="p">(</span>SL<span class="p">),</span> nth_PW<span class="o">=</span>nth<span class="p">(</span>PW<span class="p">,</span> <span class="m">10</span><span class="p">),</span> distinct_Species<span class="o">=</span>n_distinct<span class="p">(</span>Species<span class="p">),</span> N<span class="o">=</span>n<span class="p">())</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 1 &lt;U+00D7&gt; 4
+##    mean_SL nth_PW distinct_Species     N
+##      &lt;dbl&gt;  &lt;dbl&gt;            &lt;int&gt; &lt;int&gt;
+## 1 5.843333    0.1                3   150
+</pre></div>
+
+
+<h3>pipe operator <code>%&gt;%</code></h3>
+<ul>
+<li>From magrittr package. Effecient, readable, save space in memory. We don't need use nested loop. <code>object %&gt;% function(  , arg2, arg3)</code>, <code>object</code> is passed as the first argument in the function, and it is written as <code>object %&gt;% function(arg2, arg3)</code></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># use pipe operator to mutate, then filter</span>
+iris <span class="o">%&gt;%</span>
+  mutate<span class="p">(</span>area_S <span class="o">=</span> SL<span class="o">*</span>SW<span class="p">)</span> <span class="o">%&gt;%</span>
+  filter<span class="p">(</span>Species <span class="o">==</span> <span class="s">&#39;setosa&#39;</span> <span class="o">&amp;</span> SW <span class="o">&gt;</span> <span class="m">3</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  summarise<span class="p">(</span>avg <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>area_S<span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 1 &lt;U+00D7&gt; 1
+##        avg
+##      &lt;dbl&gt;
+## 1 17.98048
+</pre></div>
+
+
+<h3><code>group_by</code></h3>
+<ul>
+<li>Takes an existing tbl and converts it into grouped tbl where operations are performed by group. Its influence becomes clear when calling <code>summarise()</code> on a grouped dataset: summarising statistics are calculated for the different groups separately. </li>
+</ul>
+<div class="highlight"><pre><span></span>iris <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>Species<span class="p">)</span> <span class="o">%&gt;%</span>
+  summarise<span class="p">(</span>avg_SL <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>SL<span class="p">,</span> na.rm<span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span> avg_SW <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>SW<span class="p">))</span> <span class="o">%&gt;%</span>
+  arrange<span class="p">(</span>avg_SW<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 3 &lt;U+00D7&gt; 3
+##      Species avg_SL avg_SW
+##       &lt;fctr&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 versicolor  5.936  2.770
+## 2  virginica  6.588  2.974
+## 3     setosa  5.006  3.428
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># or we can use:</span>
+iris <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>Species<span class="p">)</span> <span class="o">%&gt;%</span>
+  summarise<span class="p">(</span>avg_SL <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>SL<span class="p">,</span> na.rm<span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span> avg_SW <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>SW<span class="p">))</span> <span class="o">%&gt;%</span>
+  mutate<span class="p">(</span>rank <span class="o">=</span> <span class="kp">rank</span><span class="p">(</span>avg_SL<span class="p">))</span> <span class="o">%&gt;%</span>
+  arrange<span class="p">(</span><span class="kp">rank</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 3 &lt;U+00D7&gt; 4
+##      Species avg_SL avg_SW  rank
+##       &lt;fctr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1     setosa  5.006  3.428     1
+## 2 versicolor  5.936  2.770     2
+## 3  virginica  6.588  2.974     3
+</pre></div>
+
+
+<ul>
+<li><code>dplyr</code> also works with other data set types like <code>data.table</code>, <code>data.frame</code>.</li>
+</ul>
+<h2>data.table</h2>
+<h3>Overview</h3>
+<ul>
+<li>Think data.frame as a set of columns. <code>data.table</code> inherits from data.frame, but reduces programming time and computing time. <code>data.table</code> is <code>data.frame</code>, accepted as a <code>data.frame</code> by other pacakges. For the packages don't know <code>data.table</code>, <code>DT[...]</code> is redirected to <code>data.frame</code> methods for square bracket <code>[...]</code>.</li>
+<li>General form: <code>DT[i, j, by]</code>, <code>i</code> corresponds <code>WHERE</code> in SQL and <code>j</code> corresponds <code>SELECT</code> in SQL. It stands for "Take DT, subset rows using i, then calculate j grouped by <code>by</code>".</li>
+</ul>
+<h3>Select rows by argument <code>i</code></h3>
+<ul>
+<li>Comma <code>,</code> can be ignored. For <code>data.table</code>, <code>iris[1:3]</code> equals to <code>iris[1:3, ]</code>. But for <code>data.frame</code>, <code>iris[1:3]</code> returns error if you forget comma. </li>
+<li><code>.N</code>, a special symbol which contains the number of rows when used inside square brackets.</li>
+</ul>
+<div class="highlight"><pre><span></span>data<span class="p">(</span><span class="s">&#39;iris&#39;</span><span class="p">)</span>
+
+<span class="c1"># change names</span>
+<span class="kp">names</span><span class="p">(</span>iris<span class="p">)</span> <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;SL&#39;</span><span class="p">,</span> <span class="s">&#39;SW&#39;</span><span class="p">,</span> <span class="s">&#39;PL&#39;</span><span class="p">,</span> <span class="s">&#39;PW&#39;</span><span class="p">,</span> <span class="s">&#39;Species&#39;</span><span class="p">)</span>
+
+<span class="c1"># covert data.frame to data.table</span>
+<span class="kn">library</span><span class="p">(</span>data.table<span class="p">)</span>
+iris <span class="o">&lt;-</span> data.table<span class="p">(</span>iris<span class="p">)</span>
+
+<span class="c1"># select rows</span>
+iris<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">]</span>  <span class="c1"># iris[1:3,] returns the same table.</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species
+## 1: 5.1 3.5 1.4 0.2  setosa
+## 2: 4.9 3.0 1.4 0.2  setosa
+## 3: 4.7 3.2 1.3 0.2  setosa
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># select the first and second last row.</span>
+iris<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">.</span>N<span class="m">-1</span><span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW   Species
+## 1: 5.1 3.5 1.4 0.2    setosa
+## 2: 6.2 3.4 5.4 2.3 virginica
+</pre></div>
+
+
+<h3>Select columns by argument <code>j</code></h3>
+<ul>
+<li>Select columns by <code>j</code>. Put <code>j</code> into <code>.()</code>, an alias to <code>list()</code> in data.tables and they mean the same. <code>iris[, .(SL, SW)]</code>. Note <code>DT[, .(B)]</code> returns a <code>data.table</code>, while <code>DT[, B]</code> returns a vector, so is <code>DT[['B']]</code>, note column name contained in quotation. And <code>DT[, c(B,C)]</code> returns a vector combined with <code>B</code> and <code>C</code>.</li>
+<li>Compute on columns. <code>iris[, .(mean_SL=mean(SL), mean_SW=mean(SW)]</code>.</li>
+<li>The generated multiple columns all return the same length. The length of short item get recycled to match the length of large columns. <code>iris[, .(SL, mean_SL=mean(SL))</code>. For all rows, they have the same <code>mean_SL</code>.</li>
+<li>Throw anything into <code>j</code>. <code>iris[, plot(SL, SW)]</code>.</li>
+<li>Subsetting data.tables. <code>DT[1:3, .(2:4)]</code></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># select two columns together with a generated column</span>
+iris<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>SL<span class="p">,</span> SW<span class="p">,</span> area_S <span class="o">=</span> SL<span class="o">*</span>SW<span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##       SL  SW area_S
+##   1: 5.1 3.5  17.85
+##   2: 4.9 3.0  14.70
+##   3: 4.7 3.2  15.04
+##   4: 4.6 3.1  14.26
+##   5: 5.0 3.6  18.00
+##  ---               
+## 146: 6.7 3.0  20.10
+## 147: 6.3 2.5  15.75
+## 148: 6.5 3.0  19.50
+## 149: 6.2 3.4  21.08
+## 150: 5.9 3.0  17.70
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># throw anything into `j`</span>
+iris<span class="p">[,</span> <span class="p">{</span><span class="kp">print</span><span class="p">(</span><span class="kp">head</span><span class="p">(</span>SW<span class="p">))</span>
+        hist<span class="p">(</span>SW<span class="p">)</span>
+        <span class="kc">NULL</span><span class="p">}]</span> <span class="c1"># return NULL</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## [1] 3.5 3.0 3.2 3.1 3.6 3.9
+</pre></div>
+
+
+<p><img alt="plot of chunk unnamed-chunk-10" src="https://byrony.github.io/figure/Data_Wrangling-unnamed-chunk-10-1.png" /></p>
+<div class="highlight"><pre><span></span>## NULL
+</pre></div>
+
+
+<h3>Doing <code>j</code> by group.</h3>
+<ul>
+<li><code>by</code> can have more than one values. <code>by = .(A, B)</code></li>
+<li>We can call functions in <code>by</code></li>
+<li>Shortcut: if there is only one item in <code>j</code> or <code>by</code>, you can drop the <code>.()</code> notation.</li>
+</ul>
+<div class="highlight"><pre><span></span>iris<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>mean_SL <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>SL<span class="p">)),</span> by<span class="o">=</span><span class="m">.</span><span class="p">(</span>Species<span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##       Species mean_SL
+## 1:     setosa   5.006
+## 2: versicolor   5.936
+## 3:  virginica   6.588
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># call function in `by`, and grouping only on a subset</span>
+iris<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">100</span><span class="p">,</span> <span class="m">.</span><span class="p">(</span>mean_SL <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>SL<span class="p">)),</span> by<span class="o">=</span><span class="m">.</span><span class="p">(</span><span class="kp">substr</span><span class="p">(</span>Species<span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">))]</span> <span class="c1"># group by the 1st character of Species</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    substr mean_SL
+## 1:      s   5.006
+## 2:      v   5.936
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># count the number of rows by group</span>
+iris<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>Count <span class="o">=</span> <span class="m">.</span>N<span class="p">),</span> by<span class="o">=</span><span class="m">.</span><span class="p">(</span>not_setosa <span class="o">&lt;-</span> Species <span class="o">!=</span> <span class="s">&#39;setosa&#39;</span><span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    not_setosa Count
+## 1:      FALSE    50
+## 2:       TRUE   100
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># select the last two rows of SL by group </span>
+iris<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>last_two_SL <span class="o">=</span> <span class="kp">tail</span><span class="p">(</span>SL<span class="p">,</span> <span class="m">2</span><span class="p">)),</span> by<span class="o">=</span><span class="m">.</span><span class="p">(</span>Species<span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##       Species last_two_SL
+## 1:     setosa         5.3
+## 2:     setosa         5.0
+## 3: versicolor         5.1
+## 4: versicolor         5.7
+## 5:  virginica         6.2
+## 6:  virginica         5.9
+</pre></div>
+
+
+<h3>Chaining.</h3>
+<ul>
+<li>Chain two <code>[]</code>, <code>[]</code> together.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># select the last two rows of SL by group</span>
+iris<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>SL<span class="p">),</span> by<span class="o">=</span><span class="m">.</span><span class="p">(</span>Species<span class="p">)][,</span> <span class="m">.</span><span class="p">(</span>last_two_SL <span class="o">=</span> <span class="kp">tail</span><span class="p">(</span>SL<span class="p">,</span><span class="m">2</span><span class="p">)),</span> by<span class="o">=</span><span class="m">.</span><span class="p">(</span>Species<span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##       Species last_two_SL
+## 1:     setosa         5.3
+## 2:     setosa         5.0
+## 3: versicolor         5.1
+## 4: versicolor         5.7
+## 5:  virginica         6.2
+## 6:  virginica         5.9
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># order by selected column</span>
+iris<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>last_two_SL <span class="o">=</span> <span class="kp">tail</span><span class="p">(</span>SL<span class="p">,</span> <span class="m">2</span><span class="p">)),</span> by<span class="o">=</span><span class="m">.</span><span class="p">(</span>Species<span class="p">)][</span><span class="kp">order</span><span class="p">(</span>last_two_SL<span class="p">,</span> decreasing <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##       Species last_two_SL
+## 1:  virginica         6.2
+## 2:  virginica         5.9
+## 3: versicolor         5.7
+## 4:     setosa         5.3
+## 5: versicolor         5.1
+## 6:     setosa         5.0
+</pre></div>
+
+
+<h3>Subset of data.</h3>
+<ul>
+<li>A special built-in variable <code>.SD</code>, refers to the subset of the data table for each unique value of the <code>by</code> argument. </li>
+<li><code>.SDcols</code> specifies the columns of <code>DT</code> that are included in <code>.SD</code>. Use <code>.SDcols</code> if you want to perform a particular operation on a subset of the columns. </li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># use lapply to compute the mean of each columns</span>
+iris<span class="p">[,</span> <span class="kp">lapply</span><span class="p">(</span><span class="m">.</span>SD<span class="p">,</span> <span class="kp">mean</span><span class="p">),</span> by <span class="o">=</span> <span class="m">.</span><span class="p">(</span>Species<span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##       Species    SL    SW    PL    PW
+## 1:     setosa 5.006 3.428 1.462 0.246
+## 2: versicolor 5.936 2.770 4.260 1.326
+## 3:  virginica 6.588 2.974 5.552 2.026
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># use .SDcols to specify the columns(2nd to 4th) selected for each group.</span>
+iris<span class="p">[,</span> <span class="kp">lapply</span><span class="p">(</span><span class="m">.</span>SD<span class="p">,</span> <span class="kp">mean</span><span class="p">),</span> <span class="m">.</span>SDcols <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">4</span><span class="p">),</span> by <span class="o">=</span> <span class="m">.</span><span class="p">(</span>Species<span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##       Species    SW    PL    PW
+## 1:     setosa 3.428 1.462 0.246
+## 2: versicolor 2.770 4.260 1.326
+## 3:  virginica 2.974 5.552 2.026
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># we can also set the value of .SDcols as column names. e.g. .SDcols = c(&#39;SL&#39;, &#39;SW&#39;)</span>
+iris<span class="p">[,</span> <span class="kp">lapply</span><span class="p">(</span><span class="m">.</span>SD<span class="p">,</span> <span class="kp">mean</span><span class="p">),</span> <span class="m">.</span>SDcols <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;SL&#39;</span><span class="p">,</span> <span class="s">&#39;SW&#39;</span><span class="p">),</span> by <span class="o">=</span> <span class="m">.</span><span class="p">(</span>Species<span class="p">)]</span> <span class="c1"># note add quotation &quot;&quot;</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##       Species    SL    SW
+## 1:     setosa 5.006 3.428
+## 2: versicolor 5.936 2.770
+## 3:  virginica 6.588 2.974
+</pre></div>
+
+
+<h3>Using <code>:=</code> in <code>j</code>,</h3>
+<ul>
+<li>Updates the data table by reference.</li>
+<li>Different from selecting by <code>i</code> and <code>j</code>, this is updating data table, and the new data table isn't printed.</li>
+<li>Remove columns using <code>:= NULL</code>. Remove the columns instantly no matter how large the data is in RAM. The columns can be indicated by both name or column index number.</li>
+<li>Functional <code>:=</code>. <code>DT[,</code>:=<code>(y=6:10, )</code></li>
+<li><code>:=</code> combined with <code>i</code> and <code>by</code>. Note if <code>i</code> is set a value, then only those rows are used to compute in the <code>:=</code> by groups. It doesn't mean select <code>i</code> rows in the updated data table. See example in code chunk below.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># reverse a column, create a new column</span>
+iris<span class="p">[,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;rev_SL&#39;</span><span class="p">,</span> <span class="s">&#39;area_S&#39;</span><span class="p">)</span> <span class="o">:=</span> <span class="m">.</span><span class="p">(</span><span class="kp">rev</span><span class="p">(</span>SL<span class="p">),</span> SL<span class="o">*</span>SW<span class="p">)]</span>
+
+<span class="c1"># remove a column. If only one column, there is shortcut: iris[, area_S := NULL]</span>
+iris<span class="p">[,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;rev_SL&#39;</span><span class="p">,</span> <span class="s">&#39;area_S&#39;</span><span class="p">)</span> <span class="o">:=</span> <span class="kc">NULL</span><span class="p">]</span> 
+
+<span class="c1"># if the columns need be deleted is a vector, we need add bracket to stop the variable being a symbol. </span>
+<span class="c1"># Then data.table knows to look up the value of the variable.</span>
+<span class="c1"># Also, you can paste </span>
+
+<span class="c1"># MyCols &lt;- c(&#39;rev_SL&#39;, &#39;area_S&#39;)</span>
+<span class="c1"># iris[, (MyCols) := NULL]</span>
+
+<span class="c1"># Functional :=</span>
+iris<span class="p">[,</span> <span class="sb">`:=`</span><span class="p">(</span>x <span class="o">=</span> <span class="m">6</span><span class="o">:</span><span class="m">10</span><span class="p">,</span> <span class="c1"># space of comment for each variable, make it easy to read </span>
+            z <span class="o">=</span> <span class="m">1</span><span class="p">)]</span>
+
+<span class="c1"># := combined with i and by</span>
+<span class="c1"># only the 1st 100 rows are selected to compute mean of SL by Species. The `mean_SL` in rows later than 100 are NA</span>
+iris<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">100</span><span class="p">,</span> mean_SL<span class="o">:=</span><span class="kp">mean</span><span class="p">(</span>SL<span class="p">),</span> by<span class="o">=</span><span class="m">.</span><span class="p">(</span>Species<span class="p">)]</span> 
+iris<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">101</span><span class="o">:</span><span class="m">103</span><span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW   Species x z mean_SL
+## 1: 5.1 3.5 1.4 0.2    setosa 6 1   5.006
+## 2: 4.9 3.0 1.4 0.2    setosa 7 1   5.006
+## 3: 4.7 3.2 1.3 0.2    setosa 8 1   5.006
+## 4: 6.3 3.3 6.0 2.5 virginica 6 1      NA
+## 5: 5.8 2.7 5.1 1.9 virginica 7 1      NA
+## 6: 7.1 3.0 5.9 2.1 virginica 8 1      NA
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># an error for deleting columns</span>
+iris<span class="p">[,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">)</span> <span class="o">:=</span> <span class="kc">NULL</span><span class="p">]</span> <span class="c1"># not error is given if i is specified.</span>
+iris<span class="p">[,</span> <span class="m">6</span> <span class="o">:=</span> <span class="kc">NULL</span><span class="p">]</span> <span class="c1"># remove column by number also works.</span>
+</pre></div>
+
+
+<h3>Use <code>set()</code></h3>
+<ul>
+<li>Assignment by reference, used to repeatedly update a data.table by reference. You can think of the <code>set()</code> as loopable, low overhead version of the <code>:=</code> operator, except that <code>set()</code> cannot be used for grouping operations. <code>set(DT, index, column, value)</code></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># randomly set three items in 6th column to be NA </span>
+temp <span class="o">&lt;-</span> iris<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">6</span><span class="p">]</span>
+<span class="kr">for</span><span class="p">(</span>i <span class="kr">in</span> <span class="m">6</span><span class="o">:</span><span class="m">6</span><span class="p">)</span> set<span class="p">(</span>temp<span class="p">,</span> <span class="kp">sample.int</span><span class="p">(</span><span class="kp">nrow</span><span class="p">(</span>temp<span class="p">),</span> <span class="m">3</span><span class="p">),</span> i<span class="p">,</span> <span class="kc">NA</span><span class="p">)</span>
+temp
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
+## 2: 4.9 3.0 1.4 0.2  setosa   5.006
+## 3: 4.7 3.2 1.3 0.2  setosa      NA
+## 4: 4.6 3.1 1.5 0.2  setosa      NA
+## 5: 5.0 3.6 1.4 0.2  setosa      NA
+## 6: 5.4 3.9 1.7 0.4  setosa   5.006
+</pre></div>
+
+
+<h3>Use <code>setnames()</code>, <code>setcolorder</code></h3>
+<ul>
+<li>Use <code>setnames()</code> to set or change column names; use <code>setcolorder()</code> to reorder the columns.</li>
+</ul>
+<div class="highlight"><pre><span></span>setnames<span class="p">(</span>temp<span class="p">,</span> <span class="kp">names</span><span class="p">(</span>temp<span class="p">),</span> <span class="kp">paste0</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>temp<span class="p">),</span> <span class="s">&#39;_new&#39;</span><span class="p">))</span>
+temp<span class="p">[</span><span class="m">1</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    SL_new SW_new PL_new PW_new Species_new mean_SL_new
+## 1:    5.1    3.5    1.4    0.2      setosa       5.006
+</pre></div>
+
+
+<h3>Indexing</h3>
+<ul>
+<li>Automatic indexing. Data table don't actually vector scan. They create an index automatically on <code>SL</code> the first time you use column <code>SL</code>. So second time it's <strong>much faster</strong> as the index alread exists. In data base, you need create the index by hand, while in <code>data.table</code> it's done automatically.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kp">head</span><span class="p">(</span>iris<span class="p">[</span>SL <span class="o">&gt;</span><span class="m">0</span> <span class="o">&amp;</span> SL <span class="o">&lt;</span><span class="m">10</span> <span class="o">&amp;</span> <span class="o">!</span>Species <span class="o">%in%</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;setosa&#39;</span><span class="p">)])</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW    Species mean_SL
+## 1: 7.0 3.2 4.7 1.4 versicolor   5.936
+## 2: 6.4 3.2 4.5 1.5 versicolor   5.936
+## 3: 6.9 3.1 4.9 1.5 versicolor   5.936
+## 4: 5.5 2.3 4.0 1.3 versicolor   5.936
+## 5: 6.5 2.8 4.6 1.5 versicolor   5.936
+## 6: 5.7 2.8 4.5 1.3 versicolor   5.936
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>iris<span class="p">[</span>SL <span class="o">&gt;</span><span class="m">1</span> <span class="o">&amp;</span> SL <span class="o">&lt;</span><span class="m">11</span><span class="p">]</span> <span class="c1"># second time much faster.</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##       SL  SW  PL  PW   Species mean_SL
+##   1: 5.1 3.5 1.4 0.2    setosa   5.006
+##   2: 4.9 3.0 1.4 0.2    setosa   5.006
+##   3: 4.7 3.2 1.3 0.2    setosa   5.006
+##   4: 4.6 3.1 1.5 0.2    setosa   5.006
+##   5: 5.0 3.6 1.4 0.2    setosa   5.006
+##  ---                                  
+## 146: 6.7 3.0 5.2 2.3 virginica      NA
+## 147: 6.3 2.5 5.0 1.9 virginica      NA
+## 148: 6.5 3.0 5.2 2.0 virginica      NA
+## 149: 6.2 3.4 5.4 2.3 virginica      NA
+## 150: 5.9 3.0 5.1 1.8 virginica      NA
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># remove the `_new` suffix</span>
+setnames<span class="p">(</span>temp<span class="p">,</span> <span class="kp">names</span><span class="p">(</span>temp<span class="p">),</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&#39;\\_new$&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="kp">names</span><span class="p">(</span>temp<span class="p">)))</span> <span class="c1"># `^` means begin with, `$` means end with.</span>
+temp<span class="p">[</span><span class="m">1</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># remove the columns end with `_SL`</span>
+temp<span class="p">[,</span> <span class="kp">names</span><span class="p">(</span>temp<span class="p">)[</span><span class="kp">grepl</span><span class="p">(</span><span class="s">&#39;\\_SL$&#39;</span><span class="p">,</span> <span class="kp">names</span><span class="p">(</span>temp<span class="p">))]</span> <span class="o">:=</span> <span class="kc">NULL</span><span class="p">]</span>
+temp<span class="p">[</span><span class="m">1</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species
+## 1: 5.1 3.5 1.4 0.2  setosa
+</pre></div>
+
+
+<h3>Keys</h3>
+<ul>
+<li>Set keys on columns, <code>setkey(DT, A)</code>, then use <code>DT['b']</code> to filter the rows where <code>A == 'b'</code>. (effectively filter). To data.frame, it turns to error.</li>
+<li>Two-column key <code>setkey(DT, A, B)</code>. The second column is sorted within each group of the first column</li>
+<li><code>by = .EACHI</code>, allows to group by each subset of knows groups in <code>i</code>. A key needs to be set prior to use <code>by = .EACHI</code>. </li>
+</ul>
+<div class="highlight"><pre><span></span>setkey<span class="p">(</span>iris<span class="p">,</span> Species<span class="p">)</span>
+<span class="kp">head</span><span class="p">(</span>iris<span class="p">[</span><span class="s">&#39;setosa&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
+## 2: 4.9 3.0 1.4 0.2  setosa   5.006
+## 3: 4.7 3.2 1.3 0.2  setosa   5.006
+## 4: 4.6 3.1 1.5 0.2  setosa   5.006
+## 5: 5.0 3.6 1.4 0.2  setosa   5.006
+## 6: 5.4 3.9 1.7 0.4  setosa   5.006
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>iris<span class="p">[</span><span class="s">&#39;setosa&#39;</span><span class="p">,</span> mult <span class="o">=</span> <span class="s">&#39;first&#39;</span><span class="p">]</span> <span class="c1"># &#39;last&#39; returns the last row</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># nomatch</span>
+iris<span class="p">[</span><span class="s">&#39;otherSpecies&#39;</span><span class="p">,</span> nomatch <span class="o">=</span> <span class="kc">NA</span><span class="p">]</span> <span class="c1"># default</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    SL SW PL PW      Species mean_SL
+## 1: NA NA NA NA otherSpecies      NA
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>iris<span class="p">[</span><span class="s">&#39;otherSpecies&#39;</span><span class="p">,</span> nomatch <span class="o">=</span> <span class="m">0</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Empty data.table (0 rows) of 6 cols: SL,SW,PL,PW,Species,mean_SL
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># set two-column key. The second column is sorted within each group of the first column</span>
+setkey<span class="p">(</span>iris<span class="p">,</span> Species<span class="p">,</span> SW<span class="p">)</span>
+<span class="kp">head</span><span class="p">(</span>iris<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
+## 1: 4.5 2.3 1.3 0.3  setosa   5.006
+## 2: 4.4 2.9 1.4 0.2  setosa   5.006
+## 3: 4.9 3.0 1.4 0.2  setosa   5.006
+## 4: 4.8 3.0 1.4 0.1  setosa   5.006
+## 5: 4.3 3.0 1.1 0.1  setosa   5.006
+## 6: 5.0 3.0 1.6 0.2  setosa   5.006
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>iris<span class="p">[</span><span class="m">.</span><span class="p">(</span><span class="s">&#39;setosa&#39;</span><span class="p">,</span> <span class="m">3</span><span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL SW  PL  PW Species mean_SL
+## 1: 4.9  3 1.4 0.2  setosa   5.006
+## 2: 4.8  3 1.4 0.1  setosa   5.006
+## 3: 4.3  3 1.1 0.1  setosa   5.006
+## 4: 5.0  3 1.6 0.2  setosa   5.006
+## 5: 4.4  3 1.3 0.2  setosa   5.006
+## 6: 4.8  3 1.4 0.3  setosa   5.006
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># first and last row of the `setosa` group</span>
+iris<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;setosa&#39;</span><span class="p">),</span> <span class="m">.</span>SD<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">.</span>N<span class="p">)],</span> by<span class="o">=</span><span class="m">.</span>EACHI<span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    Species  SL  SW  PL  PW mean_SL
+## 1:  setosa 4.5 2.3 1.3 0.3   5.006
+## 2:  setosa 5.7 4.4 1.5 0.4   5.006
+</pre></div>
+
+
+<h3>Rolling joins</h3>
+<ul>
+<li>The value we are looking for falls in a gap in the ordered series in a key. See more details <a href="https://www.r-bloggers.com/understanding-data-table-rolling-joins/">here</a>. It's often used in time series data.</li>
+</ul>
+<div class="highlight"><pre><span></span>DT <span class="o">&lt;-</span> data.table<span class="p">(</span>A<span class="o">=</span> <span class="kc">letters</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">],</span> B<span class="o">=</span><span class="m">1</span><span class="o">:</span><span class="m">6</span><span class="p">,</span> C<span class="o">=</span><span class="m">6</span><span class="o">:</span><span class="m">1</span><span class="p">)</span>
+setkey<span class="p">(</span>DT<span class="p">,</span> A<span class="p">,</span> B<span class="p">)</span>
+DT
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    A B C
+## 1: a 1 6
+## 2: a 4 3
+## 3: b 2 5
+## 4: b 5 2
+## 5: c 3 4
+## 6: c 6 1
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>DT<span class="p">[</span><span class="m">.</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="m">4</span><span class="p">)]</span> <span class="c1"># C is NA</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    A B  C
+## 1: b 4 NA
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>DT<span class="p">[</span><span class="m">.</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="m">4</span><span class="p">),</span> roll <span class="o">=</span> <span class="kc">TRUE</span><span class="p">]</span> <span class="c1"># C is 5</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    A B C
+## 1: b 4 5
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>DT<span class="p">[</span><span class="m">.</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="m">4</span><span class="p">),</span> roll <span class="o">=</span> <span class="s">&#39;nearest&#39;</span><span class="p">]</span> <span class="c1"># C is 2</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    A B C
+## 1: b 4 2
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>DT<span class="p">[</span><span class="m">.</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="m">4</span><span class="p">),</span> roll <span class="o">=</span> <span class="o">+</span><span class="kc">Inf</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    A B C
+## 1: b 4 5
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>DT<span class="p">[</span><span class="m">.</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="m">4</span><span class="p">),</span> roll <span class="o">=</span> <span class="o">-</span><span class="kc">Inf</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    A B C
+## 1: b 4 2
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>DT<span class="p">[</span><span class="m">.</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="m">4</span><span class="p">),</span> roll <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> rollends <span class="o">=</span> <span class="kc">FALSE</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    A B C
+## 1: b 4 5
+</pre></div>
+
+
+<h2>R build-in data.frame</h2>
+<h3>Overview of data.frame</h3>
+<div class="highlight"><pre><span></span>data<span class="p">(</span><span class="s">&#39;iris&#39;</span><span class="p">)</span>
+<span class="c1"># change names</span>
+<span class="kp">names</span><span class="p">(</span>iris<span class="p">)</span> <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;SL&#39;</span><span class="p">,</span> <span class="s">&#39;SW&#39;</span><span class="p">,</span> <span class="s">&#39;PL&#39;</span><span class="p">,</span> <span class="s">&#39;PW&#39;</span><span class="p">,</span> <span class="s">&#39;Species&#39;</span><span class="p">)</span>
+str<span class="p">(</span>iris<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## &#39;data.frame&#39;:    150 obs. of  5 variables:
+##  $ SL     : num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ SW     : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ PL     : num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ PW     : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species: Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+</pre></div>
+
+
+<h3>Subset a data.frame</h3>
+<ul>
+<li>Dollar sign <code>$</code>. <code>iris$SL</code> returns a vector, so is <code>iris[, 'SL']</code>.</li>
+<li><code>iris['SL']</code> returns one column as data.frame</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># select two columns and return data.frame</span>
+iris<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;SL&#39;</span><span class="p">,</span> <span class="s">&#39;SW&#39;</span><span class="p">)][</span><span class="m">1</span><span class="p">,]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    SL  SW
+## 1 5.1 3.5
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># use subset()</span>
+<span class="kp">subset</span><span class="p">(</span>iris<span class="p">,</span> select <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;SL&#39;</span><span class="p">,</span> <span class="s">&#39;PL&#39;</span><span class="p">))[</span><span class="m">1</span><span class="p">,]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    SL  PL
+## 1 5.1 1.4
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># use index along with relational operators</span>
+iris<span class="p">[</span>iris<span class="o">$</span>SL <span class="o">&gt;</span> <span class="m">7</span> <span class="o">&amp;</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>iris<span class="o">$</span>Species<span class="p">),</span> <span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">][</span><span class="m">1</span><span class="p">,</span> <span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##      SL SW  PL
+## 103 7.1  3 5.9
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># use `-` to delete columns by column index. Both with or without a comma work </span>
+iris<span class="p">[</span><span class="m">-5</span><span class="p">][</span><span class="m">1</span><span class="p">,</span> <span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    SL  SW  PL  PW
+## 1 5.1 3.5 1.4 0.2
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>iris<span class="p">[,</span> <span class="m">-5</span><span class="p">][</span><span class="m">1</span><span class="p">,</span> <span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    SL  SW  PL  PW
+## 1 5.1 3.5 1.4 0.2
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># other expressions to delete columns</span>
+<span class="c1"># delCols &lt;- &#39;Species&#39;</span>
+<span class="c1"># iris[! names(iris) %in% delCols][1, ]</span>
+<span class="c1"># iris[, ! names(iris) %in% delCols][1, ]</span>
+<span class="c1"># iris[ -which(names(iris) %in% delCols)][1, ]</span>
+<span class="c1"># iris[, -which(names(iris) %in% delCols)][1, ]</span>
+</pre></div>
+
+
+<h3>Add a column</h3>
+<div class="highlight"><pre><span></span>iris<span class="o">$</span>is_setosa <span class="o">&lt;-</span> iris<span class="o">$</span>Species <span class="o">==</span> <span class="s">&#39;setosa&#39;</span>
+iris<span class="p">[</span><span class="m">1</span><span class="p">,</span> <span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    SL  SW  PL  PW Species is_setosa
+## 1 5.1 3.5 1.4 0.2  setosa      TRUE
+</pre></div>
+
+
+<h3>Combine R object by rows or columns.</h3>
+<div class="highlight"><pre><span></span><span class="c1"># combine by columns. Note the short item is recycled to match the length of large columns.</span>
+<span class="kp">cbind</span><span class="p">(</span>iris<span class="p">,</span> z<span class="o">=</span><span class="m">1</span><span class="p">)[</span><span class="m">1</span><span class="p">,</span> <span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    SL  SW  PL  PW Species is_setosa z
+## 1 5.1 3.5 1.4 0.2  setosa      TRUE 1
+</pre></div>
+
+
+<h3>Sort data.frame by columns</h3>
+<ul>
+<li>Use function <code>order</code>. The return of <code>order()</code> are the indices of the ordered vector.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># an example for order. the return of order() are the indices of the ordered vector</span>
+<span class="c1"># as below, in order(s), 1 is the index of first number(1) of ordered vector(1 2 4 5 7) in original vector. </span>
+<span class="c1"># 5 is the index of second number(2) of ordered vector(1 2 4 5 7) in original vector, which is 5th.</span>
+s <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">5</span><span class="p">,</span><span class="m">7</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">2</span><span class="p">)</span>
+<span class="kp">sort</span><span class="p">(</span>s<span class="p">)</span>     <span class="c1"># [1] 1 2 4 5 7</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## [1] 1 2 4 5 7
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kp">order</span><span class="p">(</span>s<span class="p">)</span>    <span class="c1"># [1] 1 5 4 2 3</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## [1] 1 5 4 2 3
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>s<span class="p">[</span><span class="kp">order</span><span class="p">(</span>s<span class="p">)]</span> <span class="c1"># [1] 1 5 4 2 3</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## [1] 1 2 4 5 7
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># sort data.frame by multiple columns</span>
+<span class="kp">head</span><span class="p">(</span>iris<span class="p">[</span><span class="kp">order</span><span class="p">(</span>iris<span class="o">$</span>SL<span class="p">,</span> <span class="o">-</span>iris<span class="o">$</span>SW<span class="p">),</span> <span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species is_setosa
+## 14 4.3 3.0 1.1 0.1  setosa      TRUE
+## 43 4.4 3.2 1.3 0.2  setosa      TRUE
+## 39 4.4 3.0 1.3 0.2  setosa      TRUE
+## 9  4.4 2.9 1.4 0.2  setosa      TRUE
+## 42 4.5 2.3 1.3 0.3  setosa      TRUE
+## 23 4.6 3.6 1.0 0.2  setosa      TRUE
+</pre></div>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="www.linkedin.com/in/xiang-cao"><i class="fa fa-linkedin-square fa-lg"></i> Linkedin</a></li>
+                <li class="list-group-item"><a href="https://github.com/byrony"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="https://www.linkedin.com/in/xiang-cao" target="_blank">
+                Linkedin
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/byrony" target="_blank">
+                Github
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 Vincent
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://byrony.github.io/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://byrony.github.io/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="https://byrony.github.io/theme/js/respond.min.js"></script>
+
+
+</body>
+</html>
