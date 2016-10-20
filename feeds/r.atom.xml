@@ -317,7 +317,7 @@ iris&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt
 &lt;li&gt;Compute on columns. &lt;code&gt;iris[, .(mean_SL=mean(SL), mean_SW=mean(SW)]&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;The generated multiple columns all return the same length. The length of short item get recycled to match the length of large columns. &lt;code&gt;iris[, .(SL, mean_SL=mean(SL))&lt;/code&gt;. For all rows, they have the same &lt;code&gt;mean_SL&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Throw anything into &lt;code&gt;j&lt;/code&gt;. &lt;code&gt;iris[, plot(SL, SW)]&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Subsetting data.tables. &lt;code&gt;DT[1:3, .(2:4)]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Subsetting data.tables. &lt;code&gt;DT[1:3, .(2:4), with=False]&lt;/code&gt;. Check the argument with, which determines whether the column index should be evaluated within the frame of data.table.When with=FALSE j is a character vector of column names or a numeric vector of column positions to select.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# select two columns together with a generated column&lt;/span&gt;
 iris&lt;span class="p"&gt;[,&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;SL&lt;span class="p"&gt;,&lt;/span&gt; SW&lt;span class="p"&gt;,&lt;/span&gt; area_S &lt;span class="o"&gt;=&lt;/span&gt; SL&lt;span class="o"&gt;*&lt;/span&gt;SW&lt;span class="p"&gt;)]&lt;/span&gt;
@@ -545,11 +545,11 @@ temp
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##     SL  SW  PL  PW Species mean_SL
 ## 1: 5.1 3.5 1.4 0.2  setosa   5.006
-## 2: 4.9 3.0 1.4 0.2  setosa      NA
-## 3: 4.7 3.2 1.3 0.2  setosa   5.006
+## 2: 4.9 3.0 1.4 0.2  setosa   5.006
+## 3: 4.7 3.2 1.3 0.2  setosa      NA
 ## 4: 4.6 3.1 1.5 0.2  setosa      NA
-## 5: 5.0 3.6 1.4 0.2  setosa   5.006
-## 6: 5.4 3.9 1.7 0.4  setosa      NA
+## 5: 5.0 3.6 1.4 0.2  setosa      NA
+## 6: 5.4 3.9 1.7 0.4  setosa   5.006
 &lt;/pre&gt;&lt;/div&gt;
 
 
