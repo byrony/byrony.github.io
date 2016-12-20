@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>Which Asian food is more welcome in Seattle? - Pieces of Data Science</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="https://byrony.github.io/which-asian-food-is-more-welcome-in-seattle.html">
+
+        <meta name="author" content="Vincent Cao" />
+        <meta name="keywords" content="Web Scraping,Data Analysis" />
+        <meta name="description" content="I moved to Seattle three months ago and found there were many Asian food restaurants here. Some of the Chinese food is really authetic. However, when I was enjoying the food in some Chinese restaurants I found many customers are Asian people, which indicates Americans don&#39;t like Chinese food ..." />
+
+        <meta property="og:site_name" content="Pieces of Data Science" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Which Asian food is more welcome in Seattle?"/>
+        <meta property="og:url" content="https://byrony.github.io/which-asian-food-is-more-welcome-in-seattle.html"/>
+        <meta property="og:description" content="I moved to Seattle three months ago and found there were many Asian food restaurants here. Some of the Chinese food is really authetic. However, when I was enjoying the food in some Chinese restaurants I found many customers are Asian people, which indicates Americans don&#39;t like Chinese food ..."/>
+        <meta property="article:published_time" content="2016-12-19" />
+            <meta property="article:section" content="Mini Project" />
+            <meta property="article:tag" content="Web Scraping" />
+            <meta property="article:tag" content="Data Analysis" />
+            <meta property="article:author" content="Vincent Cao" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://byrony.github.io/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://byrony.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://byrony.github.io/theme/css/pygments/default.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://byrony.github.io/theme/css/style.css" type="text/css"/>
+
+        <link href="https://byrony.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Pieces of Data Science ATOM Feed"/>
+
+
+
+        <link href="https://byrony.github.io/feeds/mini-project.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Pieces of Data Science Mini Project ATOM Feed"/>
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://byrony.github.io/" class="navbar-brand">
+Pieces of Data Science            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="https://byrony.github.io/category/about-me.html">About me</a>
+                        </li>
+                        <li >
+                            <a href="https://byrony.github.io/category/data-analysis.html">Data analysis</a>
+                        </li>
+                        <li class="active">
+                            <a href="https://byrony.github.io/category/mini-project.html">Mini project</a>
+                        </li>
+                        <li >
+                            <a href="https://byrony.github.io/category/r.html">R</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="https://byrony.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="https://byrony.github.io/which-asian-food-is-more-welcome-in-seattle.html"
+                       rel="bookmark"
+                       title="Permalink to Which Asian food is more welcome in Seattle?">
+                        Which Asian food is more welcome in Seattle?
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-12-19T00:00:00-05:00"> Mon 19 December 2016</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="https://byrony.github.io/tag/web-scraping.html">Web Scraping</a>
+        /
+	<a href="https://byrony.github.io/tag/data-analysis.html">Data Analysis</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p><img alt="" src="./figure/yelp.png" />
+<br><br></p>
+<p>I moved to Seattle three months ago and found there were many Asian food restaurants here. Some of the Chinese food is really authetic. However, when I was enjoying the food in some Chinese restaurants I found many customers are Asian people, which indicates Americans don't like Chinese food very much. To analysis how popular and how welcome Chinese food is in Seattle, I scraped the information of restuarants in Seattle for different styles of Asian food from Yelp. </p>
+<h2>1. Scraping Data From Yelp</h2>
+<p>As the image shows below, the scraped information of a restaurant includes Name, Price(dollor sign), Review_count, Star(rating from 0 to 5 stars), Category(the type of food) and Address. </p>
+<p><center><img src="./figure/biz_block.png"></center></p>
+<p>I wrote Python code to scrape data from Yelp. You can either choose store the data into MySQL database or csv file. The code can also be found at my <a href="https://github.com/byrony/Web_Scraping">github</a>.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Thu Dec 15 15:38:11 2016</span>
+
+<span class="sd">@author: Vincent </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">pymysql</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">class</span> <span class="nc">YelpSeattleRestaurant</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The code scrapes the restaurant information of Name, Price, Category, Star and</span>
+<span class="sd">    Review count in Seattle areas. You can use it to scrape other areas but the url</span>
+<span class="sd">    need be modified correctly.</span>
+
+<span class="sd">    Params: url: the web page link of restaurant list.</span>
+<span class="sd">            num_restaurant: the number of restaurant. Since Yelp has 10 restaurants</span>
+<span class="sd">            per page, the code scrapes the largest multiple of 10 less than num_restaurant</span>
+
+<span class="sd">    Note: MySQL database need be created before executing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">num_restaurant</span><span class="p">,</span> <span class="n">style</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">UA</span> <span class="o">=</span> <span class="s1">&#39;Chrome/54 (Macintosh; Intel Mac OS X 10.11; rv:32.0) Gecko/20100101 Firefox/32.0&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_num</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_restaurant</span><span class="p">,</span> <span class="mi">10</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="n">style</span>
+
+    <span class="k">def</span> <span class="nf">scrape_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">soup</span><span class="p">):</span>
+        <span class="c1"># seach a outer tag and a inner tag</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">name_div</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;h3&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;search-result-title&#39;</span><span class="p">})</span>
+        <span class="n">name_a</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;biz-name js-analytics-click&#39;</span><span class="p">})</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">name_a</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="n">d</span><span class="o">.</span><span class="n">string</span>
+        <span class="k">return</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">scrape_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">soup</span><span class="p">):</span>
+        <span class="n">price</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">price_</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;business-attribute price-range&#39;</span><span class="p">})</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">price_</span><span class="p">:</span>
+            <span class="n">price</span> <span class="o">=</span> <span class="n">price</span> <span class="o">+</span> <span class="n">p</span><span class="o">.</span><span class="n">string</span>
+        <span class="k">return</span> <span class="n">price</span>
+
+    <span class="k">def</span> <span class="nf">scrape_category</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">soup</span><span class="p">):</span>
+        <span class="n">category</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">category_</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;category-str-list&#39;</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">category_</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">category_</span><span class="p">:</span>
+                <span class="c1">## .get_text() returns the same as .text; ## replace both &#39;\n&#39; and space with &#39;&#39;</span>
+                <span class="n">category</span> <span class="o">=</span> <span class="n">category</span> <span class="o">+</span> <span class="n">c</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">category</span>
+
+    <span class="k">def</span> <span class="nf">scrape_star</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">soup</span><span class="p">):</span>
+        <span class="n">star</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">star_</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;i-stars i-stars*&#39;</span><span class="p">)})</span>
+        <span class="k">if</span> <span class="n">star_</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">star_</span><span class="p">:</span>
+                <span class="n">star_str</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">star</span> <span class="o">=</span> <span class="n">star</span> <span class="o">+</span> <span class="n">star_str</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">star</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">star</span>
+
+    <span class="k">def</span> <span class="nf">scrape_review</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">soup</span><span class="p">):</span>
+        <span class="n">review_count</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">reviews</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;review-count rating-qualifier&#39;</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">reviews</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reviews</span><span class="p">:</span>
+                <span class="n">review_count</span> <span class="o">=</span> <span class="n">review_count</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">review_count</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">review_count</span>
+
+    <span class="k">def</span> <span class="nf">scrape_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">soup</span><span class="p">):</span>
+        <span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">address_</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;address&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">address_</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">address_</span><span class="p">:</span>
+                <span class="n">address</span> <span class="o">=</span> <span class="n">address</span> <span class="o">+</span> <span class="n">a</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">address</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">address</span>
+
+    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">review_count</span><span class="p">,</span> <span class="n">star</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">pymysql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+                               <span class="n">user</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span>
+                               <span class="n">passwd</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span>
+                               <span class="n">db</span><span class="o">=</span><span class="s1">&#39;Yelp_scrape&#39;</span><span class="p">,</span>
+                               <span class="n">use_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                               <span class="n">charset</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+
+        <span class="c1"># create a cursor object in order to execute queries</span>
+        <span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="c1"># create a new record</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="s1">&#39;Insert into Restaurant (Name, Price, Review_count, &#39;</span> \
+              <span class="s1">&#39;Star, Category, Address) Values (</span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">)&#39;</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">review_count</span><span class="p">,</span> <span class="n">star</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">address</span><span class="p">))</span>
+        <span class="c1"># commit changes</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">write_mysql</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_num</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Begin to scrape: Page </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">url_curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">+</span> <span class="n">page</span> <span class="o">+</span> <span class="s1">&#39;&amp;cflt=&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_curr</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">UA</span><span class="p">})</span>
+            <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;lxml&#39;</span><span class="p">)</span>
+
+            <span class="n">restaurants_div</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;biz-listing-large&#39;</span><span class="p">})</span>
+            <span class="k">for</span> <span class="n">restaurant</span> <span class="ow">in</span> <span class="n">restaurants_div</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_name</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_price</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="n">category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_category</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="n">star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_star</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="n">review_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_review</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_address</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="c1"># for each restaurant, store its information in MySQL database</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">review_count</span><span class="p">,</span> <span class="n">star</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="c1"># print(&#39;Failed or error&#39;)</span>
+                    <span class="k">pass</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished scraping: Page </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">write_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># if the file doesn&#39;t exist, create a new file</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;yelp_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Price&#39;</span><span class="p">,</span> <span class="s1">&#39;Review_count&#39;</span><span class="p">,</span> <span class="s1">&#39;Star&#39;</span><span class="p">,</span> <span class="s1">&#39;Category&#39;</span><span class="p">,</span> <span class="s1">&#39;Address&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c1"># check each restaurant, append its info into csv file.</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_num</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Begin to scrape: Page </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">url_curr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">+</span> <span class="n">page</span> <span class="o">+</span> <span class="s1">&#39;&amp;cflt=&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">style</span>
+            <span class="n">html</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_curr</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">UA</span><span class="p">})</span>
+            <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="s1">&#39;lxml&#39;</span><span class="p">)</span>
+
+            <span class="n">restaurants_div</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;biz-listing-large&#39;</span><span class="p">})</span>
+            <span class="k">for</span> <span class="n">restaurant</span> <span class="ow">in</span> <span class="n">restaurants_div</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_name</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="n">price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_price</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="n">category</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_category</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="n">star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_star</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="n">review_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_review</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_address</span><span class="p">(</span><span class="n">restaurant</span><span class="p">)</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> <span class="c1"># note the mode is &#39;a&#39;, append</span>
+                    <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="n">name</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">review_count</span><span class="p">,</span> <span class="n">star</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">address</span><span class="p">])</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finished scraping: Page </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://www.yelp.com/search?find_desc=restaurants&amp;find_loc=Seattle,+WA&amp;start=&#39;</span>
+<span class="n">num_restaurant</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">styles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;chinese&#39;</span><span class="p">,</span> <span class="s1">&#39;japanese&#39;</span><span class="p">,</span> <span class="s1">&#39;thai&#39;</span><span class="p">,</span> <span class="s1">&#39;vietnamese&#39;</span><span class="p">,</span> <span class="s1">&#39;india&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;American (New)&#39;</span><span class="p">,</span> <span class="s1">&#39;American (Traditional)&#39;</span><span class="p">]</span>
+<span class="n">Scraper</span> <span class="o">=</span> <span class="n">YelpSeattleRestaurant</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">num_restaurant</span><span class="p">,</span> <span class="s1">&#39;vietnamese&#39;</span><span class="p">)</span>
+<span class="n">Scraper</span><span class="o">.</span><span class="n">write_csv</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+<h2>2. Visualization in R</h2>
+<p>We have scraped the information of restaurants using Python and stored them into seperate .csv files, now we simply use R(ggplot2) to visualize the relation between different variables. </p>
+<ul>
+<li>Read and combine data from seperate files. Create a new column to indicate the style(country) of the restaurant. Note actually one restaurant may have more than one style, and even some of them have overlapping, for example one restaurant may be labeled as <code>chinese</code> and <code>thai</code> at the same time, we just keep these overlappings and allow one restaurant appears in multiple categories.</li>
+</ul>
+<div class="highlight"><pre><span></span>styles <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;chinese&#39;</span><span class="p">,</span> <span class="s">&#39;japanese&#39;</span><span class="p">,</span> <span class="s">&#39;thai&#39;</span><span class="p">,</span> <span class="s">&#39;vietnamese&#39;</span><span class="p">)</span>
+read_data <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>styles<span class="p">){</span>
+  data <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">()</span>
+  <span class="kr">for</span><span class="p">(</span>s <span class="kr">in</span> styles<span class="p">){</span>
+    file <span class="o">=</span> <span class="kp">paste0</span><span class="p">(</span><span class="s">&#39;yelp_&#39;</span><span class="p">,</span> s<span class="p">,</span> <span class="s">&#39;.csv&#39;</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+    temp <span class="o">=</span> read.csv<span class="p">(</span><span class="kp">file</span><span class="p">,</span> header <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+    temp<span class="o">$</span>Style <span class="o">&lt;-</span> s
+    data <span class="o">&lt;-</span> <span class="kp">rbind</span><span class="p">(</span>data<span class="p">,</span> temp<span class="p">)</span>
+  <span class="p">}</span>
+  data<span class="o">$</span>Style <span class="o">&lt;-</span> <span class="kp">factor</span><span class="p">(</span>data<span class="o">$</span>Style<span class="p">)</span>
+  data <span class="o">&lt;-</span> data<span class="p">[</span><span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>data<span class="o">$</span>Star<span class="p">),</span> <span class="p">]</span>
+  <span class="kr">return</span><span class="p">(</span>data<span class="p">)</span>
+<span class="p">}</span>
+data <span class="o">&lt;-</span> read_data<span class="p">(</span>styles<span class="p">)</span>
+</pre></div>
+
+
+<h3>Question 1: For Asian foods, which one is expensive or cheap?</h3>
+<p>For the low-end restaurant market, Vietnamese style has higher market share than its overall ratio. Chinese food performs neither better nor worse. Chinese restaurants has a large amount but most of them are less than 2 dollar signs. What surprised me is that the high-end market is totally dominated by Japanese food. Except one Vieranamese food restaurant, all the ones greater than 3 dollar signs are Japanese.  </p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+
+data <span class="o">%&gt;%</span>
+  group_by_<span class="p">(</span><span class="s">&#39;Style&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  summarize<span class="p">(</span>Num_restaurant <span class="o">=</span> n<span class="p">(),</span> Ratio_restaurant <span class="o">=</span> n<span class="p">()</span><span class="o">/</span><span class="kp">nrow</span><span class="p">(</span>data<span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 4 &lt;U+00D7&gt; 3
+##        Style Num_restaurant Ratio_restaurant
+##       &lt;fctr&gt;          &lt;int&gt;            &lt;dbl&gt;
+## 1    chinese            427        0.2883187
+## 2   japanese            498        0.3362593
+## 3       thai            265        0.1789332
+## 4 vietnamese            291        0.1964889
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>p0 <span class="o">&lt;-</span> ggplot<span class="p">(</span>data<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Price<span class="p">,</span> fill<span class="o">=</span>Style<span class="p">))</span> <span class="o">+</span> geom_bar<span class="p">(</span>position<span class="o">=</span><span class="s">&#39;fill&#39;</span><span class="p">)</span> <span class="o">+</span> 
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&#39;Percentage of Restaurants for Each Price&#39;</span><span class="p">)</span>
+p0
+</pre></div>
+
+
+<p><img alt="plot of chunk unnamed-chunk-2" src="https://byrony.github.io/figure/Yelp_EDA2-unnamed-chunk-2-1.png" /></p>
+<h3>Question 2: Which Asian food are more is more welcome (higher everage rating star and more reviews)?</h3>
+<ul>
+<li>It's very astounding that Thai food and Vietnamese has the largest average number of reviews and rating stars. </li>
+<li>Chinese food has the lowest rating star. Although the number of Chinese restaurant is large, but the standard deviation of rating is normal, consistent with the other foods. </li>
+<li>We could infer Chinese food indeed has a lower acceptance in Seattle. <strong>I guesss it would be the great gap of food culture between East and West.</strong> I will do a future research on review using NLP techniques to reveal why Chinese food has such a lowe score and whether there is biased/underestimated evaluation on Chinese food.</li>
+</ul>
+<div class="highlight"><pre><span></span>data <span class="o">%&gt;%</span> 
+  group_by_<span class="p">(</span><span class="s">&#39;Style&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  summarize<span class="p">(</span>avg_num_Review <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>Review_count<span class="p">),</span> avg_num_Star <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>Star<span class="p">),</span> std_Star<span class="o">=</span> sd<span class="p">(</span>Star<span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 4 &lt;U+00D7&gt; 4
+##        Style avg_num_Review avg_num_Star  std_Star
+##       &lt;fctr&gt;          &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt;
+## 1    chinese       124.1967     3.447307 0.5744244
+## 2   japanese       132.0301     3.653614 0.5753111
+## 3       thai       156.8755     3.675472 0.5403792
+## 4 vietnamese       119.3333     3.704467 0.5830484
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>p1 <span class="o">&lt;-</span> ggplot<span class="p">(</span>data<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Star<span class="p">,</span> fill<span class="o">=</span>Style<span class="p">))</span> <span class="o">+</span> geom_bar<span class="p">(</span>position<span class="o">=</span><span class="s">&#39;fill&#39;</span><span class="p">)</span> <span class="o">+</span> 
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&#39;Percentage of Restaurants for Each Star&#39;</span><span class="p">)</span>
+p2 <span class="o">&lt;-</span> ggplot<span class="p">(</span>data<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span><span class="kp">log</span><span class="p">(</span>Review_count<span class="m">+1</span><span class="p">),</span> fill<span class="o">=</span>Style<span class="p">))</span> <span class="o">+</span> geom_density<span class="p">(</span>alpha<span class="o">=</span><span class="m">0.5</span><span class="p">)</span> <span class="o">+</span> 
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&#39;Density of log(Review_count + 1)&#39;</span><span class="p">)</span>
+p1<span class="p">;</span> p2
+</pre></div>
+
+
+<p><img alt="plot of chunk unnamed-chunk-3" src="https://byrony.github.io/figure/Yelp_EDA2-unnamed-chunk-3-1.png" /><img alt="plot of chunk unnamed-chunk-3" src="https://byrony.github.io/figure/Yelp_EDA2-unnamed-chunk-3-2.png" /></p>
+<h3>Question 3: The overall visualization and conclusion.</h3>
+<p>The size of the point indicates the amount of the reviews.(I took the square root so that it's easy to compare). Each color indicates one type of food. From the plot we can see:</p>
+<ul>
+<li>Most restaurant locate in the region of <code>$-$$</code> and <code>3.5 Star - 4 Star</code>. It looks Thai food and Vietnamese food are more welcome in this region, which is consistent with prior analysis.</li>
+<li>Japanese food dominates the hign-end market. Only several high-end resturants with expensive menu and highest rating could impressed customers that Japanese food is excellent.</li>
+<li>Chinese food is cheap and low star rated, also doesn't receive much attention. </li>
+</ul>
+<p>Intuitive Conclusion:</p>
+<ul>
+<li>Japanese food is expensive and highly rated.</li>
+<li>Thai and Vietnamese food is cheap and highly rated.</li>
+<li>Chinese food is cheap and lowly rated.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># Price vs. Star, use Review_count as point size.</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">2016</span><span class="p">)</span>
+p3 <span class="o">&lt;-</span> ggplot<span class="p">(</span>data<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Star<span class="p">,</span> y<span class="o">=</span>Price<span class="p">,</span> col<span class="o">=</span>Style<span class="p">))</span> <span class="o">+</span> 
+  geom_point<span class="p">(</span>position <span class="o">=</span> <span class="s">&#39;jitter&#39;</span><span class="p">,</span> aes<span class="p">(</span>size<span class="o">=</span><span class="kp">sqrt</span><span class="p">(</span>Review_count<span class="p">)),</span> alpha<span class="o">=</span><span class="m">0.4</span><span class="p">)</span> <span class="o">+</span> 
+  facet_wrap<span class="p">(</span><span class="o">~</span>Style<span class="p">,</span> nrow<span class="o">=</span><span class="m">2</span><span class="p">)</span> <span class="o">+</span> 
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&#39;Price vs. Star&#39;</span><span class="p">)</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">2016</span><span class="p">)</span>
+p4 <span class="o">&lt;-</span> ggplot<span class="p">(</span>data<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Star<span class="p">,</span> y<span class="o">=</span>Price<span class="p">,</span> col<span class="o">=</span>Style<span class="p">))</span> <span class="o">+</span> 
+  geom_point<span class="p">(</span>position <span class="o">=</span> <span class="s">&#39;jitter&#39;</span><span class="p">,</span> aes<span class="p">(</span>size<span class="o">=</span><span class="kp">sqrt</span><span class="p">(</span>Review_count<span class="p">)),</span> alpha<span class="o">=</span><span class="m">0.3</span><span class="p">)</span> <span class="o">+</span> 
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&#39;Price vs. Star in One Figure&#39;</span><span class="p">)</span>
+p3<span class="p">;</span> p4
+</pre></div>
+
+
+<p><img alt="plot of chunk unnamed-chunk-4" src="https://byrony.github.io/figure/Yelp_EDA2-unnamed-chunk-4-1.png" /><img alt="plot of chunk unnamed-chunk-4" src="https://byrony.github.io/figure/Yelp_EDA2-unnamed-chunk-4-2.png" /></p>
+            </div>
+            <!-- /.entry-content -->
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'byrony'; // required: replace example with your forum shortname
+
+                    var disqus_identifier = 'which-asian-food-is-more-welcome-in-seattle';
+                var disqus_url = 'https://byrony.github.io/which-asian-food-is-more-welcome-in-seattle.html';
+
+            var disqus_config = function () {
+                this.language = "en";
+            };
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="https://www.linkedin.com/in/xiang-cao"><i class="fa fa-linkedin-square fa-lg"></i> Linkedin</a></li>
+                <li class="list-group-item"><a href="https://github.com/byrony"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="https://www.linkedin.com/in/xiang-cao" target="_blank">
+                Linkedin
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/byrony" target="_blank">
+                Github
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 Vincent
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://byrony.github.io/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://byrony.github.io/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="https://byrony.github.io/theme/js/respond.min.js"></script>
+
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'byrony'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+
+</body>
+</html>
