@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>Terrorist Attacks in China From 1970-2015 - Pieces of Data Science</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="/terrorist-attacks-in-china-from-1970-2015.html">
+
+        <meta name="author" content="Vincent Cao" />
+        <meta name="keywords" content="Map,Data Analysis" />
+        <meta name="description" content="Terrorist attack is a national problem worldwide. Fortunately according to this dataset, from 1970-2015 (actully 1989-2015), there are only 242 terrorist attacks in China, in which 2917 killed or wounded. Also, it&#39;s astounding that 128 out of the all 242 attacks were happend in Xinjing (Sinkiang, Uygur). Within this ..." />
+
+        <meta property="og:site_name" content="Pieces of Data Science" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Terrorist Attacks in China From 1970-2015"/>
+        <meta property="og:url" content="/terrorist-attacks-in-china-from-1970-2015.html"/>
+        <meta property="og:description" content="Terrorist attack is a national problem worldwide. Fortunately according to this dataset, from 1970-2015 (actully 1989-2015), there are only 242 terrorist attacks in China, in which 2917 killed or wounded. Also, it&#39;s astounding that 128 out of the all 242 attacks were happend in Xinjing (Sinkiang, Uygur). Within this ..."/>
+        <meta property="article:published_time" content="2017-01-03" />
+            <meta property="article:section" content="Mini Project" />
+            <meta property="article:tag" content="Map" />
+            <meta property="article:tag" content="Data Analysis" />
+            <meta property="article:author" content="Vincent Cao" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/default.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+Pieces of Data Science            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="/category/about-me.html">About me</a>
+                        </li>
+                        <li >
+                            <a href="/category/data-analysis.html">Data analysis</a>
+                        </li>
+                        <li class="active">
+                            <a href="/category/mini-project.html">Mini project</a>
+                        </li>
+                        <li >
+                            <a href="/category/r.html">R</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/terrorist-attacks-in-china-from-1970-2015.html"
+                       rel="bookmark"
+                       title="Permalink to Terrorist Attacks in China From 1970-2015">
+                        Terrorist Attacks in China From 1970-2015
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2017-01-03T00:00:00-05:00"> Tue 03 January 2017</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="/tag/map.html">Map</a>
+        /
+	<a href="/tag/data-analysis.html">Data Analysis</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p><img alt="" src="./figure/Terrorist_cover.png" />
+<br><br></p>
+<p>Terrorist attack is a national problem worldwide. Fortunately according to this dataset, from 1970-2015 (actully 1989-2015), there are only 242 terrorist attacks in China, in which 2917 killed or wounded. Also, it's astounding that 128 out of the all 242 attacks were happend in Xinjing (Sinkiang, Uygur). </p>
+<p>Within this report, I showed the map in R using <code>ggmap</code> and <code>ggplot2 (geom_polygon)</code>.</p>
+<h2>Read Data</h2>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>data.table<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>ggmap<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>maptools<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>rgeos<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>gpclib<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>foreign<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>sp<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+
+data <span class="o">&lt;-</span> fread<span class="p">(</span><span class="s">&#39;globalterrorismdb_0616dist.csv&#39;</span><span class="p">,</span> showProgress <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+
+data_country <span class="o">&lt;-</span> data <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>country_txt<span class="p">)</span> <span class="o">%&gt;%</span>
+  summarise<span class="p">(</span>num_attack <span class="o">=</span> <span class="kp">sum</span><span class="p">(</span>n<span class="p">()))</span> <span class="o">%&gt;%</span>
+  arrange<span class="p">(</span>desc<span class="p">(</span>num_attack<span class="p">))</span>
+
+China <span class="o">&lt;-</span> data <span class="o">%&gt;%</span> filter<span class="p">(</span>country_txt <span class="o">==</span> <span class="s">&#39;China&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  select<span class="p">(</span>eventid<span class="o">:</span>location<span class="p">,</span> nkill<span class="p">,</span> nwound<span class="p">)</span> <span class="o">%&gt;%</span>
+  mutate<span class="p">(</span>nkill <span class="o">=</span> <span class="kp">ifelse</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>nkill<span class="p">),</span> <span class="m">0</span><span class="p">,</span> nkill<span class="p">))</span> <span class="o">%&gt;%</span>
+  mutate<span class="p">(</span>nwound <span class="o">=</span> <span class="kp">ifelse</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>nwound<span class="p">),</span> <span class="m">0</span><span class="p">,</span> nwound<span class="p">))</span> <span class="o">%&gt;%</span>
+  mutate<span class="p">(</span>Injury_Death <span class="o">=</span> nkill<span class="o">+</span>nwound<span class="p">)</span>
+</pre></div>
+
+
+<p>Note for the attacks in China, there is one without latitude and longitude. </p>
+<h2>Attacks in China by Longitude/Latitude (on Google maps)</h2>
+<div class="highlight"><pre><span></span><span class="c1"># boundaries of China, from https://en.wikipedia.org/wiki/List_of_extreme_points_of_China</span>
+lat <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="m">20</span><span class="p">,</span> <span class="m">54</span><span class="p">)</span>
+lon <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="m">73</span><span class="p">,</span> <span class="m">135</span><span class="p">)</span>
+map_China <span class="o">&lt;-</span> get_map<span class="p">(</span>location <span class="o">=</span> <span class="kt">c</span><span class="p">(</span>lon<span class="o">=</span><span class="kp">mean</span><span class="p">(</span>lon<span class="p">),</span> lat<span class="o">=</span><span class="kp">mean</span><span class="p">(</span>lat<span class="p">)),</span> zoom<span class="o">=</span><span class="m">4</span><span class="p">,</span> <span class="kn">source</span><span class="o">=</span><span class="s">&#39;google&#39;</span><span class="p">,</span> color<span class="o">=</span><span class="s">&#39;color&#39;</span><span class="p">)</span>
+p1 <span class="o">&lt;-</span> ggmap<span class="p">(</span>map_China<span class="p">)</span> <span class="o">+</span> 
+  geom_point<span class="p">(</span>data<span class="o">=</span>China<span class="p">,</span> aes<span class="p">(</span>y<span class="o">=</span>latitude<span class="p">,</span> x<span class="o">=</span>longitude<span class="p">,</span> size<span class="o">=</span>Injury_Death<span class="p">),</span> col<span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">,</span> alpha<span class="o">=</span><span class="m">0.3</span><span class="p">,</span>
+             position <span class="o">=</span> <span class="s">&#39;jitter&#39;</span><span class="p">)</span> <span class="o">+</span>
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&#39;Terrorist Attacks in China&#39;</span><span class="p">)</span>
+p1
+</pre></div>
+
+
+<p><img alt="plot of chunk unnamed-chunk-2" src="/figure/Terrorist-unnamed-chunk-2-1.png" /></p>
+<h2>Attacks in China by year</h2>
+<div class="highlight"><pre><span></span>China_attack_year <span class="o">&lt;-</span> China <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>iyear<span class="p">)</span> <span class="o">%&gt;%</span>
+  summarize<span class="p">(</span>num_attack <span class="o">=</span> n<span class="p">())</span>
+
+p2 <span class="o">&lt;-</span> ggplot<span class="p">(</span>China_attack_year<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>iyear<span class="p">,</span> y<span class="o">=</span>num_attack<span class="p">))</span> <span class="o">+</span>
+  geom_line<span class="p">(</span>size<span class="o">=</span><span class="m">1</span><span class="p">,</span> color<span class="o">=</span><span class="s">&#39;orange&#39;</span><span class="p">)</span> <span class="o">+</span>
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&#39;Terrosit Attacks in China by Year (1970-2015)&#39;</span><span class="p">,</span> x<span class="o">=</span><span class="s">&#39;Year&#39;</span><span class="p">,</span> y<span class="o">=</span><span class="s">&#39;Number of Attacks&#39;</span><span class="p">)</span> <span class="o">+</span>
+  theme_classic<span class="p">()</span>
+p2
+</pre></div>
+
+
+<p><img alt="plot of chunk unnamed-chunk-3" src="/figure/Terrorist-unnamed-chunk-3-1.png" /></p>
+<p>Although for the whole dataset, the earliest record of terrorist attacks is in 1975, for each the earlist is in 1989. So in other words, the plot shows the attacks in China from 1989-2015.</p>
+<h2>Attacks in China by provinces</h2>
+<p>I downloaded the administrative areas data from <a href="http://www.gadm.org/">here</a>, which is used to plot polygon boundary of each province(Please note it's a bug that Taiwan is not included in the administrative area of China). For the missing values of the province, I inquired the Province through google maps API using the longitude and latitude given in the dataset. </p>
+<div class="highlight"><pre><span></span>find_ProvState <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> index1<span class="p">,</span> index2<span class="p">){</span>
+  <span class="kr">if</span><span class="p">(</span><span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>x<span class="p">[</span>index1<span class="p">])</span> <span class="o">&amp;</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>x<span class="p">[</span>index2<span class="p">])){</span>
+    address <span class="o">&lt;-</span> revgeocode<span class="p">(</span><span class="kp">as.numeric</span><span class="p">(</span><span class="kt">c</span><span class="p">(</span>x<span class="p">[</span>index1<span class="p">],</span> x<span class="p">[</span>index2<span class="p">])),</span> messaging <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+    string <span class="o">&lt;-</span> <span class="kp">strsplit</span><span class="p">(</span>address<span class="p">,</span> <span class="s">&#39;,&#39;</span><span class="p">)[[</span><span class="m">1</span><span class="p">]]</span>
+    ProvState_index <span class="o">&lt;-</span> <span class="kp">which</span><span class="p">(</span>string <span class="o">==</span> <span class="s">&#39; China&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="m">1</span> <span class="c1"># Index of province is 1 less than &#39;China&#39;</span>
+    name <span class="o">=</span> string<span class="p">[</span>ProvState_index<span class="p">]</span> <span class="c1"># e.g. Sichuan Sheng</span>
+    name <span class="o">=</span> <span class="kp">strsplit</span><span class="p">(</span>name<span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)[[</span><span class="m">1</span><span class="p">]][</span><span class="m">2</span><span class="p">]</span> <span class="c1"># e.g. Sichuan</span>
+    <span class="kr">return</span><span class="p">(</span>name<span class="p">)</span>
+  <span class="p">}</span> <span class="kr">else</span> <span class="p">{</span><span class="kr">return</span><span class="p">(</span><span class="kc">NA</span><span class="p">)}</span>
+<span class="p">}</span>
+index1 <span class="o">&lt;-</span> <span class="kp">which</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>China<span class="p">)</span> <span class="o">==</span> <span class="s">&#39;longitude&#39;</span><span class="p">)</span>
+index2 <span class="o">&lt;-</span> <span class="kp">which</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>China<span class="p">)</span> <span class="o">==</span> <span class="s">&#39;latitude&#39;</span><span class="p">)</span>
+
+<span class="c1"># China$provstate[which(China$provstate==&#39;&#39;)] &lt;- apply(China[which(China$provstate==&#39;&#39;),], </span>
+<span class="c1">#                                                      MARGIN = 1, FUN=find_ProvState, index1, index2)</span>
+
+clear_ProvName <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">){</span>
+  x <span class="o">&lt;-</span> <span class="kp">strsplit</span><span class="p">(</span>x<span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)[[</span><span class="m">1</span><span class="p">]][</span><span class="m">1</span><span class="p">]</span>
+  <span class="kr">if</span><span class="p">(</span><span class="kp">grepl</span><span class="p">(</span><span class="s">&#39;Inner&#39;</span><span class="p">,</span> x<span class="p">))</span> x<span class="o">&lt;-</span> <span class="s">&#39;Nei Mongol&#39;</span>
+  <span class="kr">else</span> <span class="kr">if</span><span class="p">(</span><span class="kp">grepl</span><span class="p">(</span><span class="s">&#39;Nei&#39;</span><span class="p">,</span> x<span class="p">))</span> x <span class="o">&lt;-</span> <span class="s">&#39;Nei Mongol&#39;</span>
+  <span class="kr">else</span> <span class="kr">if</span><span class="p">(</span><span class="kp">grepl</span><span class="p">(</span><span class="s">&#39;Hong&#39;</span><span class="p">,</span> x<span class="p">))</span> x <span class="o">&lt;-</span> <span class="s">&#39;Hong Kong&#39;</span>
+  <span class="kr">else</span> <span class="kr">if</span><span class="p">(</span><span class="kp">grepl</span><span class="p">(</span><span class="s">&#39;Xinjiang&#39;</span><span class="p">,</span> x<span class="p">))</span> x <span class="o">&lt;-</span> <span class="s">&#39;Xinjiang Uygur&#39;</span>
+  <span class="kr">else</span> <span class="kr">if</span><span class="p">(</span><span class="kp">grepl</span><span class="p">(</span><span class="s">&#39;Tibet&#39;</span><span class="p">,</span> x<span class="p">))</span> x <span class="o">&lt;-</span> <span class="s">&#39;Xizang&#39;</span>
+  <span class="kr">else</span> <span class="kr">if</span><span class="p">(</span><span class="kp">grepl</span><span class="p">(</span><span class="s">&#39;Ningxia&#39;</span><span class="p">,</span> x<span class="p">))</span> x <span class="o">&lt;-</span> <span class="s">&#39;Ningxia Hui&#39;</span>
+  <span class="kr">return</span><span class="p">(</span>x<span class="p">)</span>
+<span class="p">}</span>
+<span class="c1"># China$provstate &lt;- sapply(China$provstate, FUN = clear_ProvName)</span>
+<span class="c1"># China$id &lt;- China$provstate</span>
+<span class="c1"># write.csv(China, file=&#39;China.csv&#39;)</span>
+
+<span class="c1"># China &lt;- read.csv(&#39;China.csv&#39;, header = TRUE)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># read the map data</span>
+ChinaPolygonsLevel1 <span class="o">&lt;-</span> readShapeSpatial<span class="p">(</span><span class="s">&#39;./CHN_adm_shp/CHN_adm1.shp&#39;</span><span class="p">)</span>
+ChinaLevel1Data <span class="o">&lt;-</span> ChinaPolygonsLevel1<span class="o">@</span>data
+ChinaLevel1Data<span class="o">$</span>id <span class="o">&lt;-</span> ChinaLevel1Data<span class="o">$</span>NAME_1
+ChinaLevel1dF <span class="o">&lt;-</span> fortify<span class="p">(</span>ChinaPolygonsLevel1<span class="p">,</span> region <span class="o">=</span> <span class="s">&quot;NAME_1&quot;</span><span class="p">)</span>
+
+<span class="c1"># merge map data and terrorist attack data</span>
+ChinaLevel1 <span class="o">&lt;-</span> <span class="kp">merge</span><span class="p">(</span>ChinaLevel1dF<span class="p">,</span> ChinaLevel1Data<span class="p">,</span> by <span class="o">=</span> <span class="s">&quot;id&quot;</span><span class="p">)</span>
+
+<span class="c1"># compute the number of attacks and number of injury, death in each province</span>
+China_attack <span class="o">&lt;-</span> China <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>id<span class="p">)</span> <span class="o">%&gt;%</span>
+  summarize<span class="p">(</span>num_attack <span class="o">=</span> n<span class="p">(),</span> num_injury_death <span class="o">=</span> <span class="kp">sum</span><span class="p">(</span>Injury_Death<span class="p">))</span>
+plot_data <span class="o">&lt;-</span> <span class="kp">merge</span><span class="p">(</span>ChinaLevel1<span class="p">,</span> China_attack<span class="p">,</span> by <span class="o">=</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> all.x<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+plot_data <span class="o">&lt;-</span> plot_data <span class="o">%&gt;%</span>
+  mutate<span class="p">(</span>num_injury_death <span class="o">=</span> <span class="kp">ifelse</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>num_injury_death<span class="p">),</span> <span class="m">0</span><span class="p">,</span> num_injury_death<span class="p">),</span>
+         num_attack <span class="o">=</span> <span class="kp">ifelse</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>num_attack<span class="p">),</span> <span class="m">0</span><span class="p">,</span> num_attack<span class="p">))</span>
+
+<span class="c1"># plot number of attach for each province. Note after merge, the order has changed. We need change it</span>
+<span class="c1"># to the original order so that it can be plotted correctly.</span>
+p <span class="o">&lt;-</span> ggplot<span class="p">(</span>plot_data<span class="p">[</span><span class="kp">order</span><span class="p">(</span>plot_data<span class="o">$</span><span class="kp">order</span><span class="p">),</span> <span class="p">],</span> aes<span class="p">(</span>x <span class="o">=</span> long<span class="p">,</span> y <span class="o">=</span> lat<span class="p">,</span> fill <span class="o">=</span> <span class="kp">sqrt</span><span class="p">(</span>num_attack<span class="p">),</span> group <span class="o">=</span> group<span class="p">))</span> <span class="o">+</span>
+  <span class="c1"># projected shadow</span>
+  geom_polygon<span class="p">(</span>aes<span class="p">(</span>x <span class="o">=</span> long <span class="o">+</span> <span class="m">0.7</span><span class="p">,</span> y <span class="o">=</span> lat <span class="o">-</span> <span class="m">0.5</span><span class="p">),</span> color <span class="o">=</span> <span class="s">&quot;grey50&quot;</span><span class="p">,</span> size <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span> fill <span class="o">=</span> <span class="s">&quot;grey50&quot;</span><span class="p">)</span> <span class="o">+</span>
+  geom_polygon<span class="p">(</span>color<span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">,</span> size<span class="o">=</span><span class="m">0.2</span><span class="p">)</span> <span class="o">+</span>
+  coord_equal<span class="p">()</span> <span class="o">+</span>
+  scale_fill_gradient<span class="p">(</span>low <span class="o">=</span> <span class="s">&quot;yellow&quot;</span><span class="p">,</span> high <span class="o">=</span> <span class="s">&quot;red&quot;</span><span class="p">,</span> guide <span class="o">=</span> guide_legend<span class="p">(</span>title <span class="o">=</span> <span class="s">&quot;log(num_attack)&quot;</span><span class="p">))</span> <span class="o">+</span>
+  xlab<span class="p">(</span><span class="s">&quot;Longtitude&quot;</span><span class="p">)</span> <span class="o">+</span> ylab<span class="p">(</span><span class="s">&quot;Lantitude&quot;</span><span class="p">)</span> <span class="o">+</span>
+  labs<span class="p">(</span>title <span class="o">=</span> <span class="s">&#39;Attacks in China by Province (1970 - 2015)&#39;</span><span class="p">)</span>
+
+<span class="c1"># compute the center of each province</span>
+Level1Centers <span class="o">&lt;-</span> ChinaLevel1dF <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>id<span class="p">)</span> <span class="o">%&gt;%</span>
+  summarize<span class="p">(</span>clong <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>long<span class="p">),</span> clat <span class="o">=</span> <span class="kp">mean</span><span class="p">(</span>lat<span class="p">))</span>
+<span class="c1"># not sure why the `num_attack` must included in center_loc to plot correctly</span>
+center_loc <span class="o">&lt;-</span> <span class="kp">merge</span><span class="p">(</span>ChinaLevel1Data<span class="p">,</span> Level1Centers<span class="p">,</span> by<span class="o">=</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
+center_loc <span class="o">&lt;-</span> <span class="kp">merge</span><span class="p">(</span>center_loc<span class="p">,</span> China_attack<span class="p">,</span> by<span class="o">=</span><span class="s">&#39;id&#39;</span><span class="p">,</span> all.x<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="c1"># add name of each province</span>
+p <span class="o">&lt;-</span> p <span class="o">+</span> geom_text<span class="p">(</span>data <span class="o">=</span> center_loc<span class="p">,</span>
+                   aes<span class="p">(</span>x<span class="o">=</span>clong<span class="p">,</span> y<span class="o">=</span>clat<span class="p">,</span> label<span class="o">=</span>id<span class="p">,</span> group<span class="o">=</span><span class="kc">NULL</span><span class="p">),</span> size<span class="o">=</span><span class="m">3</span><span class="p">,</span> show.legend<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="kp">print</span><span class="p">(</span>p<span class="p">)</span>
+</pre></div>
+
+
+<h3>Attention:</h3>
+<p><strong>Don't know why the plot cannot be generated by knitr. I generated in Rstudio first then inserted the plot below</strong>.
+<img alt="" src="./figure/province.png" /></p>
+            </div>
+            <!-- /.entry-content -->
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'byrony'; // required: replace example with your forum shortname
+
+                    var disqus_identifier = 'terrorist-attacks-in-china-from-1970-2015';
+                var disqus_url = '/terrorist-attacks-in-china-from-1970-2015.html';
+
+            var disqus_config = function () {
+                this.language = "en";
+            };
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="https://www.linkedin.com/in/xiang-cao"><i class="fa fa-linkedin-square fa-lg"></i> Linkedin</a></li>
+                <li class="list-group-item"><a href="https://github.com/byrony"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+              </ul>
+            </li>
+
+
+
+
+
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="https://www.linkedin.com/in/xiang-cao" target="_blank">
+                Linkedin
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="https://github.com/byrony" target="_blank">
+                Github
+            </a>
+        </li>
+      </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2017 Vincent
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'byrony'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+
+</body>
+</html>
