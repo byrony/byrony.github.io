@@ -9,7 +9,7 @@
 
 
 
-<link rel="canonical" href="/titanic-a-tutorial-to-achieve-082297.html">
+<link rel="canonical" href="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html">
 
         <meta name="author" content="Vincent Cao" />
         <meta name="keywords" content="Project" />
@@ -18,7 +18,7 @@
         <meta property="og:site_name" content="Pieces of Data Science" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Titanic: A Tutorial to Achieve 0.82297"/>
-        <meta property="og:url" content="/titanic-a-tutorial-to-achieve-082297.html"/>
+        <meta property="og:url" content="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html"/>
         <meta property="og:description" content="For the original Knitr version HTML file, see here. It looks like the plugin of Pelican doesn&#39;t support Rmd perfectly. 1. Introduction The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset ..."/>
         <meta property="article:published_time" content="2016-09-06" />
             <meta property="article:section" content="R" />
@@ -27,15 +27,19 @@
 
 
     <!-- Bootstrap -->
-        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
-    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://byrony.github.io/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://byrony.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="/theme/css/pygments/default.css" rel="stylesheet">
-    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+    <link href="https://byrony.github.io/theme/css/pygments/default.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://byrony.github.io/theme/css/style.css" type="text/css"/>
+
+        <link href="https://byrony.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Pieces of Data Science ATOM Feed"/>
 
 
 
-
+        <link href="https://byrony.github.io/feeds/r.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Pieces of Data Science R ATOM Feed"/>
 
 </head>
 <body>
@@ -49,26 +53,26 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="/" class="navbar-brand">
+            <a href="https://byrony.github.io/" class="navbar-brand">
 Pieces of Data Science            </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                         <li >
-                            <a href="/category/about-me.html">About me</a>
+                            <a href="https://byrony.github.io/category/about-me.html">About me</a>
                         </li>
                         <li >
-                            <a href="/category/data-analysis.html">Data analysis</a>
+                            <a href="https://byrony.github.io/category/data-analysis.html">Data analysis</a>
                         </li>
                         <li >
-                            <a href="/category/mini-project.html">Mini project</a>
+                            <a href="https://byrony.github.io/category/mini-project.html">Mini project</a>
                         </li>
                         <li class="active">
-                            <a href="/category/r.html">R</a>
+                            <a href="https://byrony.github.io/category/r.html">R</a>
                         </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+              <li><a href="https://byrony.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -83,7 +87,7 @@ Pieces of Data Science            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="/titanic-a-tutorial-to-achieve-082297.html"
+                    <a href="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html"
                        rel="bookmark"
                        title="Permalink to Titanic: A Tutorial to Achieve 0.82297">
                         Titanic: A Tutorial to Achieve 0.82297
@@ -104,7 +108,7 @@ Pieces of Data Science            </a>
 
 
 <span class="label label-default">Tags</span>
-	<a href="/tag/project.html">Project</a>
+	<a href="https://byrony.github.io/tag/project.html">Project</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
@@ -209,7 +213,7 @@ p
 </pre></div>
 
 
-<p><img alt="plot of chunk unnamed-chunk-3" src="/figure/Titanic-unnamed-chunk-3-1.png" /></p>
+<p><img alt="plot of chunk unnamed-chunk-3" src="https://byrony.github.io/figure/Titanic-unnamed-chunk-3-1.png" /></p>
 <ul>
 <li><strong>Check the relation between <code>Age</code> and <code>Survive</code></strong>.</li>
 </ul>
@@ -224,7 +228,7 @@ p2
 </pre></div>
 
 
-<p><img alt="plot of chunk unnamed-chunk-4" src="/figure/Titanic-unnamed-chunk-4-1.png" /></p>
+<p><img alt="plot of chunk unnamed-chunk-4" src="https://byrony.github.io/figure/Titanic-unnamed-chunk-4-1.png" /></p>
 <ul>
 <li><strong>Check the relation between <code>Fare</code> and <code>Survive</code></strong>.</li>
 </ul>
@@ -235,7 +239,7 @@ p3
 </pre></div>
 
 
-<p><img alt="plot of chunk unnamed-chunk-5" src="/figure/Titanic-unnamed-chunk-5-1.png" /></p>
+<p><img alt="plot of chunk unnamed-chunk-5" src="https://byrony.github.io/figure/Titanic-unnamed-chunk-5-1.png" /></p>
 <div class="highlight"><pre><span></span><span class="kp">prop.table</span><span class="p">(</span><span class="kp">table</span><span class="p">(</span>train<span class="o">$</span>Survived<span class="p">,</span> train<span class="o">$</span>Pclass<span class="p">),</span> margin <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 </pre></div>
 
@@ -257,7 +261,7 @@ p4
 </pre></div>
 
 
-<p><img alt="plot of chunk unnamed-chunk-6" src="/figure/Titanic-unnamed-chunk-6-1.png" /></p>
+<p><img alt="plot of chunk unnamed-chunk-6" src="https://byrony.github.io/figure/Titanic-unnamed-chunk-6-1.png" /></p>
 <h2>3. Data Clearing and Feature Engineering</h2>
 <h3>3.1 Feature Engineering</h3>
 <ul>
@@ -596,7 +600,7 @@ submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span 
             var disqus_shortname = 'byrony'; // required: replace example with your forum shortname
 
                     var disqus_identifier = 'titanic-a-tutorial-to-achieve-082297';
-                var disqus_url = '/titanic-a-tutorial-to-achieve-082297.html';
+                var disqus_url = 'https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html';
 
             var disqus_config = function () {
                 this.language = "en";
@@ -668,13 +672,13 @@ submission <span class="o">&lt;-</span> <span class="kt">data.frame</span><span 
       </div>
    </div>
 </footer>
-<script src="/theme/js/jquery.min.js"></script>
+<script src="https://byrony.github.io/theme/js/jquery.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="/theme/js/bootstrap.min.js"></script>
+<script src="https://byrony.github.io/theme/js/bootstrap.min.js"></script>
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-<script src="/theme/js/respond.min.js"></script>
+<script src="https://byrony.github.io/theme/js/respond.min.js"></script>
 
     <!-- Disqus -->
     <script type="text/javascript">
