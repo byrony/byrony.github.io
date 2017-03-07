@@ -976,8 +976,8 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;&lt;img alt="" src="./figure/SQL.png"&gt;
-&lt;br&gt;&lt;br /&gt;&lt;/br&gt;&lt;/img&gt;&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;&lt;img src="./figure/SQL.png" /&gt;&lt;/center&gt;
+&lt;br&gt;&lt;br /&gt;&lt;/br&gt;&lt;/p&gt;
 &lt;p&gt;I resolved all the database questions on Leetcode.com recently. The questions cover most of the SQL common queries inlcuding JOIN, Ranking and other SQL basics. I provided the answers as well as explanations in this blog, as a way to consolidate the SQL knowledge.&lt;/p&gt;
 &lt;p&gt;The questions on Leetcode only support MySQL, so you can install MySQL on your laptop for testing purpose before submitting the solution, or use online SQL platforms to test you query. E.g. &lt;a href="http://rextester.com/l/mysql_online_compiler"&gt;rextester&lt;/a&gt;.&lt;/p&gt;
 &lt;/div&gt;
@@ -1213,7 +1213,7 @@ Insert Into Scores (Id, Score) Values
 &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;h3 id="Solution:"&gt;Solution:&lt;a class="anchor-link" href="#Solution:"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This is similar to ranking question, in which we set a variable to count consecutive numbers. We create a new column to record the number of consecutive numbers. If the &lt;code&gt;Num&lt;/code&gt; is the same as the previous one, then add the &lt;code&gt;count&lt;/code&gt; by one, and reset the &lt;code&gt;count&lt;/code&gt; to be 1 if the &lt;code&gt;Num&lt;/code&gt; is different.&lt;/p&gt;
-&lt;p&gt;Note: since it doesn't need rank, in SQL server and Oracle you can't use &lt;code&gt;rank()&lt;/code&gt; to solve this porblem.&lt;/p&gt;
+&lt;p&gt;Note: since it doesn't need rank, in SQL server and Oracle you can't use &lt;code&gt;rank()&lt;/code&gt; to solve this problem.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;Select&lt;/span&gt; &lt;span class="k"&gt;Distinct&lt;/span&gt; &lt;span class="n"&gt;Num&lt;/span&gt; &lt;span class="k"&gt;As&lt;/span&gt; &lt;span class="n"&gt;ConsecutiveNums&lt;/span&gt; &lt;span class="k"&gt;From&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="k"&gt;Select&lt;/span&gt; &lt;span class="n"&gt;Id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Num&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
         &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="k"&gt;count&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;If&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;preNum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Num&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="k"&gt;count&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;AS&lt;/span&gt; &lt;span class="k"&gt;Count&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -1253,8 +1253,8 @@ Insert Into Scores (Id, Score) Values
 &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'IT'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
 &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'Sales'&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id="Solution:"&gt;Solution:&lt;a class="anchor-link" href="#Solution:"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This is also a ranking problem. But different from previous ones, we need generate the rank for each group of each department.
-&lt;strong&gt;Method 1:&lt;/strong&gt; In MySQL, we set a variable to generate the rank within each group. If the group(departmentId) changed, then set the rank to default. Then join the generated table with Department table to get the department name.&lt;/p&gt;
+&lt;h3 id="Solution:"&gt;Solution:&lt;a class="anchor-link" href="#Solution:"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;This is also a ranking problem. But different from previous ones, we need generate the rank for each group of each department.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Method 1:&lt;/strong&gt; In MySQL, we set a variable to generate the rank within each group. If the group(departmentId) changed, then set the rank to default. Then join the generated table with Department table to get the department name.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;Select&lt;/span&gt; &lt;span class="n"&gt;D&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Name&lt;/span&gt; &lt;span class="k"&gt;AS&lt;/span&gt; &lt;span class="n"&gt;Department&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Name&lt;/span&gt; &lt;span class="k"&gt;AS&lt;/span&gt; &lt;span class="n"&gt;Employee&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;T&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Salary&lt;/span&gt;
 &lt;span class="k"&gt;From&lt;/span&gt; 
 &lt;span class="p"&gt;(&lt;/span&gt;
@@ -1289,7 +1289,7 @@ Insert Into Scores (Id, Score) Values
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="197.-Rising-Temperature"&gt;197. &lt;a href=""&gt;Rising Temperature&lt;/a&gt;&lt;a class="anchor-link" href="#197.-Rising-Temperature"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;h3 id="Create-test-table"&gt;Create test table&lt;a class="anchor-link" href="#Create-test-table"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;Weather&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+&lt;h2 id="197.-Rising-Temperature"&gt;197. &lt;a href="https://leetcode.com/problems/rising-temperature/?tab=Description"&gt;Rising Temperature&lt;/a&gt;&lt;a class="anchor-link" href="#197.-Rising-Temperature"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;h3 id="Create-test-table"&gt;Create test table&lt;a class="anchor-link" href="#Create-test-table"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;CREATE&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;Weather&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="nb"&gt;INT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="nb"&gt;Date&lt;/span&gt; &lt;span class="nb"&gt;DATE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;Temperature&lt;/span&gt; &lt;span class="nb"&gt;INT&lt;/span&gt;
@@ -2443,7 +2443,9 @@ h6:hover .anchor-link {
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;This is an introduction of using &lt;code&gt;NumPy&lt;/code&gt; and &lt;code&gt;Pandas&lt;/code&gt; based on the course &lt;a href="https://www.udacity.com/course/intro-to-data-analysis--ud170"&gt;&lt;code&gt;Intro to Data Analysis&lt;/code&gt;&lt;/a&gt; on Udacity. It includes &lt;code&gt;NumPy&lt;/code&gt; and &lt;code&gt;Pandas&lt;/code&gt; data structures, basic operations and functions with code examples.. I learnt a lot from this course and shared this notes for your reference.&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;&lt;img ,="" height="100" src="./figure/python-numpy-scipy.png" /&gt;&lt;/center&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+This is an introduction of using &lt;code&gt;NumPy&lt;/code&gt; and &lt;code&gt;Pandas&lt;/code&gt; based on the course &lt;a href="https://www.udacity.com/course/intro-to-data-analysis--ud170"&gt;&lt;code&gt;Intro to Data Analysis&lt;/code&gt;&lt;/a&gt; on Udacity. It includes &lt;code&gt;NumPy&lt;/code&gt; and &lt;code&gt;Pandas&lt;/code&gt; data structures, basic operations and functions with code examples.. I learnt a lot from this course and shared this notes for your reference.&lt;/br&gt;&lt;/br&gt;&lt;/br&gt;&lt;/br&gt;&lt;/br&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;

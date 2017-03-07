@@ -1092,8 +1092,8 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img alt="" src="./figure/SQL.png">
-<br><br /></br></img></p>
+<p><center><img src="./figure/SQL.png" /></center>
+<br><br /></br></p>
 <p>I resolved all the database questions on Leetcode.com recently. The questions cover most of the SQL common queries inlcuding JOIN, Ranking and other SQL basics. I provided the answers as well as explanations in this blog, as a way to consolidate the SQL knowledge.</p>
 <p>The questions on Leetcode only support MySQL, so you can install MySQL on your laptop for testing purpose before submitting the solution, or use online SQL platforms to test you query. E.g. <a href="http://rextester.com/l/mysql_online_compiler">rextester</a>.</p>
 </div>
@@ -1329,7 +1329,7 @@ Insert Into Scores (Id, Score) Values
 <span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
 <h3 id="Solution:">Solution:<a class="anchor-link" href="#Solution:">¶</a></h3><p>This is similar to ranking question, in which we set a variable to count consecutive numbers. We create a new column to record the number of consecutive numbers. If the <code>Num</code> is the same as the previous one, then add the <code>count</code> by one, and reset the <code>count</code> to be 1 if the <code>Num</code> is different.</p>
-<p>Note: since it doesn't need rank, in SQL server and Oracle you can't use <code>rank()</code> to solve this porblem.</p>
+<p>Note: since it doesn't need rank, in SQL server and Oracle you can't use <code>rank()</code> to solve this problem.</p>
 <div class="highlight"><pre><span></span><span class="k">Select</span> <span class="k">Distinct</span> <span class="n">Num</span> <span class="k">As</span> <span class="n">ConsecutiveNums</span> <span class="k">From</span> <span class="p">(</span>
     <span class="k">Select</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Num</span><span class="p">,</span> 
         <span class="o">@</span><span class="k">count</span> <span class="p">:</span><span class="o">=</span> <span class="k">If</span><span class="p">(</span><span class="o">@</span><span class="n">preNum</span> <span class="o">=</span> <span class="n">Num</span><span class="p">,</span> <span class="o">@</span><span class="k">count</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">AS</span> <span class="k">Count</span><span class="p">,</span>
@@ -1369,8 +1369,8 @@ Insert Into Scores (Id, Score) Values
 <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'IT'</span><span class="p">),</span>
 <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'Sales'</span><span class="p">);</span>
 </pre></div>
-<h3 id="Solution:">Solution:<a class="anchor-link" href="#Solution:">¶</a></h3><p>This is also a ranking problem. But different from previous ones, we need generate the rank for each group of each department.
-<strong>Method 1:</strong> In MySQL, we set a variable to generate the rank within each group. If the group(departmentId) changed, then set the rank to default. Then join the generated table with Department table to get the department name.</p>
+<h3 id="Solution:">Solution:<a class="anchor-link" href="#Solution:">¶</a></h3><p>This is also a ranking problem. But different from previous ones, we need generate the rank for each group of each department.</p>
+<p><strong>Method 1:</strong> In MySQL, we set a variable to generate the rank within each group. If the group(departmentId) changed, then set the rank to default. Then join the generated table with Department table to get the department name.</p>
 <div class="highlight"><pre><span></span><span class="k">Select</span> <span class="n">D</span><span class="p">.</span><span class="n">Name</span> <span class="k">AS</span> <span class="n">Department</span><span class="p">,</span> <span class="n">T</span><span class="p">.</span><span class="n">Name</span> <span class="k">AS</span> <span class="n">Employee</span><span class="p">,</span> <span class="n">T</span><span class="p">.</span><span class="n">Salary</span>
 <span class="k">From</span> 
 <span class="p">(</span>
@@ -1405,7 +1405,7 @@ Insert Into Scores (Id, Score) Values
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="197.-Rising-Temperature">197. <a href="">Rising Temperature</a><a class="anchor-link" href="#197.-Rising-Temperature">¶</a></h2><h3 id="Create-test-table">Create test table<a class="anchor-link" href="#Create-test-table">¶</a></h3><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">Weather</span> <span class="p">(</span>
+<h2 id="197.-Rising-Temperature">197. <a href="https://leetcode.com/problems/rising-temperature/?tab=Description">Rising Temperature</a><a class="anchor-link" href="#197.-Rising-Temperature">¶</a></h2><h3 id="Create-test-table">Create test table<a class="anchor-link" href="#Create-test-table">¶</a></h3><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">Weather</span> <span class="p">(</span>
     <span class="n">Id</span> <span class="nb">INT</span><span class="p">,</span>
     <span class="nb">Date</span> <span class="nb">DATE</span><span class="p">,</span>
     <span class="n">Temperature</span> <span class="nb">INT</span>

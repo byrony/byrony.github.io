@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Pieces of Data Science</title><link href="https://byrony.github.io/" rel="alternate"></link><link href="https://byrony.github.io/feeds/r.atom.xml" rel="self"></link><id>https://byrony.github.io/</id><updated>2016-10-09T00:00:00-04:00</updated><entry><title>Data Wrangling: Quick Guide for dplyr, data.table and R build-in data.frame</title><link href="https://byrony.github.io/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html" rel="alternate"></link><published>2016-10-09T00:00:00-04:00</published><updated>2016-10-09T00:00:00-04:00</updated><author><name>"Vincent Cao"</name></author><id>tag:byrony.github.io,2016-10-09:data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html</id><summary type="html">&lt;p&gt;The &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;data.table&lt;/code&gt; part are based on the courses &lt;em&gt;Data Manipulation in R with dplyr&lt;/em&gt; and &lt;em&gt;Data Manipulation in R, the data.table way&lt;/em&gt; on DataCamp. Hope the description along with the code in this guide help you understand the basic data wrangling in R clearly.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Pieces of Data Science</title><link href="https://byrony.github.io/" rel="alternate"></link><link href="https://byrony.github.io/feeds/r.atom.xml" rel="self"></link><id>https://byrony.github.io/</id><updated>2016-10-09T00:00:00-04:00</updated><entry><title>Data Wrangling: Quick Guide for dplyr, data.table and R build-in data.frame</title><link href="https://byrony.github.io/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html" rel="alternate"></link><published>2016-10-09T00:00:00-04:00</published><updated>2016-10-09T00:00:00-04:00</updated><author><name>"Vincent Cao"</name></author><id>tag:byrony.github.io,2016-10-09:data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html</id><summary type="html">&lt;p&gt;&lt;center&gt;&lt;img src="./figure/Rlogo.png" width="400"&gt;&lt;/center&gt;
+&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;data.table&lt;/code&gt; part are based on the courses &lt;em&gt;Data Manipulation in R with dplyr&lt;/em&gt; and &lt;em&gt;Data Manipulation in R, the data.table way&lt;/em&gt; on DataCamp. Hope the description along with the code in this guide help you understand the basic data wrangling in R clearly.&lt;/p&gt;
 &lt;h2&gt;dplyr&lt;/h2&gt;
 &lt;h3&gt;Overview&lt;/h3&gt;
 &lt;ul&gt;
@@ -317,8 +319,20 @@ iris&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt
 &lt;li&gt;Compute on columns. &lt;code&gt;iris[, .(mean_SL=mean(SL), mean_SW=mean(SW)]&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;The generated multiple columns all return the same length. The length of short item get recycled to match the length of large columns. &lt;code&gt;iris[, .(SL, mean_SL=mean(SL))&lt;/code&gt;. For all rows, they have the same &lt;code&gt;mean_SL&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;Throw anything into &lt;code&gt;j&lt;/code&gt;. &lt;code&gt;iris[, plot(SL, SW)]&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Subsetting data.tables. &lt;code&gt;DT[1:3, .(2:4), with=False]&lt;/code&gt;. Check the argument with, which determines whether the column index should be evaluated within the frame of data.table.When with=FALSE j is a character vector of column names or a numeric vector of column positions to select.&lt;/li&gt;
+&lt;li&gt;Subsetting data.tables. &lt;code&gt;DT[1:3, 2:4, with=False]&lt;/code&gt;. Check the argument &lt;code&gt;with&lt;/code&gt;. The argument is named &lt;code&gt;with&lt;/code&gt; because it determines whether the column index should be evaluated within the frame of the data.table, as it would be when using, e.g., base R's &lt;code&gt;with()&lt;/code&gt; and &lt;code&gt;within()&lt;/code&gt;. When &lt;code&gt;with=FALSE&lt;/code&gt; &lt;code&gt;j&lt;/code&gt; is a character vector of column names or a numeric vector of column positions to select.&lt;/li&gt;
 &lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# select three columns&lt;/span&gt;
+iris&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;SL&lt;span class="p"&gt;,&lt;/span&gt; PL&lt;span class="p"&gt;,&lt;/span&gt; SW&lt;span class="p"&gt;)]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##     SL  PL  SW
+## 1: 5.1 1.4 3.5
+## 2: 4.9 1.4 3.0
+## 3: 4.7 1.3 3.2
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# select two columns together with a generated column&lt;/span&gt;
 iris&lt;span class="p"&gt;[,&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;SL&lt;span class="p"&gt;,&lt;/span&gt; SW&lt;span class="p"&gt;,&lt;/span&gt; area_S &lt;span class="o"&gt;=&lt;/span&gt; SL&lt;span class="o"&gt;*&lt;/span&gt;SW&lt;span class="p"&gt;)]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -352,6 +366,30 @@ iris&lt;span class="p"&gt;[,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&l
 
 &lt;p&gt;&lt;img alt="plot of chunk unnamed-chunk-10" src="https://byrony.github.io/figure/Data_Wrangling-unnamed-chunk-10-1.png" /&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## NULL
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# select column using index. Set with=FALSE.&lt;/span&gt;
+iris&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; with&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;# the same as R base. If iris is data.frame. iris[1:3,2:4] returns the same&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##     SW  PL  PW
+## 1: 3.5 1.4 0.2
+## 2: 3.0 1.4 0.2
+## 3: 3.2 1.3 0.2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# also we can use column name&lt;/span&gt;
+iris&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; SW&lt;span class="o"&gt;:&lt;/span&gt;PW&lt;span class="p"&gt;,&lt;/span&gt; with&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##     SW  PL  PW
+## 1: 3.5 1.4 0.2
+## 2: 3.0 1.4 0.2
+## 3: 3.2 1.3 0.2
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -544,8 +582,8 @@ temp
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##     SL  SW  PL  PW Species mean_SL
-## 1: 5.1 3.5 1.4 0.2  setosa      NA
-## 2: 4.9 3.0 1.4 0.2  setosa   5.006
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
+## 2: 4.9 3.0 1.4 0.2  setosa      NA
 ## 3: 4.7 3.2 1.3 0.2  setosa      NA
 ## 4: 4.6 3.1 1.5 0.2  setosa   5.006
 ## 5: 5.0 3.6 1.4 0.2  setosa      NA
@@ -563,7 +601,7 @@ temp&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##    SL_new SW_new PL_new PW_new Species_new mean_SL_new
-## 1:    5.1    3.5    1.4    0.2      setosa          NA
+## 1:    5.1    3.5    1.4    0.2      setosa       5.006
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -611,7 +649,7 @@ temp&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##     SL  SW  PL  PW Species mean_SL
-## 1: 5.1 3.5 1.4 0.2  setosa      NA
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -936,7 +974,9 @@ s &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span
 ## 9  4.4 2.9 1.4 0.2  setosa      TRUE
 ## 42 4.5 2.3 1.3 0.3  setosa      TRUE
 ## 23 4.6 3.6 1.0 0.2  setosa      TRUE
-&lt;/pre&gt;&lt;/div&gt;</summary><category term="Toturial"></category></entry><entry><title>Titanic: A Tutorial to Achieve 0.82297</title><link href="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html" rel="alternate"></link><published>2016-09-06T00:00:00-04:00</published><updated>2016-09-06T00:00:00-04:00</updated><author><name>Vincent Cao</name></author><id>tag:byrony.github.io,2016-09-06:titanic-a-tutorial-to-achieve-082297.html</id><summary type="html">&lt;h4&gt;For the original Knitr version HTML file, see &lt;a href="http://rpubs.com/Vincent/Titanic"&gt;here&lt;/a&gt;. It looks like the plugin of Pelican doesn't support Rmd perfectly.&lt;/h4&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Toturial"></category></entry><entry><title>Titanic: A Tutorial to Achieve 0.82297</title><link href="https://byrony.github.io/titanic-a-tutorial-to-achieve-082297.html" rel="alternate"></link><published>2016-09-06T00:00:00-04:00</published><updated>2016-09-06T00:00:00-04:00</updated><author><name>Vincent Cao</name></author><id>tag:byrony.github.io,2016-09-06:titanic-a-tutorial-to-achieve-082297.html</id><summary type="html">&lt;p&gt;&lt;center&gt;&lt;img src="./figure/titanic_sink.png" width="800"&gt;&lt;/center&gt;
+&lt;br&gt;&lt;br&gt;&lt;/p&gt;
+&lt;h4&gt;For the original Knitr version HTML file, see &lt;a href="http://rpubs.com/Vincent/Titanic"&gt;here&lt;/a&gt;. It looks like the plugin of Pelican doesn't support Rmd perfectly.&lt;/h4&gt;
 &lt;h2&gt;1. Introduction&lt;/h2&gt;
 &lt;p&gt;The sinking of Titanic in twentieth century is an sensational tragedy, in which 1502 out of 2224 passenger and crew members were killed. Kaggle provided this dataset to machine learning beginners to predict what sorts of people were more likely to survive given the information including sex, age, name, etc. Although the size of the dataset is small, it provides newbies a chance to accomplish most procedures in a data science project including data cleaning, feature engineering, model fitting, and tweaking to achieve higher scores.&lt;/p&gt;
 &lt;h3&gt;1.1 Read the data&lt;/h3&gt;

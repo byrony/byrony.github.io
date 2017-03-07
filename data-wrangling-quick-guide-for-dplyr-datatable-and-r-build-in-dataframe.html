@@ -112,7 +112,9 @@ Pieces of Data Science            </a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <p>The <code>dplyr</code> and <code>data.table</code> part are based on the courses <em>Data Manipulation in R with dplyr</em> and <em>Data Manipulation in R, the data.table way</em> on DataCamp. Hope the description along with the code in this guide help you understand the basic data wrangling in R clearly.</p>
+                <p><center><img src="./figure/Rlogo.png" width="400"></center>
+<br><br></p>
+<p>The <code>dplyr</code> and <code>data.table</code> part are based on the courses <em>Data Manipulation in R with dplyr</em> and <em>Data Manipulation in R, the data.table way</em> on DataCamp. Hope the description along with the code in this guide help you understand the basic data wrangling in R clearly.</p>
 <h2>dplyr</h2>
 <h3>Overview</h3>
 <ul>
@@ -430,8 +432,20 @@ iris<span class="p">[</span><span class="kt">c</span><span class="p">(</span><sp
 <li>Compute on columns. <code>iris[, .(mean_SL=mean(SL), mean_SW=mean(SW)]</code>.</li>
 <li>The generated multiple columns all return the same length. The length of short item get recycled to match the length of large columns. <code>iris[, .(SL, mean_SL=mean(SL))</code>. For all rows, they have the same <code>mean_SL</code>.</li>
 <li>Throw anything into <code>j</code>. <code>iris[, plot(SL, SW)]</code>.</li>
-<li>Subsetting data.tables. <code>DT[1:3, .(2:4), with=False]</code>. Check the argument with, which determines whether the column index should be evaluated within the frame of data.table.When with=FALSE j is a character vector of column names or a numeric vector of column positions to select.</li>
+<li>Subsetting data.tables. <code>DT[1:3, 2:4, with=False]</code>. Check the argument <code>with</code>. The argument is named <code>with</code> because it determines whether the column index should be evaluated within the frame of the data.table, as it would be when using, e.g., base R's <code>with()</code> and <code>within()</code>. When <code>with=FALSE</code> <code>j</code> is a character vector of column names or a numeric vector of column positions to select.</li>
 </ul>
+<div class="highlight"><pre><span></span><span class="c1"># select three columns</span>
+iris<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">.</span><span class="p">(</span>SL<span class="p">,</span> PL<span class="p">,</span> SW<span class="p">)]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SL  PL  SW
+## 1: 5.1 1.4 3.5
+## 2: 4.9 1.4 3.0
+## 3: 4.7 1.3 3.2
+</pre></div>
+
+
 <div class="highlight"><pre><span></span><span class="c1"># select two columns together with a generated column</span>
 iris<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>SL<span class="p">,</span> SW<span class="p">,</span> area_S <span class="o">=</span> SL<span class="o">*</span>SW<span class="p">)]</span>
 </pre></div>
@@ -465,6 +479,30 @@ iris<span class="p">[,</span> <span class="p">{</span><span class="kp">print</sp
 
 <p><img alt="plot of chunk unnamed-chunk-10" src="https://byrony.github.io/figure/Data_Wrangling-unnamed-chunk-10-1.png" /></p>
 <div class="highlight"><pre><span></span>## NULL
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># select column using index. Set with=FALSE.</span>
+iris<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="m">2</span><span class="o">:</span><span class="m">4</span><span class="p">,</span> with<span class="o">=</span><span class="kc">FALSE</span><span class="p">]</span> <span class="c1"># the same as R base. If iris is data.frame. iris[1:3,2:4] returns the same</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SW  PL  PW
+## 1: 3.5 1.4 0.2
+## 2: 3.0 1.4 0.2
+## 3: 3.2 1.3 0.2
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># also we can use column name</span>
+iris<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> SW<span class="o">:</span>PW<span class="p">,</span> with<span class="o">=</span><span class="kc">FALSE</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##     SW  PL  PW
+## 1: 3.5 1.4 0.2
+## 2: 3.0 1.4 0.2
+## 3: 3.2 1.3 0.2
 </pre></div>
 
 
@@ -657,8 +695,8 @@ temp
 
 
 <div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
-## 1: 5.1 3.5 1.4 0.2  setosa      NA
-## 2: 4.9 3.0 1.4 0.2  setosa   5.006
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
+## 2: 4.9 3.0 1.4 0.2  setosa      NA
 ## 3: 4.7 3.2 1.3 0.2  setosa      NA
 ## 4: 4.6 3.1 1.5 0.2  setosa   5.006
 ## 5: 5.0 3.6 1.4 0.2  setosa      NA
@@ -676,7 +714,7 @@ temp<span class="p">[</span><span class="m">1</span><span class="p">]</span>
 
 
 <div class="highlight"><pre><span></span>##    SL_new SW_new PL_new PW_new Species_new mean_SL_new
-## 1:    5.1    3.5    1.4    0.2      setosa          NA
+## 1:    5.1    3.5    1.4    0.2      setosa       5.006
 </pre></div>
 
 
@@ -724,7 +762,7 @@ temp<span class="p">[</span><span class="m">1</span><span class="p">]</span>
 
 
 <div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
-## 1: 5.1 3.5 1.4 0.2  setosa      NA
+## 1: 5.1 3.5 1.4 0.2  setosa   5.006
 </pre></div>
 
 
