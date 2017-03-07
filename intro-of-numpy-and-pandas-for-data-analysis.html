@@ -9,7 +9,7 @@
 
 
 
-<link rel="canonical" href="https://byrony.github.io/intro-of-numpy-and-pandas-for-data-analysis.html">
+<link rel="canonical" href="/intro-of-numpy-and-pandas-for-data-analysis.html">
 
         <meta name="author" content="Vincent Cao" />
         <meta name="keywords" content="Python,Data Analysis" />
@@ -18,7 +18,7 @@
         <meta property="og:site_name" content="Pieces of Data Science" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Intro of NumPy and Pandas for Data Analysis"/>
-        <meta property="og:url" content="https://byrony.github.io/intro-of-numpy-and-pandas-for-data-analysis.html"/>
+        <meta property="og:url" content="/intro-of-numpy-and-pandas-for-data-analysis.html"/>
         <meta property="og:description" content="This is an introduction of using NumPy and Pandas based on the course Intro to Data Analysis on Udacity. It includes NumPy and Pandas data structures, basic operations and functions with code examples.. I learnt a lot from this course and shared this notes for your reference. Table of Contents¶1 1. Data Analysis Process"/>
         <meta property="article:published_time" content="2016-10-18" />
             <meta property="article:section" content="Data Analysis" />
@@ -28,19 +28,15 @@
 
 
     <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://byrony.github.io/theme/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://byrony.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="https://byrony.github.io/theme/css/pygments/default.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://byrony.github.io/theme/css/style.css" type="text/css"/>
-
-        <link href="https://byrony.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
-              title="Pieces of Data Science ATOM Feed"/>
+    <link href="/theme/css/pygments/default.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
 
 
 
-        <link href="https://byrony.github.io/feeds/data-analysis.atom.xml" type="application/atom+xml" rel="alternate"
-              title="Pieces of Data Science Data Analysis ATOM Feed"/>
+
 
 </head>
 <body>
@@ -54,26 +50,26 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="https://byrony.github.io/" class="navbar-brand">
+            <a href="/" class="navbar-brand">
 Pieces of Data Science            </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                         <li >
-                            <a href="https://byrony.github.io/category/about-me.html">About me</a>
+                            <a href="/category/about-me.html">About me</a>
                         </li>
                         <li class="active">
-                            <a href="https://byrony.github.io/category/data-analysis.html">Data analysis</a>
+                            <a href="/category/data-analysis.html">Data analysis</a>
                         </li>
                         <li >
-                            <a href="https://byrony.github.io/category/mini-project.html">Mini project</a>
+                            <a href="/category/mini-project.html">Mini project</a>
                         </li>
                         <li >
-                            <a href="https://byrony.github.io/category/r.html">R</a>
+                            <a href="/category/r.html">R</a>
                         </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="https://byrony.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -88,7 +84,7 @@ Pieces of Data Science            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="https://byrony.github.io/intro-of-numpy-and-pandas-for-data-analysis.html"
+                    <a href="/intro-of-numpy-and-pandas-for-data-analysis.html"
                        rel="bookmark"
                        title="Permalink to Intro of NumPy and Pandas for Data Analysis">
                         Intro of NumPy and Pandas for Data Analysis
@@ -109,9 +105,9 @@ Pieces of Data Science            </a>
 
 
 <span class="label label-default">Tags</span>
-	<a href="https://byrony.github.io/tag/python.html">Python</a>
+	<a href="/tag/python.html">Python</a>
         /
-	<a href="https://byrony.github.io/tag/data-analysis.html">Data Analysis</a>
+	<a href="/tag/data-analysis.html">Data Analysis</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
@@ -1103,7 +1099,7 @@ This is an introduction of using <code>NumPy</code> and <code>Pandas</code> base
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Table-of-Contents">Table of Contents<a class="anchor-link" href="#Table-of-Contents">¶</a></h1><p><p><div class="lev1 toc-item"><a data-toc-modified-id="1.-Data-Analysis-Process-1" href="#1.-Data-Analysis-Process"><span class="toc-item-num">1  </span>1. Data Analysis Process</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Introduction-1.1" href="#Introduction"><span class="toc-item-num">1.1  </span>Introduction</a></div><div class="lev1 toc-item"><a data-toc-modified-id="2.-NumPy-and-Pandas-for-1D-Data-2" href="#2.-NumPy-and-Pandas-for-1D-Data"><span class="toc-item-num">2  </span>2. NumPy and Pandas for 1D Data</a></div><div class="lev2 toc-item"><a data-toc-modified-id="One-dimensional-data-structures-2.1" href="#One-dimensional-data-structures"><span class="toc-item-num">2.1  </span>One-dimensional data structures</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Numpy-array-2.2" href="#Numpy-array"><span class="toc-item-num">2.2  </span>Numpy array</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Vectorized-Operations-2.3" href="#Vectorized-Operations"><span class="toc-item-num">2.3  </span>Vectorized Operations</a></div><div class="lev2 toc-item"><a data-toc-modified-id="NumPy-index-arrays-2.4" href="#NumPy-index-arrays"><span class="toc-item-num">2.4  </span>NumPy index arrays</a></div><div class="lev2 toc-item"><a data-toc-modified-id="+-vs.-+=-2.5" href="#+-vs.-+="><span class="toc-item-num">2.5  </span>+ vs. +=</a></div><div class="lev2 toc-item"><a data-toc-modified-id="In-Place-vs.-Not-In-Place-2.6" href="#In-Place-vs.-Not-In-Place"><span class="toc-item-num">2.6  </span>In-Place vs. Not In-Place</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Pandas-Series-2.7" href="#Pandas-Series"><span class="toc-item-num">2.7  </span>Pandas Series</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Series-index-2.8" href="#Series-index"><span class="toc-item-num">2.8  </span>Series index</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Vectorized-Operations-and-Series-Indexes-2.9" href="#Vectorized-Operations-and-Series-Indexes"><span class="toc-item-num">2.9  </span>Vectorized Operations and Series Indexes</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Pandas-Series-apply().-2.10" href="#Pandas-Series-apply()."><span class="toc-item-num">2.10  </span>Pandas Series <code>apply()</code>.</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Plotting-in-Pandas-2.11" href="#Plotting-in-Pandas"><span class="toc-item-num">2.11  </span>Plotting in Pandas</a></div><div class="lev1 toc-item"><a data-toc-modified-id="3.-NumPy-and-Pandas-for-2D-Data-3" href="#3.-NumPy-and-Pandas-for-2D-Data"><span class="toc-item-num">3  </span>3. NumPy and Pandas for 2D Data</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Two-dimensional-data:-3.1" href="#Two-dimensional-data:"><span class="toc-item-num">3.1  </span>Two-dimensional data:</a></div><div class="lev2 toc-item"><a data-toc-modified-id="NumPy-Axis-3.2" href="#NumPy-Axis"><span class="toc-item-num">3.2  </span>NumPy Axis</a></div><div class="lev2 toc-item"><a data-toc-modified-id="NumPy-and-Pandas-Data-Types-3.3" href="#NumPy-and-Pandas-Data-Types"><span class="toc-item-num">3.3  </span>NumPy and Pandas Data Types</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Access-Elements-of-DataFrame-3.4" href="#Access-Elements-of-DataFrame"><span class="toc-item-num">3.4  </span>Access Elements of DataFrame</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Loading-Data-into-a-DataFrame-3.5" href="#Loading-Data-into-a-DataFrame"><span class="toc-item-num">3.5  </span>Loading Data into a DataFrame</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Pandas-Axis-Name-3.6" href="#Pandas-Axis-Name"><span class="toc-item-num">3.6  </span>Pandas Axis Name</a></div><div class="lev2 toc-item"><a data-toc-modified-id="DataFrame-Vectorized-Operations-3.7" href="#DataFrame-Vectorized-Operations"><span class="toc-item-num">3.7  </span>DataFrame Vectorized Operations</a></div><div class="lev2 toc-item"><a data-toc-modified-id="DataFrame-applymap()-and-apply()-3.8" href="#DataFrame-applymap()-and-apply()"><span class="toc-item-num">3.8  </span>DataFrame applymap() and apply()</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Adding-a-DataFrame-to-a-Series-3.9" href="#Adding-a-DataFrame-to-a-Series"><span class="toc-item-num">3.9  </span>Adding a DataFrame to a Series</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Standardize-Columns-and-Rows-via-Vectorized-Operation-3.10" href="#Standardize-Columns-and-Rows-via-Vectorized-Operation"><span class="toc-item-num">3.10  </span>Standardize Columns and Rows via Vectorized Operation</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Pandas-groupby()-3.11" href="#Pandas-groupby()"><span class="toc-item-num">3.11  </span>Pandas <code>groupby()</code></a></div><div class="lev2 toc-item"><a data-toc-modified-id="Combining-Pandas-DataFrame-3.12" href="#Combining-Pandas-DataFrame"><span class="toc-item-num">3.12  </span>Combining Pandas DataFrame</a></div></p>
+<h2 id="Table-of-Contents">Table of Contents<a class="anchor-link" href="#Table-of-Contents">¶</a></h2><p><p><div class="lev1 toc-item"><a data-toc-modified-id="1.-Data-Analysis-Process-1" href="#1.-Data-Analysis-Process"><span class="toc-item-num">1  </span>1. Data Analysis Process</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Introduction-1.1" href="#Introduction"><span class="toc-item-num">1.1  </span>Introduction</a></div><div class="lev1 toc-item"><a data-toc-modified-id="2.-NumPy-and-Pandas-for-1D-Data-2" href="#2.-NumPy-and-Pandas-for-1D-Data"><span class="toc-item-num">2  </span>2. NumPy and Pandas for 1D Data</a></div><div class="lev2 toc-item"><a data-toc-modified-id="One-dimensional-data-structures-2.1" href="#One-dimensional-data-structures"><span class="toc-item-num">2.1  </span>One-dimensional data structures</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Numpy-array-2.2" href="#Numpy-array"><span class="toc-item-num">2.2  </span>Numpy array</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Vectorized-Operations-2.3" href="#Vectorized-Operations"><span class="toc-item-num">2.3  </span>Vectorized Operations</a></div><div class="lev2 toc-item"><a data-toc-modified-id="NumPy-index-arrays-2.4" href="#NumPy-index-arrays"><span class="toc-item-num">2.4  </span>NumPy index arrays</a></div><div class="lev2 toc-item"><a data-toc-modified-id="+-vs.-+=-2.5" href="#+-vs.-+="><span class="toc-item-num">2.5  </span>+ vs. +=</a></div><div class="lev2 toc-item"><a data-toc-modified-id="In-Place-vs.-Not-In-Place-2.6" href="#In-Place-vs.-Not-In-Place"><span class="toc-item-num">2.6  </span>In-Place vs. Not In-Place</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Pandas-Series-2.7" href="#Pandas-Series"><span class="toc-item-num">2.7  </span>Pandas Series</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Series-index-2.8" href="#Series-index"><span class="toc-item-num">2.8  </span>Series index</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Vectorized-Operations-and-Series-Indexes-2.9" href="#Vectorized-Operations-and-Series-Indexes"><span class="toc-item-num">2.9  </span>Vectorized Operations and Series Indexes</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Pandas-Series-apply().-2.10" href="#Pandas-Series-apply()."><span class="toc-item-num">2.10  </span>Pandas Series <code>apply()</code>.</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Plotting-in-Pandas-2.11" href="#Plotting-in-Pandas"><span class="toc-item-num">2.11  </span>Plotting in Pandas</a></div><div class="lev1 toc-item"><a data-toc-modified-id="3.-NumPy-and-Pandas-for-2D-Data-3" href="#3.-NumPy-and-Pandas-for-2D-Data"><span class="toc-item-num">3  </span>3. NumPy and Pandas for 2D Data</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Two-dimensional-data:-3.1" href="#Two-dimensional-data:"><span class="toc-item-num">3.1  </span>Two-dimensional data:</a></div><div class="lev2 toc-item"><a data-toc-modified-id="NumPy-Axis-3.2" href="#NumPy-Axis"><span class="toc-item-num">3.2  </span>NumPy Axis</a></div><div class="lev2 toc-item"><a data-toc-modified-id="NumPy-and-Pandas-Data-Types-3.3" href="#NumPy-and-Pandas-Data-Types"><span class="toc-item-num">3.3  </span>NumPy and Pandas Data Types</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Access-Elements-of-DataFrame-3.4" href="#Access-Elements-of-DataFrame"><span class="toc-item-num">3.4  </span>Access Elements of DataFrame</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Loading-Data-into-a-DataFrame-3.5" href="#Loading-Data-into-a-DataFrame"><span class="toc-item-num">3.5  </span>Loading Data into a DataFrame</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Pandas-Axis-Name-3.6" href="#Pandas-Axis-Name"><span class="toc-item-num">3.6  </span>Pandas Axis Name</a></div><div class="lev2 toc-item"><a data-toc-modified-id="DataFrame-Vectorized-Operations-3.7" href="#DataFrame-Vectorized-Operations"><span class="toc-item-num">3.7  </span>DataFrame Vectorized Operations</a></div><div class="lev2 toc-item"><a data-toc-modified-id="DataFrame-applymap()-and-apply()-3.8" href="#DataFrame-applymap()-and-apply()"><span class="toc-item-num">3.8  </span>DataFrame applymap() and apply()</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Adding-a-DataFrame-to-a-Series-3.9" href="#Adding-a-DataFrame-to-a-Series"><span class="toc-item-num">3.9  </span>Adding a DataFrame to a Series</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Standardize-Columns-and-Rows-via-Vectorized-Operation-3.10" href="#Standardize-Columns-and-Rows-via-Vectorized-Operation"><span class="toc-item-num">3.10  </span>Standardize Columns and Rows via Vectorized Operation</a></div><div class="lev2 toc-item"><a data-toc-modified-id="Pandas-groupby()-3.11" href="#Pandas-groupby()"><span class="toc-item-num">3.11  </span>Pandas <code>groupby()</code></a></div><div class="lev2 toc-item"><a data-toc-modified-id="Combining-Pandas-DataFrame-3.12" href="#Combining-Pandas-DataFrame"><span class="toc-item-num">3.12  </span>Combining Pandas DataFrame</a></div></p>
 </p></div>
 </div>
 </div>
@@ -3732,7 +3728,7 @@ Name: value, dtype: int32
             var disqus_shortname = 'byrony'; // required: replace example with your forum shortname
 
                     var disqus_identifier = 'intro-of-numpy-and-pandas-for-data-analysis';
-                var disqus_url = 'https://byrony.github.io/intro-of-numpy-and-pandas-for-data-analysis.html';
+                var disqus_url = '/intro-of-numpy-and-pandas-for-data-analysis.html';
 
             var disqus_config = function () {
                 this.language = "en";
@@ -3804,13 +3800,13 @@ Name: value, dtype: int32
       </div>
    </div>
 </footer>
-<script src="https://byrony.github.io/theme/js/jquery.min.js"></script>
+<script src="/theme/js/jquery.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://byrony.github.io/theme/js/bootstrap.min.js"></script>
+<script src="/theme/js/bootstrap.min.js"></script>
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-<script src="https://byrony.github.io/theme/js/respond.min.js"></script>
+<script src="/theme/js/respond.min.js"></script>
 
     <!-- Disqus -->
     <script type="text/javascript">
