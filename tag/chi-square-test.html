@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
 <head>
-    <title>Python - Pieces of Data Science</title>
+    <title>chi-square test - Pieces of Data Science</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -11,7 +11,7 @@
 
 
     <meta name="author" content="Vincent" />
-    <meta name="keywords" content="Python" />
+    <meta name="keywords" content="chi-square test" />
 
     <!-- Open Graph tags -->
         <meta property="og:site_name" content="Pieces of Data Science" />
@@ -80,26 +80,24 @@ Pieces of Data Science            </a>
     <div class="row">
         <div class="col-sm-9">
             <article>
-                <h2><a href="https://byrony.github.io/intro-of-numpy-and-pandas-for-data-analysis.html">Intro of NumPy and Pandas for Data Analysis</a></h2>
+                <h2><a href="https://byrony.github.io/understanding-ab-testing-and-statistics-behind.html">Understanding A/B Testing and Statistics Behind</a></h2>
                 <div class="summary">
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><center><img ,="" height="100" src="./figure/python-numpy-scipy.png" /></center>
-<br><br><br><br><br>
-This is an introduction of using <code>NumPy</code> and <code>Pandas</code> based on the course <a href="https://www.udacity.com/course/intro-to-data-analysis--ud170"><code>Intro to Data Analysis</code></a> on Udacity. It includes <code>NumPy</code> and <code>Pandas</code> data structures, basic operations and functions with code examples.. I learnt a lot from this course and shared this notes for your reference.</br></br></br></br></br></p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Table-of-Contents">Table of Contents<a class="anchor-link" href="#Table-of-Contents">¶</a></h2><p><p><div class="lev1 toc-item"><a data-toc-modified-id="1.-Data-Analysis-Process-1" href="#1.-Data-Analysis-Process"><span class="toc-item-num">1  </span>1. Data Analysis Process</a>
-                    <a class="btn btn-default btn-xs" href="https://byrony.github.io/intro-of-numpy-and-pandas-for-data-analysis.html">more ...</a>
+<p><br /></p>
+<p><center><img ,="" src="./figure/ab-testing.png" width="450" /></center>
+<br /></p>
+<h3 id="1.-A-trivial-example:-flipping-a-coin">1. A trivial example: flipping a coin<a class="anchor-link" href="#1.-A-trivial-example:-flipping-a-coin">¶</a></h3><p><strong>Question</strong>:</p>
+<p>A coin is tossed for 100 times, heads appeared 65 times, tails appeared 35 times. Construct a hypothesis test to check whether the coin is fair. ($P_{head}=P_{tail}=\frac{1}{2}$)</p>
+<p><strong>Hypothesis</strong>:
+$$H_0:P_{h}=0.5, H_a:P_{h}\neq 0.5$$</p>
+<h4 id="(1)-Z-test">(1) Z test<a class="anchor-link" href="#(1)-Z-test">¶</a></h4><p>Since for binomial distribution, each trial is either 0 or 1, so the sample mean is also the proportion of success. Since for this experiment, we already know the distribution of tossing coin is a binomial distribution, let $X$ to be the count of sucesses, then:
+$$\mu_X = np$$
+$$\sigma^2_X=np(1-p)$$</p>
+                    <a class="btn btn-default btn-xs" href="https://byrony.github.io/understanding-ab-testing-and-statistics-behind.html">more ...</a>
                 </div>
             </article>
             <hr/>
@@ -145,7 +143,7 @@ This is an introduction of using <code>NumPy</code> and <code>Pandas</code> base
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2016 Vincent
+         <div class="col-xs-10">&copy; 2017 Vincent
             &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
