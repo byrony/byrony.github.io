@@ -9,7 +9,7 @@
 
 
 
-<link rel="canonical" href="https://byrony.github.io/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html">
+<link rel="canonical" href="/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html">
 
         <meta name="author" content=""Vincent Cao"" />
         <meta name="keywords" content="Toturial" />
@@ -18,7 +18,7 @@
         <meta property="og:site_name" content="Pieces of Data Science" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Data Wrangling: Quick Guide for dplyr, data.table and R build-in data.frame"/>
-        <meta property="og:url" content="https://byrony.github.io/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html"/>
+        <meta property="og:url" content="/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html"/>
         <meta property="og:description" content="The dplyr and data.table part are based on the courses Data Manipulation in R with dplyr and Data Manipulation in R, the data.table way on DataCamp. Hope the description along with the code in this guide help you understand the basic data wrangling in R clearly. dplyr Overview ..."/>
         <meta property="article:published_time" content="2016-10-09" />
             <meta property="article:section" content="R" />
@@ -27,19 +27,15 @@
 
 
     <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://byrony.github.io/theme/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://byrony.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="https://byrony.github.io/theme/css/pygments/default.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://byrony.github.io/theme/css/style.css" type="text/css"/>
-
-        <link href="https://byrony.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
-              title="Pieces of Data Science ATOM Feed"/>
+    <link href="/theme/css/pygments/default.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
 
 
 
-        <link href="https://byrony.github.io/feeds/r.atom.xml" type="application/atom+xml" rel="alternate"
-              title="Pieces of Data Science R ATOM Feed"/>
+
 
 </head>
 <body>
@@ -53,29 +49,29 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="https://byrony.github.io/" class="navbar-brand">
+            <a href="/" class="navbar-brand">
 Pieces of Data Science            </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                         <li >
-                            <a href="https://byrony.github.io/category/about-me.html">About me</a>
+                            <a href="/category/about-me.html">About me</a>
                         </li>
                         <li >
-                            <a href="https://byrony.github.io/category/data-analysis.html">Data analysis</a>
+                            <a href="/category/data-analysis.html">Data analysis</a>
                         </li>
                         <li >
-                            <a href="https://byrony.github.io/category/mini-project.html">Mini project</a>
+                            <a href="/category/mini-project.html">Mini project</a>
                         </li>
                         <li class="active">
-                            <a href="https://byrony.github.io/category/r.html">R</a>
+                            <a href="/category/r.html">R</a>
                         </li>
                         <li >
-                            <a href="https://byrony.github.io/category/statistics.html">Statistics</a>
+                            <a href="/category/statistics.html">Statistics</a>
                         </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="https://byrony.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -90,7 +86,7 @@ Pieces of Data Science            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="https://byrony.github.io/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html"
+                    <a href="/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html"
                        rel="bookmark"
                        title="Permalink to Data Wrangling: Quick Guide for dplyr, data.table and R build-in data.frame">
                         Data Wrangling: Quick Guide for dplyr, data.table and R build-in data.frame
@@ -111,7 +107,7 @@ Pieces of Data Science            </a>
 
 
 <span class="label label-default">Tags</span>
-	<a href="https://byrony.github.io/tag/toturial.html">Toturial</a>
+	<a href="/tag/toturial.html">Toturial</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
@@ -480,7 +476,7 @@ iris<span class="p">[,</span> <span class="p">{</span><span class="kp">print</sp
 </pre></div>
 
 
-<p><img alt="plot of chunk unnamed-chunk-10" src="https://byrony.github.io/figure/Data_Wrangling-unnamed-chunk-10-1.png" /></p>
+<p><img alt="plot of chunk unnamed-chunk-10" src="/figure/Data_Wrangling-unnamed-chunk-10-1.png" /></p>
 <div class="highlight"><pre><span></span>## NULL
 </pre></div>
 
@@ -698,12 +694,12 @@ temp
 
 
 <div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
-## 1: 5.1 3.5 1.4 0.2  setosa   5.006
+## 1: 5.1 3.5 1.4 0.2  setosa      NA
 ## 2: 4.9 3.0 1.4 0.2  setosa   5.006
 ## 3: 4.7 3.2 1.3 0.2  setosa      NA
-## 4: 4.6 3.1 1.5 0.2  setosa      NA
-## 5: 5.0 3.6 1.4 0.2  setosa      NA
-## 6: 5.4 3.9 1.7 0.4  setosa   5.006
+## 4: 4.6 3.1 1.5 0.2  setosa   5.006
+## 5: 5.0 3.6 1.4 0.2  setosa   5.006
+## 6: 5.4 3.9 1.7 0.4  setosa      NA
 </pre></div>
 
 
@@ -717,7 +713,7 @@ temp<span class="p">[</span><span class="m">1</span><span class="p">]</span>
 
 
 <div class="highlight"><pre><span></span>##    SL_new SW_new PL_new PW_new Species_new mean_SL_new
-## 1:    5.1    3.5    1.4    0.2      setosa       5.006
+## 1:    5.1    3.5    1.4    0.2      setosa          NA
 </pre></div>
 
 
@@ -765,7 +761,7 @@ temp<span class="p">[</span><span class="m">1</span><span class="p">]</span>
 
 
 <div class="highlight"><pre><span></span>##     SL  SW  PL  PW Species mean_SL
-## 1: 5.1 3.5 1.4 0.2  setosa   5.006
+## 1: 5.1 3.5 1.4 0.2  setosa      NA
 </pre></div>
 
 
@@ -1103,7 +1099,7 @@ s <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>
             var disqus_shortname = 'byrony'; // required: replace example with your forum shortname
 
                     var disqus_identifier = 'data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe';
-                var disqus_url = 'https://byrony.github.io/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html';
+                var disqus_url = '/data-wrangling-quick-guide-for-dplyr-datatable-and-r-build-in-dataframe.html';
 
             var disqus_config = function () {
                 this.language = "en";
@@ -1175,13 +1171,13 @@ s <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>
       </div>
    </div>
 </footer>
-<script src="https://byrony.github.io/theme/js/jquery.min.js"></script>
+<script src="/theme/js/jquery.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://byrony.github.io/theme/js/bootstrap.min.js"></script>
+<script src="/theme/js/bootstrap.min.js"></script>
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-<script src="https://byrony.github.io/theme/js/respond.min.js"></script>
+<script src="/theme/js/respond.min.js"></script>
 
     <!-- Disqus -->
     <script type="text/javascript">

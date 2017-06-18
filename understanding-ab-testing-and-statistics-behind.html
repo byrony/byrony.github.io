@@ -9,17 +9,17 @@
 
 
 
-<link rel="canonical" href="https://byrony.github.io/understanding-ab-testing-and-statistics-behind.html">
+<link rel="canonical" href="/understanding-ab-testing-and-statistics-behind.html">
 
         <meta name="author" content="Vincent Cao" />
         <meta name="keywords" content="A/B testing,Statistics,t test,z test,chi-square test" />
-        <meta name="description" content="1. A trivial example: flipping a coin¶Question: A coin is tossed for 100 times, heads appeared 65 times, tails appeared 35 times. Construct a hypothesis test to check whether the coin is fair. ($P_{head}=P_{tail}=\frac{1}{2}$) Hypothesis: $$H_0:P_{h}=0.5, H_a:P_{h}\neq 0.5$$ (1) Z test¶Since for binomial distribution, each trial is either 0 or 1, so the sample mean is also the proportion of success. Since for this experiment, we already know the distribution of tossing coin is a binomial distribution, let $X$ to be the count of sucesses, then: $$\mu_X = np$$ $$\sigma^2_X=np(1-p)$$" />
+        <meta name="description" content="1. A trivial example: flipping a coin¶Question: A coin is tossed for 100 times, heads appeared 65 times, tails appeared 35 times. Construct a hypothesis test to check whether the coin is fair. ($P_{head}=P_{tail}=\frac{1}{2}$) Hypothesis: $$H_0:P_{h}=0.5, H_a:P_{h}\neq 0.5$$ (1) Z test¶Since for binomial distribution, each trial is either 0 or 1, so the sample mean is also the proportion of success. Since for this experiment, we already know the distribution of tossing a coin is a binomial distribution, let $X$ to be the count of successes, then: $$\mu_X = np$$ $$\sigma^2_X=np(1-p)$$ $$X \sim N(np, np(1-p))$$" />
 
         <meta property="og:site_name" content="Pieces of Data Science" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Understanding A/B Testing and Statistics Behind"/>
-        <meta property="og:url" content="https://byrony.github.io/understanding-ab-testing-and-statistics-behind.html"/>
-        <meta property="og:description" content="1. A trivial example: flipping a coin¶Question: A coin is tossed for 100 times, heads appeared 65 times, tails appeared 35 times. Construct a hypothesis test to check whether the coin is fair. ($P_{head}=P_{tail}=\frac{1}{2}$) Hypothesis: $$H_0:P_{h}=0.5, H_a:P_{h}\neq 0.5$$ (1) Z test¶Since for binomial distribution, each trial is either 0 or 1, so the sample mean is also the proportion of success. Since for this experiment, we already know the distribution of tossing coin is a binomial distribution, let $X$ to be the count of sucesses, then: $$\mu_X = np$$ $$\sigma^2_X=np(1-p)$$"/>
+        <meta property="og:url" content="/understanding-ab-testing-and-statistics-behind.html"/>
+        <meta property="og:description" content="1. A trivial example: flipping a coin¶Question: A coin is tossed for 100 times, heads appeared 65 times, tails appeared 35 times. Construct a hypothesis test to check whether the coin is fair. ($P_{head}=P_{tail}=\frac{1}{2}$) Hypothesis: $$H_0:P_{h}=0.5, H_a:P_{h}\neq 0.5$$ (1) Z test¶Since for binomial distribution, each trial is either 0 or 1, so the sample mean is also the proportion of success. Since for this experiment, we already know the distribution of tossing a coin is a binomial distribution, let $X$ to be the count of successes, then: $$\mu_X = np$$ $$\sigma^2_X=np(1-p)$$ $$X \sim N(np, np(1-p))$$"/>
         <meta property="article:published_time" content="2017-03-12" />
             <meta property="article:section" content="Statistics" />
             <meta property="article:tag" content="A/B testing" />
@@ -31,19 +31,15 @@
 
 
     <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://byrony.github.io/theme/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://byrony.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="https://byrony.github.io/theme/css/pygments/default.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://byrony.github.io/theme/css/style.css" type="text/css"/>
-
-        <link href="https://byrony.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
-              title="Pieces of Data Science ATOM Feed"/>
+    <link href="/theme/css/pygments/default.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
 
 
 
-        <link href="https://byrony.github.io/feeds/statistics.atom.xml" type="application/atom+xml" rel="alternate"
-              title="Pieces of Data Science Statistics ATOM Feed"/>
+
 
 </head>
 <body>
@@ -57,29 +53,29 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="https://byrony.github.io/" class="navbar-brand">
+            <a href="/" class="navbar-brand">
 Pieces of Data Science            </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                         <li >
-                            <a href="https://byrony.github.io/category/about-me.html">About me</a>
+                            <a href="/category/about-me.html">About me</a>
                         </li>
                         <li >
-                            <a href="https://byrony.github.io/category/data-analysis.html">Data analysis</a>
+                            <a href="/category/data-analysis.html">Data analysis</a>
                         </li>
                         <li >
-                            <a href="https://byrony.github.io/category/mini-project.html">Mini project</a>
+                            <a href="/category/mini-project.html">Mini project</a>
                         </li>
                         <li >
-                            <a href="https://byrony.github.io/category/r.html">R</a>
+                            <a href="/category/r.html">R</a>
                         </li>
                         <li class="active">
-                            <a href="https://byrony.github.io/category/statistics.html">Statistics</a>
+                            <a href="/category/statistics.html">Statistics</a>
                         </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="https://byrony.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -94,7 +90,7 @@ Pieces of Data Science            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="https://byrony.github.io/understanding-ab-testing-and-statistics-behind.html"
+                    <a href="/understanding-ab-testing-and-statistics-behind.html"
                        rel="bookmark"
                        title="Permalink to Understanding A/B Testing and Statistics Behind">
                         Understanding A/B Testing and Statistics Behind
@@ -115,15 +111,15 @@ Pieces of Data Science            </a>
 
 
 <span class="label label-default">Tags</span>
-	<a href="https://byrony.github.io/tag/ab-testing.html">A/B testing</a>
+	<a href="/tag/ab-testing.html">A/B testing</a>
         /
-	<a href="https://byrony.github.io/tag/statistics.html">Statistics</a>
+	<a href="/tag/statistics.html">Statistics</a>
         /
-	<a href="https://byrony.github.io/tag/t-test.html">t test</a>
+	<a href="/tag/t-test.html">t test</a>
         /
-	<a href="https://byrony.github.io/tag/z-test.html">z test</a>
+	<a href="/tag/z-test.html">z test</a>
         /
-	<a href="https://byrony.github.io/tag/chi-square-test.html">chi-square test</a>
+	<a href="/tag/chi-square-test.html">chi-square test</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
@@ -1111,16 +1107,16 @@ h6:hover .anchor-link {
 <p>A coin is tossed for 100 times, heads appeared 65 times, tails appeared 35 times. Construct a hypothesis test to check whether the coin is fair. ($P_{head}=P_{tail}=\frac{1}{2}$)</p>
 <p><strong>Hypothesis</strong>:
 $$H_0:P_{h}=0.5, H_a:P_{h}\neq 0.5$$</p>
-<h4 id="(1)-Z-test">(1) Z test<a class="anchor-link" href="#(1)-Z-test">¶</a></h4><p>Since for binomial distribution, each trial is either 0 or 1, so the sample mean is also the proportion of success. Since for this experiment, we already know the distribution of tossing coin is a binomial distribution, let $X$ to be the count of sucesses, then:
+<h4 id="(1)-Z-test">(1) Z test<a class="anchor-link" href="#(1)-Z-test">¶</a></h4><p>Since for binomial distribution, each trial is either 0 or 1, so the sample mean is also the proportion of success. Since for this experiment, we already know the distribution of tossing a coin is a binomial distribution, let $X$ to be the count of successes, then:
 $$\mu_X = np$$
-$$\sigma^2_X=np(1-p)$$</p>
-<p>the SD (Standard Deviation) $\sigma$ is known, we need compute SE (Standard Error) for mean. The sample mean actually is the sample proportion of sucessess, $\hat{p}=\frac{X}{n}$, so:
-$$\bar{X}=\mu_p=np/n=p$$
-$$var(\bar{X}) = \frac{var(X)}{n^2} = \frac{p(1-p)}{n}$$</p>
-<p>Therefore, SE for the mean is $\sigma/n=\sqrt{p(1-p)/n}$.</p>
+$$\sigma^2_X=np(1-p)$$
+$$X \sim N(np, np(1-p))$$</p>
+<p>the SD (Standard Deviation) $\sigma$ is known, we need compute SE (Standard Error) for mean. The sample mean actually is the sample proportion of successes(count of successes per bernoulli trial), $\hat{p}=\frac{X}{n}$, so</p>
+$$\mu_\hat{p}=np/n=p$$$$\sigma^2_\hat{p} = var(\hat{p}) = var(\frac{X}{n}) = \frac{var(X)}{n^2} = \frac{p(1-p)}{n}$$$$\hat{p} \sim N(p, \frac{p(1-p)}{n})$$<p>Therefore, SE for the mean(sample proportion) is $\sigma_\hat{p}=\sqrt{p(1-p)/n}$.</p>
 <p>As the $\sigma$ is known, we can use Z test.</p>
-<p><strong>Z statistic</strong>: 
-$$z = \frac{\bar{X}-\mu}{SE}=\frac{\bar{X}-\mu}{\sigma/\sqrt{n}}=\frac{\bar{X}-\mu}{\sqrt{p(1-p)/n}}=\frac{0.65-0.5}{\sqrt{0.5*0.5/100}}=3$$</p>
+<p><strong>Z statistic</strong>:</p>
+<p>In the following formulas, we just use $\bar{X}$ to represent $\hat{p}$, which is the sample proportion of successes (<strong>binomial proportion of successes is equivalent to bernoulli sample mean</strong>). Must note here $\bar{X} \neq \frac{\sum{X_i}}{n}$. as we already defined $X$ is the count of successes of a binomial distribution. We don't have $X_i$ here.</p>
+$$z = \frac{\bar{X}-\mu}{SE}=\frac{\bar{X}-\mu}{\sigma_\hat{p}}=\frac{\bar{X}-p}{\sqrt{p(1-p)/n}}=\frac{0.65-0.5}{\sqrt{0.5*0.5/100}}=3$$
 </div>
 </div>
 </div>
@@ -1159,7 +1155,7 @@ p_value<span class="o">*</span><span class="m">2</span>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For a two-tailed Z test, P value is smaller than 0.05, so it rejected the null hypothesis.</p>
 <p><br /></p>
-<h4 id="(2)-Binomial-test">(2) Binomial test<a class="anchor-link" href="#(2)-Binomial-test">¶</a></h4><p>From the experiment, we know $X\sim Binomial(100, 0.5)$. P-value is the probability that we see as extreme as or more extreme than the observed one. So we can compute the porbability that $X$ is greater than or equal to observation.
+<h4 id="(2)-Binomial-test">(2) Binomial test<a class="anchor-link" href="#(2)-Binomial-test">¶</a></h4><p>From the experiment, we know $X\sim Binomial(100, 0.5)$. P-value is the probability that we see as extreme as or more extreme than the observed one. So we can compute the probability that $X$ is greater than or equal to observation.
 $$P(X>=70)=\sum_{k=70}^{100} p^k(1-p)^{10-k}$$</p>
 <p>There are multiple ways to implement binomial test in R. We tried three of them.</p>
 </div>
@@ -1271,7 +1267,7 @@ p_value<span class="o">*</span><span class="m">2</span>
 <li>Prerequisite knowledge: <strong>Central Limit Theorem</strong></li>
 </ul>
 <p>The Central Limit Theorem (CLT) implies a sample of independent random variables, their sums tends towards to a normal distribution even if the original variables themselves aren't normally distributed, also the sample mean tends towards to a normal distribution (sum and mean are equivalent).</p>
-<p>For the sample in this problem, each variable is bernoulli distributed, so the sums is binomail distributed.</p>
+<p>For the sample in this problem, each variable is bernoulli distributed, so the sums is binomial distributed.</p>
 <ul>
 <li><strong>Distribution of number of successes:</strong></li>
 </ul>
@@ -1279,11 +1275,11 @@ p_value<span class="o">*</span><span class="m">2</span>
 <ul>
 <li><strong>Distribution of proportion of successes:</strong></li>
 </ul>
-<p>If we consider the mean of random variable in a sample, according to CLT, when n increases, the mean approximates a normal distribution, $$\bar{X} \sim N(\frac{np}{p}, \frac{np(1-p)}{p^2}) = N(n, \frac{p(1-p)}{n})$$</p>
+<p>If we consider the mean of random variable in a sample, according to CLT, when n increases, the mean approximates a normal distribution, $$\bar{X} \sim N(\frac{np}{p}, \frac{np(1-p)}{n^2}) = N(n, \frac{p(1-p)}{n})$$</p>
 <ul>
 <li><strong>Another Hypothesis test:</strong> </li>
 </ul>
-<p>If the coin if fair, then the expected number of heads in 100 tosses is 50. Given the null hypothesis (coin is fair, or expectation of successes is 50), we want to test whether our observation (65 heads in 100 tosses) is significant different from the expectation of number of heads ($\mu=100\times 0.5=50$). Use the sum of successes $X$ to construct the test statistics, then
+<p>If the coin is fair, then the expected number of heads in 100 tosses is 50. Given the null hypothesis (coin is fair, or expectation of successes is 50), we want to test whether our observation (65 heads in 100 tosses) is significant different from the expectation of number of heads ($\mu=100\times 0.5=50$). Use the sum of successes $X$ to construct the test statistics, then
 $H_0:X=50, H_a:X\neq 50$
 $$\frac{X-\mu}{SD}=\frac{X-np}{\sqrt{np(1-p)}} = \frac{650-500}{\sqrt{100*0.5*(1-0.5)}} = 3$$
 This is equivalent as the test statistics constructed by proportion of successes.</p>
@@ -1512,7 +1508,7 @@ X-squared = 3.2865, df = 1, p-value = 0.06985
             var disqus_shortname = 'byrony'; // required: replace example with your forum shortname
 
                     var disqus_identifier = 'understanding-ab-testing-and-statistics-behind';
-                var disqus_url = 'https://byrony.github.io/understanding-ab-testing-and-statistics-behind.html';
+                var disqus_url = '/understanding-ab-testing-and-statistics-behind.html';
 
             var disqus_config = function () {
                 this.language = "en";
@@ -1584,13 +1580,13 @@ X-squared = 3.2865, df = 1, p-value = 0.06985
       </div>
    </div>
 </footer>
-<script src="https://byrony.github.io/theme/js/jquery.min.js"></script>
+<script src="/theme/js/jquery.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://byrony.github.io/theme/js/bootstrap.min.js"></script>
+<script src="/theme/js/bootstrap.min.js"></script>
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-<script src="https://byrony.github.io/theme/js/respond.min.js"></script>
+<script src="/theme/js/respond.min.js"></script>
 
     <!-- Disqus -->
     <script type="text/javascript">
